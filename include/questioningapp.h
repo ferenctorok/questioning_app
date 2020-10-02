@@ -2,8 +2,8 @@
 #define QUESTIONINGAPP_H
 
 #include <QMainWindow>
-#include <QPushButton>
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 
@@ -16,9 +16,15 @@ public:
     QuestioningApp(QWidget *parent = nullptr);
     ~QuestioningApp();
 
+protected slots:
+    void button_new_questions_clicked();
+    void button_start_clicked();
+
 protected:
     QWidget *centralwidget;
-    QPushButton *pushButton;
+    QHBoxLayout *mainlayout;
+    QPushButton *buttonNewQuestions;
+    QPushButton *buttonStart;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 };
