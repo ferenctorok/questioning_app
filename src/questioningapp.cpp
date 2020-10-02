@@ -1,8 +1,11 @@
-#include "questioningapp.h"
+#include <iostream>
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QFileDialog>
-#include <iostream>
+
+#include <questioningapp.h>
+#include <questioningapp.h>
+#include <new_questions.h>
 
 QuestioningApp::QuestioningApp(QWidget *parent)
     : QMainWindow(parent)
@@ -51,6 +54,7 @@ void QuestioningApp::button_new_questions_clicked()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
         QString("Kérdéssor Mentése"));
+    NewQuestionsWindow new_window(1);
 }
 
 void QuestioningApp::button_start_clicked()
