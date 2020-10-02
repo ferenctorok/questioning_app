@@ -54,7 +54,9 @@ void QuestioningApp::button_new_questions_clicked()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
         QString("Kérdéssor Mentése"));
-    NewQuestionsWindow new_window(1);
+    new_questions_window = new NewQuestionsWindow;
+    new_questions_window->show();
+
 }
 
 void QuestioningApp::button_start_clicked()
