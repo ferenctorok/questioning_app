@@ -52,15 +52,22 @@ QuestioningApp::~QuestioningApp()
 
 void QuestioningApp::button_new_questions_clicked()
 {
-    QString fileName = QFileDialog::getSaveFileName(this,
-        QString("Kérdéssor Mentése"));
-    new_questions_window = new NewQuestionsWindow;
+    /*QString fileName = QFileDialog::getSaveFileName(this,
+        QString("Kérdéssor Mentése"));*/
+    new_questions_window = new NewQuestionsWindow(this);
+    connect(new_questions_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
+    this->hide();
     new_questions_window->show();
-
 }
 
 void QuestioningApp::button_start_clicked()
 {
 
+}
+
+void QuestioningApp::show_again()
+{
+    std::cout << "show_again() is called\n";
+    this->show();
 }
 

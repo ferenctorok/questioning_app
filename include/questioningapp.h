@@ -20,6 +20,7 @@ public:
 protected slots:
     void button_new_questions_clicked();
     void button_start_clicked();
+    void show_again();
 
 protected:
     QWidget *centralwidget;

@@ -1,5 +1,6 @@
 #ifndef NEW_QUESTIONS_H
 #define NEW_QUESTIONS_H
+#include <QDialog>
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -7,14 +8,19 @@
 #include <QList>
 
 
-class NewQuestionsWindow: public QWidget
+class NewQuestionsWindow: public QDialog
 {
     Q_OBJECT
 public:
     NewQuestionsWindow(QWidget *parent = nullptr);
-    virtual ~NewQuestionsWindow() {};
+    virtual ~NewQuestionsWindow();
 
-private slots:
+public slots:
+    //bool close();
+    void reject();
+
+signals:
+    void IsClosed();
 
 private:
     QWidget *centralwidget;
