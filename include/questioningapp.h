@@ -1,10 +1,11 @@
 #ifndef QUESTIONINGAPP_H
 #define QUESTIONINGAPP_H
 #include <QMainWindow>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QStatusBar>
+#include <QWidget>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QStatusBar>
+#include <QMenuBar>
 
 #include <new_questions.h>
 
@@ -15,7 +16,7 @@ class QuestioningApp : public QMainWindow
 
 public:
     QuestioningApp(QWidget *parent = nullptr);
-    virtual ~QuestioningApp();
+    virtual ~QuestioningApp() {};
 
 protected slots:
     void button_new_questions_clicked();

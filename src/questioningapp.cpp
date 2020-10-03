@@ -4,56 +4,46 @@
 #include <QFileDialog>
 
 #include <questioningapp.h>
-#include <questioningapp.h>
+#include <utils.h>
 #include <new_questions.h>
 
 QuestioningApp::QuestioningApp(QWidget *parent)
     : QMainWindow(parent)
 {
     this->resize(600, 400);
-    centralwidget = new QWidget(this);
-    centralwidget->setObjectName(QStringLiteral("centralwidget"));
-    this->setCentralWidget(centralwidget);
+    // central widget
+    centralwidget = set_centralwidget(this, "centralwidget");
 
-    mainlayout = new QHBoxLayout(centralwidget);
-    mainlayout->setObjectName(QStringLiteral("mainlayout"));
+    // main layout
+    mainlayout = set_QHBoxLayout(centralwidget, "mainlayout");
 
-    buttonStart = new QPushButton(centralwidget);
-    buttonStart->setObjectName(QStringLiteral("buttonStart"));
-    buttonStart->setText("Kezdés");
-    buttonStart->setToolTip("Kérdések kezdése");
-    connect(buttonStart, SIGNAL(clicked()), this, SLOT(button_start_clicked()));
-    mainlayout->addWidget(buttonStart);
-
-    buttonNewQuestions = new QPushButton(centralwidget);
-    buttonNewQuestions->setObjectName(QStringLiteral("buttonNewQuestions"));
-    buttonNewQuestions->setText("Új kérdéssor");
-    buttonNewQuestions->setToolTip("új kérdéssor összeállítása");
-    connect(buttonNewQuestions, SIGNAL(clicked()), this, SLOT(button_new_questions_clicked()));
-    mainlayout->addWidget(buttonNewQuestions);
-
-    menubar = new QMenuBar(this);
-    menubar->setObjectName(QStringLiteral("menubar"));
-    menubar->setGeometry(QRect(0, 0, 800, 22));
+    // menu bar
+    menubar = set_QMenuBar(this, "menubar");
     this->setMenuBar(menubar);
-    statusbar = new QStatusBar(this);
-    statusbar->setObjectName(QStringLiteral("statusbar"));
+
+    // status bar
+    statusbar = set_QStatusBar(this, "statusbar");
     this->setStatusBar(statusbar);
 
+    // start button
+    buttonStart = set_QPushButton(centralwidget, "buttonStart", "Kezdés",
+                                  "Kérdések kezdése", mainlayout);
+    connect(buttonStart, SIGNAL(clicked()), this, SLOT(button_start_clicked()));
+
+    // new questions button
+    buttonNewQuestions = set_QPushButton(centralwidget, "buttonNewQuestions", "Új kérdéssor",
+                                  "Új kérdéssor összeállítása", mainlayout);
+    connect(buttonNewQuestions, SIGNAL(clicked()), this, SLOT(button_new_questions_clicked()));
 }
 
-QuestioningApp::~QuestioningApp()
-{
-    delete centralwidget;
-    delete buttonNewQuestions;
-    delete menubar;
-    delete statusbar;
-}
 
 void QuestioningApp::button_new_questions_clicked()
 {
-    /*QString fileName = QFileDialog::getSaveFileName(this,
-        QString("Kérdéssor Mentése"));*/
+    // file name to save:
+    QString fileName = QFileDialog::getSaveFileName(this,
+        QString("Kérdéssor Mentése"));
+
+    // setting up new window:
     new_questions_window = new NewQuestionsWindow();
     connect(new_questions_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
     hide();
