@@ -36,5 +36,12 @@ QRadioButton* set_QRadioButton(QWidget *parent = nullptr,
                                const QString text = "",
                                QLayout *layout = nullptr);
 
+QRadioButton* set_QRadioButton(const int max_width,
+                               const int max_height,
+                               QWidget *parent = nullptr,
+                               const QString name = "",
+                               const QString text = "",
+                               QLayout *layout = nullptr);
+
 
 #endif

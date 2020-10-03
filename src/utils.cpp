@@ -63,7 +63,6 @@ QStatusBar* set_QStatusBar(QWidget *parent,
     return statusbar;
 }
 
-
 QRadioButton* set_QRadioButton(QWidget *parent,
                                const QString name,
                                const QString text,
@@ -73,6 +72,18 @@ QRadioButton* set_QRadioButton(QWidget *parent,
     button->setObjectName(name);
     button->setText(text);
     if (layout != nullptr) layout->addWidget(button);
+    return button;
+}
+
+QRadioButton* set_QRadioButton(const int max_width,
+                               const int max_height,
+                               QWidget *parent,
+                               const QString name,
+                               const QString text,
+                               QLayout *layout)
+{
+    QRadioButton *button = set_QRadioButton(parent, name, text, layout);
+    button->setMaximumSize(max_width, max_height);
     return button;
 }
 

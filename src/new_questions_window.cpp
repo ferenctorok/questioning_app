@@ -10,6 +10,8 @@ NewQuestionsWindow::NewQuestionsWindow(QWidget *parent):
     // delete this widget when closed.
     setAttribute(Qt::WA_DeleteOnClose);
     this->resize(600, 400);
+    this->setObjectName("new_questions_window");
+    this->setWindowTitle("új kérdéssor összeállítása");
 
     // main layout
     mainlayout = set_QVBoxLayout(this, "mainlayout");
@@ -19,7 +21,7 @@ NewQuestionsWindow::NewQuestionsWindow(QWidget *parent):
     mainlayout->addLayout(questionTypeLayout);
 
     // radio button for choosing multiple choice question
-    multipleChoiceRB = set_QRadioButton(this, "multiple_choice_rb",
+    multipleChoiceRB = set_QRadioButton(300, 100, this, "multiple_choice_rb",
                                         "Feleletválasztós", questionTypeLayout);
 
     // radio button for choosing typed answear question

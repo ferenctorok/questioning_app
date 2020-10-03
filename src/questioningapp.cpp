@@ -11,6 +11,7 @@ QuestioningApp::QuestioningApp(QWidget *parent)
     : QMainWindow(parent)
 {
     this->resize(600, 400);
+    this->setWindowTitle("Kérdező app");
     // central widget
     centralwidget = set_centralwidget(this, "centralwidget");
 
