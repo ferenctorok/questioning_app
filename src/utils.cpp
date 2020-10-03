@@ -44,6 +44,20 @@ QPushButton* set_QPushButton(QWidget *parent,
     return button;
 }
 
+QPushButton* set_QPushButton(const int max_width,
+                             const int max_height,
+                             QWidget *parent,
+                             const QString name,
+                             const QString text,
+                             const QString tip_text,
+                             QLayout *layout)
+{
+    QPushButton *button = set_QPushButton(parent, name, text, tip_text, layout);
+    button->setMaximumSize(max_width, max_height);
+    return button;
+}
+
+
 
 QMenuBar* set_QMenuBar(QWidget *parent,
                        const QString name)
@@ -85,6 +99,31 @@ QRadioButton* set_QRadioButton(const int max_width,
     QRadioButton *button = set_QRadioButton(parent, name, text, layout);
     button->setMaximumSize(max_width, max_height);
     return button;
+}
+
+
+QTextEdit* set_QTextEdit(QWidget *parent,
+                         const QString name,
+                         const QString placeholder,
+                         QLayout *layout)
+{
+    QTextEdit *textedit = new QTextEdit(parent);
+    textedit->setObjectName(name);
+    textedit->setPlaceholderText(placeholder);
+    if (layout != nullptr) layout->addWidget(textedit);
+    return textedit;
+}
+
+QTextEdit* set_QTextEdit(const int max_width,
+                         const int max_height,
+                         QWidget *parent,
+                         const QString name,
+                         const QString placeholder,
+                         QLayout *layout)
+{
+    QTextEdit *textedit = set_QTextEdit(parent, name, placeholder);
+    textedit->setMaximumSize(max_width, max_height);
+    return textedit;
 }
 
 

@@ -9,6 +9,7 @@
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QRadioButton>
+#include <QTextEdit>
 
 QWidget* set_centralwidget(QMainWindow *parent = nullptr,
                            const QString name = "");
@@ -20,6 +21,14 @@ QVBoxLayout* set_QVBoxLayout(QWidget *parent = nullptr,
                              const QString name = "");
 
 QPushButton* set_QPushButton(QWidget *parent = nullptr,
+                             const QString name = "",
+                             const QString text = "",
+                             const QString tip_text = "",
+                             QLayout *layout = nullptr);
+
+QPushButton* set_QPushButton(const int max_width,
+                             const int max_height,
+                             QWidget *parent = nullptr,
                              const QString name = "",
                              const QString text = "",
                              const QString tip_text = "",
@@ -42,6 +51,18 @@ QRadioButton* set_QRadioButton(const int max_width,
                                const QString name = "",
                                const QString text = "",
                                QLayout *layout = nullptr);
+
+QTextEdit* set_QTextEdit(QWidget *parent = nullptr,
+                         const QString name = "",
+                         const QString placeholder = "",
+                         QLayout *layout = nullptr);
+
+QTextEdit* set_QTextEdit(const int max_width,
+                         const int max_height,
+                         QWidget *parent = nullptr,
+                         const QString name = "",
+                         const QString placeholder = "",
+                         QLayout *layout = nullptr);
 
 
 #endif

@@ -7,6 +7,7 @@
 #include <QRadioButton>
 #include <QList>
 #include <QCloseEvent>
+#include <QTextEdit>
 
 
 class NewQuestionsWindow: public QWidget
@@ -17,7 +18,8 @@ public:
     virtual ~NewQuestionsWindow();
 
 public slots:
-
+    void multiChRB_clicked();
+    void textAnsRb_clicked();
 signals:
     void IsClosed();
 
@@ -25,7 +27,9 @@ private:
     QVBoxLayout *mainlayout;
     QHBoxLayout *questionTypeLayout;
     QRadioButton *multipleChoiceRB;
-    QRadioButton *textAnswearRB;
+    QRadioButton *textAnswerRB;
+    QTextEdit *QuestionTextEdit;
+    QTextEdit *AnswerTextEdit;
     QVBoxLayout *MultipleChoiceLayout;
     QList<QRadioButton *> answear_rbutton_list;
 

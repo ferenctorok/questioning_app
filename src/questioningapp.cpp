@@ -17,6 +17,7 @@ QuestioningApp::QuestioningApp(QWidget *parent)
 
     // main layout
     mainlayout = set_QHBoxLayout(centralwidget, "mainlayout");
+    //mainlayout->setAlignment(Qt::AlignCenter);
 
     // menu bar
     menubar = set_QMenuBar(this, "menubar");
@@ -27,12 +28,12 @@ QuestioningApp::QuestioningApp(QWidget *parent)
     this->setStatusBar(statusbar);
 
     // start button
-    buttonStart = set_QPushButton(centralwidget, "buttonStart", "Kezdés",
+    buttonStart = set_QPushButton(300, 100, centralwidget, "buttonStart", "Kezdés",
                                   "Kérdések kezdése", mainlayout);
     connect(buttonStart, SIGNAL(clicked()), this, SLOT(button_start_clicked()));
 
     // new questions button
-    buttonNewQuestions = set_QPushButton(centralwidget, "buttonNewQuestions", "Új kérdéssor",
+    buttonNewQuestions = set_QPushButton(300, 100, centralwidget, "buttonNewQuestions", "Új kérdéssor",
                                   "Új kérdéssor összeállítása", mainlayout);
     connect(buttonNewQuestions, SIGNAL(clicked()), this, SLOT(button_new_questions_clicked()));
 }
