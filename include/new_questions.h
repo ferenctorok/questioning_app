@@ -22,13 +22,13 @@ signals:
     void IsClosed();
 
 private:
-    void closeEvent(QCloseEvent *event);
-    QWidget *centralwidget;
     QVBoxLayout *mainlayout;
-    QHBoxLayout *QuestionTypeLayout;
+    QHBoxLayout *questionTypeLayout;
     QRadioButton *multipleChoiceRB;
     QRadioButton *textAnswearRB;
     QVBoxLayout *MultipleChoiceLayout;
     QList<QRadioButton *> answear_rbutton_list;
+
+    void closeEvent(QCloseEvent *event);
 };
 #endif

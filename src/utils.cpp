@@ -20,6 +20,16 @@ QHBoxLayout* set_QHBoxLayout(QWidget *parent,
 }
 
 
+QVBoxLayout* set_QVBoxLayout(QWidget *parent,
+                             const QString name)
+{
+    QVBoxLayout *layout = new QVBoxLayout(parent);
+    layout->setObjectName(name);
+    return layout;
+}
+
+
+
 QPushButton* set_QPushButton(QWidget *parent,
                              const QString name,
                              const QString text,
@@ -30,7 +40,7 @@ QPushButton* set_QPushButton(QWidget *parent,
     button->setObjectName(name);
     button->setText(text);
     button->setToolTip(tip_text);
-    layout->addWidget(button);
+    if (layout != nullptr) layout->addWidget(button);
     return button;
 }
 
@@ -51,6 +61,19 @@ QStatusBar* set_QStatusBar(QWidget *parent,
     QStatusBar *statusbar = new QStatusBar(parent);
     statusbar->setObjectName(name);
     return statusbar;
+}
+
+
+QRadioButton* set_QRadioButton(QWidget *parent,
+                               const QString name,
+                               const QString text,
+                               QLayout *layout)
+{
+    QRadioButton *button = new QRadioButton(parent);
+    button->setObjectName(name);
+    button->setText(text);
+    if (layout != nullptr) layout->addWidget(button);
+    return button;
 }
 
 

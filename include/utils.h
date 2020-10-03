@@ -8,11 +8,15 @@
 #include <QPushButton>
 #include <QMenuBar>
 #include <QStatusBar>
+#include <QRadioButton>
 
 QWidget* set_centralwidget(QMainWindow *parent = nullptr,
                            const QString name = "");
 
 QHBoxLayout* set_QHBoxLayout(QWidget *parent = nullptr,
+                             const QString name = "");
+
+QVBoxLayout* set_QVBoxLayout(QWidget *parent = nullptr,
                              const QString name = "");
 
 QPushButton* set_QPushButton(QWidget *parent = nullptr,
@@ -26,6 +30,11 @@ QMenuBar* set_QMenuBar(QWidget *parent = nullptr,
 
 QStatusBar* set_QStatusBar(QWidget *parent = nullptr,
                            const QString name = "");
+
+QRadioButton* set_QRadioButton(QWidget *parent = nullptr,
+                               const QString name = "",
+                               const QString text = "",
+                               QLayout *layout = nullptr);
 
 
 #endif
