@@ -3,7 +3,7 @@
 
 
 NewQuestionsWindow::NewQuestionsWindow(QWidget *parent):
-        QDialog(parent)
+        QWidget(parent)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     /*centralwidget = new QWidget(this);
@@ -19,9 +19,9 @@ NewQuestionsWindow::~NewQuestionsWindow()
 
 }
 
-void NewQuestionsWindow::reject()
+void NewQuestionsWindow::closeEvent(QCloseEvent *event)
 {
-    std::cout << "reject() is called\n";
+    std::cout << "closeEvent() is called\n";
     emit IsClosed();
-    QDialog::reject();
+    QWidget::closeEvent(event);
 }

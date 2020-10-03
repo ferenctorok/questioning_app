@@ -54,9 +54,9 @@ void QuestioningApp::button_new_questions_clicked()
 {
     /*QString fileName = QFileDialog::getSaveFileName(this,
         QString("Kérdéssor Mentése"));*/
-    new_questions_window = new NewQuestionsWindow(this);
+    new_questions_window = new NewQuestionsWindow();
     connect(new_questions_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
-    this->hide();
+    hide();
     new_questions_window->show();
 }
 
@@ -67,7 +67,6 @@ void QuestioningApp::button_start_clicked()
 
 void QuestioningApp::show_again()
 {
-    std::cout << "show_again() is called\n";
-    this->show();
+    show();
 }
 

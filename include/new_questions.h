@@ -6,9 +6,10 @@
 #include <QHBoxLayout>
 #include <QRadioButton>
 #include <QList>
+#include <QCloseEvent>
 
 
-class NewQuestionsWindow: public QDialog
+class NewQuestionsWindow: public QWidget
 {
     Q_OBJECT
 public:
@@ -16,13 +17,12 @@ public:
     virtual ~NewQuestionsWindow();
 
 public slots:
-    //bool close();
-    void reject();
 
 signals:
     void IsClosed();
 
 private:
+    void closeEvent(QCloseEvent *event);
     QWidget *centralwidget;
     QVBoxLayout *mainlayout;
     QHBoxLayout *QuestionTypeLayout;
