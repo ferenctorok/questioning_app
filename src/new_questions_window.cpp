@@ -41,15 +41,20 @@ NewQuestionsWindow::NewQuestionsWindow(QWidget *parent):
 
     // multiple choice radiobuttons with layout:
     MultipleChoiceWidget = set_Qwidget(this, "multiple_choice_widget", mainlayout);
+    MultipleChoiceWidget->hide();
     MultipleChoiceLayout = set_QVBoxLayout(MultipleChoiceWidget, "multiple_choice_layout");
     add_RBs_to_list(answearRBlist, MultipleChoiceWidget, 3);
     add_QList_to_layout(answearRBlist, MultipleChoiceLayout);
-    MultipleChoiceWidget->hide();
-}
 
-NewQuestionsWindow::~NewQuestionsWindow()
-{
-
+    // buttons for more or less options:
+    moreOrLessLayout = new QHBoxLayout();
+    MultipleChoiceLayout->addLayout(moreOrLessLayout);
+    moreOptionsButton =set_QPushButton(150, 80, MultipleChoiceWidget,
+                                       "more_options_button", "Több",
+                                       "Még egy opció hozzáadása", moreOrLessLayout);
+    lessOptionsButton =set_QPushButton(150, 80, MultipleChoiceWidget,
+                                       "less_options_button", "Kevesebb",
+                                       "Utolsó opció elvétele", moreOrLessLayout);
 }
 
 void NewQuestionsWindow::closeEvent(QCloseEvent *event)

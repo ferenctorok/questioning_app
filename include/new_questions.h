@@ -15,7 +15,7 @@ class NewQuestionsWindow: public QWidget
     Q_OBJECT
 public:
     NewQuestionsWindow(QWidget *parent = nullptr);
-    virtual ~NewQuestionsWindow();
+    virtual ~NewQuestionsWindow() {};
 
 public slots:
     void multiChRB_clicked();
@@ -33,6 +33,9 @@ private:
     QWidget *MultipleChoiceWidget;
     QVBoxLayout *MultipleChoiceLayout;
     QList<QRadioButton *> answearRBlist;
+    QHBoxLayout *moreOrLessLayout;
+    QPushButton *moreOptionsButton;
+    QPushButton *lessOptionsButton;
 
     void closeEvent(QCloseEvent *event);
 };
