@@ -11,6 +11,17 @@ QWidget* set_centralwidget(QMainWindow *parent,
 }
 
 
+QWidget* set_Qwidget(QWidget *parent,
+                     const QString name,
+                     QLayout *layout)
+{
+    QWidget *widget = new QWidget(parent);
+    widget->setObjectName(name);
+    if (layout != nullptr) layout->addWidget(widget);
+    return widget;
+}
+
+
 QHBoxLayout* set_QHBoxLayout(QWidget *parent,
                              const QString name)
 {
@@ -121,9 +132,29 @@ QTextEdit* set_QTextEdit(const int max_width,
                          const QString placeholder,
                          QLayout *layout)
 {
-    QTextEdit *textedit = set_QTextEdit(parent, name, placeholder);
+    QTextEdit *textedit = set_QTextEdit(parent, name, placeholder, layout);
     textedit->setMaximumSize(max_width, max_height);
     return textedit;
+}
+
+void add_RBs_to_list(QList<QRadioButton *> &list,
+                     QWidget *parent,
+                     const int num_of_rbs)
+{
+    for(int i = 0; i < num_of_rbs; i++)
+    {
+        list.append(new QRadioButton(parent));
+    }
+}
+
+
+void add_QList_to_layout(const QList<QRadioButton *> &list,
+                         QLayout *layout)
+{
+    for (const auto &widget : list)
+    {
+        layout->addWidget(widget);
+    }
 }
 
 

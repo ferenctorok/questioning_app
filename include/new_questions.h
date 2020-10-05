@@ -30,8 +30,9 @@ private:
     QRadioButton *textAnswerRB;
     QTextEdit *QuestionTextEdit;
     QTextEdit *AnswerTextEdit;
+    QWidget *MultipleChoiceWidget;
     QVBoxLayout *MultipleChoiceLayout;
-    QList<QRadioButton *> answear_rbutton_list;
+    QList<QRadioButton *> answearRBlist;
 
     void closeEvent(QCloseEvent *event);
 };
