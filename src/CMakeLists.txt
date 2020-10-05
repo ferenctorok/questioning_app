@@ -7,6 +7,8 @@ set(HEADERS_DIR ${CMAKE_SOURCE_DIR}/include)
 add_library(utils STATIC
     utils.cpp
     ${HEADERS_DIR}/utils.h
+    question_option.cpp
+    ${HEADERS_DIR}/question_option.h
     )
 target_include_directories(utils PUBLIC ${HEADERS_DIR})
 target_link_libraries(utils PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
