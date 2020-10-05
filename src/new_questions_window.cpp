@@ -134,6 +134,6 @@ void NewQuestionsWindow::add_new_question()
 
 void NewQuestionsWindow::save_and_quit()
 {
-
+    close();
 }
 
