@@ -9,6 +9,8 @@ add_library(utils STATIC
     ${HEADERS_DIR}/utils.h
     answer_option.cpp
     ${HEADERS_DIR}/answer_option.h
+    question_utils.cpp
+    ${HEADERS_DIR}/question_utils.h
     )
 target_include_directories(utils PUBLIC ${HEADERS_DIR})
 target_link_libraries(utils PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
