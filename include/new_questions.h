@@ -20,6 +20,9 @@ public:
 public slots:
     void multiChRB_clicked();
     void textAnsRb_clicked();
+    void add_multi_choice_option();
+    void del_multi_choice_option();
+
 signals:
     void IsClosed();
 

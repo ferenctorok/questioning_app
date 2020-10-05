@@ -52,9 +52,11 @@ NewQuestionsWindow::NewQuestionsWindow(QWidget *parent):
     moreOptionsButton =set_QPushButton(150, 80, MultipleChoiceWidget,
                                        "more_options_button", "Több",
                                        "Még egy opció hozzáadása", moreOrLessLayout);
+    connect(moreOptionsButton, SIGNAL(clicked()), this, SLOT(add_multi_choice_option()));
     lessOptionsButton =set_QPushButton(150, 80, MultipleChoiceWidget,
                                        "less_options_button", "Kevesebb",
                                        "Utolsó opció elvétele", moreOrLessLayout);
+    connect(lessOptionsButton, SIGNAL(clicked()), this, SLOT(del_multi_choice_option()));
 }
 
 void NewQuestionsWindow::closeEvent(QCloseEvent *event)
@@ -74,5 +76,21 @@ void NewQuestionsWindow::textAnsRb_clicked()
 {
     MultipleChoiceWidget->hide();
     AnswerTextEdit->show();
+}
+
+void NewQuestionsWindow::add_multi_choice_option()
+{
+    add_RBs_to_list(answearRBlist, MultipleChoiceWidget);
+    MultipleChoiceLayout->insertWidget(answearRBlist.count() - 1, answearRBlist.last());
+}
+
+void NewQuestionsWindow::del_multi_choice_option()
+{
+    if (!answearRBlist.empty())
+    {
+        MultipleChoiceLayout->removeWidget(answearRBlist.last());
+        delete answearRBlist.last();
+        answearRBlist.removeLast();
+    }
 }
 
