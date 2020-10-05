@@ -43,8 +43,8 @@ NewQuestionsWindow::NewQuestionsWindow(QWidget *parent):
     MultipleChoiceWidget = set_Qwidget(this, "multiple_choice_widget", mainlayout);
     MultipleChoiceWidget->hide();
     MultipleChoiceLayout = set_QVBoxLayout(MultipleChoiceWidget, "multiple_choice_layout");
-    add_RBs_to_list(answearRBlist, MultipleChoiceWidget, 3);
-    add_QList_to_layout(answearRBlist, MultipleChoiceLayout);
+    add_option_to_list(answerOptionList, MultipleChoiceWidget, 3);
+    add_OptionList_to_layout(answerOptionList, MultipleChoiceLayout);
 
     // buttons for more or less options:
     moreOrLessLayout = new QHBoxLayout();
@@ -80,17 +80,17 @@ void NewQuestionsWindow::textAnsRb_clicked()
 
 void NewQuestionsWindow::add_multi_choice_option()
 {
-    add_RBs_to_list(answearRBlist, MultipleChoiceWidget);
-    MultipleChoiceLayout->insertWidget(answearRBlist.count() - 1, answearRBlist.last());
+    add_option_to_list(answerOptionList, MultipleChoiceWidget);
+    MultipleChoiceLayout->insertWidget(answerOptionList.count() - 1, answerOptionList.last());
 }
 
 void NewQuestionsWindow::del_multi_choice_option()
 {
-    if (!answearRBlist.empty())
+    if (!answerOptionList.empty())
     {
-        MultipleChoiceLayout->removeWidget(answearRBlist.last());
-        delete answearRBlist.last();
-        answearRBlist.removeLast();
+        MultipleChoiceLayout->removeWidget(answerOptionList.last());
+        delete answerOptionList.last();
+        answerOptionList.removeLast();
     }
 }
 

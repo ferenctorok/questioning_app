@@ -12,6 +12,9 @@
 #include <QTextEdit>
 #include <QList>
 
+#include <answer_option.h>
+
+
 QWidget* set_centralwidget(QMainWindow *parent = nullptr,
                            const QString name = "");
 
@@ -69,11 +72,11 @@ QTextEdit* set_QTextEdit(const int max_width,
                          const QString placeholder = "",
                          QLayout *layout = nullptr);
 
-void add_RBs_to_list(QList<QRadioButton *> &list,
+void add_option_to_list(QList<AnswerOption *> &list,
                      QWidget *parent = nullptr,
                      const int num_of_rbs = 1);
 
-void add_QList_to_layout(const QList<QRadioButton *> &list,
+void add_OptionList_to_layout(const QList<AnswerOption *> &list,
                          QLayout *layout);
 
 

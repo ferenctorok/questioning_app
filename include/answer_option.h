@@ -6,14 +6,16 @@
 #include <QTextEdit>
 
 
-class QuestionOption : public QWidget
+class AnswerOption : public QWidget
 {
     Q_OBJECT
 public:
-    QuestionOption(QWidget *parent = nullptr);
-    QuestionOption(QLayout * parent_layout,
-                   QWidget *parent = nullptr);
-    ~QuestionOption() {};
+    AnswerOption(QWidget *parent = nullptr);
+    AnswerOption(QLayout * parent_layout,
+                 QWidget *parent = nullptr);
+    ~AnswerOption() {};
+
+    bool isChecked();
 
 signals:
     bool clicked();

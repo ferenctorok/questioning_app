@@ -9,6 +9,8 @@
 #include <QCloseEvent>
 #include <QTextEdit>
 
+#include <answer_option.h>
+
 
 class NewQuestionsWindow: public QWidget
 {
@@ -35,7 +37,7 @@ private:
     QTextEdit *AnswerTextEdit;
     QWidget *MultipleChoiceWidget;
     QVBoxLayout *MultipleChoiceLayout;
-    QList<QRadioButton *> answearRBlist;
+    QList<AnswerOption *> answerOptionList;
     QHBoxLayout *moreOrLessLayout;
     QPushButton *moreOptionsButton;
     QPushButton *lessOptionsButton;
