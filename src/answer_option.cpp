@@ -9,7 +9,7 @@ AnswerOption::AnswerOption(QWidget *parent):
     radio_button = set_QRadioButton(this, "radio_button", "", layout);
     text_edit = set_QTextEdit(2000, 40, this, "text_edit",
                               "válasz lehetőség...", layout);
-    connect(radio_button, SIGNAL(clicked), this, SIGNAL(clicked));
+    connect(radio_button, SIGNAL(clicked()), this, SIGNAL(clicked()));
 }
 
 

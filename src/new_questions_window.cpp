@@ -17,7 +17,7 @@ NewQuestionsWindow::NewQuestionsWindow(QWidget *parent):
     mainlayout = set_QVBoxLayout(this, "mainlayout");
 
     // question type choosing layout
-    questionTypeLayout = set_QHBoxLayout(this, "question_type_layout");
+    questionTypeLayout = set_QHBoxLayout(nullptr, "question_type_layout");
     mainlayout->addLayout(questionTypeLayout);
 
     // radio button for choosing typed answer question
@@ -57,7 +57,18 @@ NewQuestionsWindow::NewQuestionsWindow(QWidget *parent):
                                        "less_options_button", "Kevesebb",
                                        "Utolsó opció elvétele", moreOrLessLayout);
     connect(lessOptionsButton, SIGNAL(clicked()), this, SLOT(del_multi_choice_option()));
+
+    // new question and save and end buttons and their layout:
+    BottomButtonsLayout = new QHBoxLayout();
+    mainlayout->addLayout(BottomButtonsLayout);
+    NewQuestionButton = set_QPushButton(200, 150, this, "new_question_button",
+                                        "Új kérdés", "Új kérdés hozzáadása", BottomButtonsLayout);
+    connect(NewQuestionButton, SIGNAL(clicked()), this, SLOT(add_new_question()));
+    SaveAndQuitButton = set_QPushButton(200, 150, this, "save_and_quit_button",
+                                        "Befejezés", "Befejezés és kérdések mentése", BottomButtonsLayout);
+    connect(SaveAndQuitButton, SIGNAL(clicked()), this, SLOT(save_and_quit()));
 }
+
 
 void NewQuestionsWindow::closeEvent(QCloseEvent *event)
 {
@@ -66,11 +77,13 @@ void NewQuestionsWindow::closeEvent(QCloseEvent *event)
     QWidget::closeEvent(event);
 }
 
+
 void NewQuestionsWindow::multiChRB_clicked()
 {
     AnswerTextEdit->hide();
     MultipleChoiceWidget->show();
 }
+
 
 void NewQuestionsWindow::textAnsRb_clicked()
 {
@@ -78,11 +91,13 @@ void NewQuestionsWindow::textAnsRb_clicked()
     AnswerTextEdit->show();
 }
 
+
 void NewQuestionsWindow::add_multi_choice_option()
 {
     add_option_to_list(answerOptionList, MultipleChoiceWidget);
     MultipleChoiceLayout->insertWidget(answerOptionList.count() - 1, answerOptionList.last());
 }
+
 
 void NewQuestionsWindow::del_multi_choice_option()
 {
@@ -92,5 +107,33 @@ void NewQuestionsWindow::del_multi_choice_option()
         delete answerOptionList.last();
         answerOptionList.removeLast();
     }
+}
+
+
+void NewQuestionsWindow::add_new_question()
+{
+    QuestionTextEdit->setText("");
+    if (textAnswerRB->isChecked())
+    {
+        AnswerTextEdit->setText("");
+    }
+    else
+    {
+        // deleting the answer options and recreating 3 new:
+        while (!answerOptionList.empty())
+        {
+            MultipleChoiceLayout->removeWidget(answerOptionList.last());
+            delete answerOptionList.last();
+            answerOptionList.removeLast();
+        }
+        add_option_to_list(answerOptionList, MultipleChoiceWidget, 3);
+        add_OptionList_to_layout(answerOptionList, MultipleChoiceLayout);
+    }
+}
+
+
+void NewQuestionsWindow::save_and_quit()
+{
+
 }
 

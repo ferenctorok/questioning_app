@@ -24,6 +24,8 @@ public slots:
     void textAnsRb_clicked();
     void add_multi_choice_option();
     void del_multi_choice_option();
+    void add_new_question();
+    void save_and_quit();
 
 signals:
     void IsClosed();
@@ -41,6 +43,9 @@ private:
     QHBoxLayout *moreOrLessLayout;
     QPushButton *moreOptionsButton;
     QPushButton *lessOptionsButton;
+    QHBoxLayout *BottomButtonsLayout;
+    QPushButton *NewQuestionButton;
+    QPushButton *SaveAndQuitButton;
 
     void closeEvent(QCloseEvent *event);
 };
