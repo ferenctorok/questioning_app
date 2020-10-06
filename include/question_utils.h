@@ -1,29 +1,27 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 
+template<class T>
 class Question
 {
 public:
-    Question(string *question = nullptr);
-    virtual ~Question();
+    Question(string *question = nullptr,
+             T *answer = nullptr)
+    {
+        this->question = question;
+        this->answer = answer;
+    }
+    ~Question(){delete question, answer;}
 
-    virtual bool isCorrectAnswer();
     string getQuestion(){return *question;}
+    bool isCorrectAnswer(const T &candidate_answer) {
+        return (*answer == candidate_answer);
+    }
 
 protected:
     string *question;
-};
-
-
-class TextQuestion: public Question
-{
-public:
-    TextQuestion(string *question = nullptr,
-                 string *answer = nullptr);
-    ~TextQuestion();
-
-protected:
-    string *answer;
+    T *answer;
 };
