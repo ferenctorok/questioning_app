@@ -38,4 +38,4 @@ target_link_libraries(questioning_app PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     new_questions
     utils
-    )
+)
