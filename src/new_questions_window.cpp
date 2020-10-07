@@ -80,7 +80,7 @@ NewQuestionsWindow::NewQuestionsWindow(QString filename,
 
 void NewQuestionsWindow::closeEvent(QCloseEvent *event)
 {
-    std::cout << "closeEvent() is called\n";
+    save_question();
     emit IsClosed();
     QWidget::closeEvent(event);
 }
@@ -146,7 +146,6 @@ void NewQuestionsWindow::add_new_question()
 
 void NewQuestionsWindow::save_and_quit()
 {
-    save_question();
     close();
 }
 
@@ -177,16 +176,19 @@ void NewQuestionsWindow::save_question()
                 outfile << "answer_options:" << endl;
                 for (auto &option: answerOptionList)
                 {
-                    outfile << "*" << option->get_text() << endl;
-                    if (option->isChecked()) answers.push_back(i);
-                    i++;
+                    if (option->get_text() != "")
+                    {
+                        outfile << "*" << option->get_text() << endl;
+                        if (option->isChecked()) answers.push_back(i);
+                        i++;
+                    }
                 }
                 outfile << "answers:";
                 for (auto &answer: answers) outfile << to_string(answer) << ",";
                 outfile << endl;
             }
+            outfile << endl;
             outfile.close();
-
         }
     }
 }
