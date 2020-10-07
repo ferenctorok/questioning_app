@@ -4,6 +4,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QRadioButton>
+#include <QPushButton>
 #include <QList>
 #include <QCloseEvent>
 #include <QTextEdit>

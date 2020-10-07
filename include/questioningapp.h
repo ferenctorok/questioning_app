@@ -8,6 +8,7 @@
 #include <QMenuBar>
 
 #include <new_questions.h>
+#include <question_utils.h>
 
 
 class QuestioningApp : public QMainWindow
@@ -17,6 +18,8 @@ class QuestioningApp : public QMainWindow
 public:
     QuestioningApp(QWidget *parent = nullptr);
     virtual ~QuestioningApp() {};
+
+    vector<Question *>* readQuestions(string filename);
 
 protected slots:
     void button_new_questions_clicked();

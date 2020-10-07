@@ -54,11 +54,24 @@ void QuestioningApp::button_new_questions_clicked()
 
 void QuestioningApp::button_start_clicked()
 {
-
+    QString fileName = QFileDialog::getOpenFileName(this, "Kérdéssor választása",
+                                                    "",
+                                                    tr("Question files (*.txt)"));
+    if (!fileName.isEmpty())
+    {
+        vector<Question *> *questions = readQuestions(fileName.toStdString());
+    }
 }
+
 
 void QuestioningApp::show_again()
 {
     show();
 }
 
+
+vector<Question *>* QuestioningApp::readQuestions(string filename)
+{
+    ifstream infile(filename);
+    return new vector<Question *>;
+}

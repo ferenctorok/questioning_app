@@ -6,6 +6,8 @@
 using namespace std;
 
 
+// Question:
+// base class for questions.
 class Question
 {
 public:
@@ -24,6 +26,8 @@ private:
 };
 
 
+// TextQuestion(public Question):
+// child class of Question for text answer based questions.
 class TextQuestion: public Question
 {
 public:
@@ -39,6 +43,8 @@ private:
 };
 
 
+// MultiChoiceQuestion(public Question):
+// child class of Question for Multiple choice questions.
 class MultiChoiceQuestion: public Question
 {
 public:
@@ -50,6 +56,7 @@ public:
 
     bool isCorrectAnswer(vector<int> *given_answer);
     vector<string *>* getOptions();
+
 private:
     vector<string *> *options;
     vector<int> *answer;
