@@ -8,15 +8,23 @@
 #include <QList>
 #include <QCloseEvent>
 #include <QTextEdit>
+#include <vector>
+#include <iostream>
+#include <fstream>
 
 #include <answer_option.h>
+#include <question_utils.h>
+
+using namespace std;
 
 
 class NewQuestionsWindow: public QWidget
 {
     Q_OBJECT
+
 public:
-    NewQuestionsWindow(QWidget *parent = nullptr);
+    NewQuestionsWindow(QString filename,
+                       QWidget *parent = nullptr);
     virtual ~NewQuestionsWindow() {};
 
 public slots:
@@ -31,6 +39,7 @@ signals:
     void IsClosed();
 
 private:
+    string filename;
     QVBoxLayout *mainlayout;
     QHBoxLayout *questionTypeLayout;
     QRadioButton *multipleChoiceRB;
@@ -48,5 +57,6 @@ private:
     QPushButton *SaveAndQuitButton;
 
     void closeEvent(QCloseEvent *event);
+    void save_question();
 };
 #endif

@@ -4,14 +4,18 @@
 #include <utils.h>
 
 
-NewQuestionsWindow::NewQuestionsWindow(QWidget *parent):
+NewQuestionsWindow::NewQuestionsWindow(QString filename,
+                                       QWidget *parent):
         QWidget(parent)
 {
-    // delete this widget when closed.
+    // setting up output file
+    this->filename = filename.toStdString();
+
+    // setting up the widget (window)
     setAttribute(Qt::WA_DeleteOnClose);
-    this->resize(600, 400);
-    this->setObjectName("new_questions_window");
-    this->setWindowTitle("új kérdéssor összeállítása");
+    resize(600, 400);
+    setObjectName("new_questions_window");
+    setWindowTitle("új kérdéssor összeállítása");
 
     // main layout
     mainlayout = set_QVBoxLayout(this, "mainlayout");
@@ -112,6 +116,8 @@ void NewQuestionsWindow::del_multi_choice_option()
 
 void NewQuestionsWindow::add_new_question()
 {
+    save_question();
+
     QuestionTextEdit->setText("");
     if (textAnswerRB->isChecked())
     {
@@ -134,6 +140,19 @@ void NewQuestionsWindow::add_new_question()
 
 void NewQuestionsWindow::save_and_quit()
 {
+    save_question();
     close();
+}
+
+
+void NewQuestionsWindow::save_question()
+{
+    ofstream outfile(filename, ios_base::app);
+    if (outfile.is_open())
+    {
+        outfile << "yolo" << endl;
+        outfile << "yololo" << endl;
+        outfile.close();
+    }
 }
 

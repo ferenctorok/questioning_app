@@ -1,3 +1,5 @@
+#ifndef QUUESTION_UTILS_H
+#define QUESTION_UTILS_H
 #include <iostream>
 #include <vector>
 
@@ -19,3 +21,4 @@ protected:
     string *question;
     T *answer;
 };
+#endif

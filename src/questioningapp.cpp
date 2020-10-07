@@ -46,7 +46,7 @@ void QuestioningApp::button_new_questions_clicked()
         QString("Kérdéssor Mentése"));
 
     // setting up new window:
-    new_questions_window = new NewQuestionsWindow();
+    new_questions_window = new NewQuestionsWindow(fileName);
     connect(new_questions_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
     hide();
     new_questions_window->show();
