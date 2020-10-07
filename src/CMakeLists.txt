@@ -11,21 +11,31 @@ add_library(utils STATIC
     ${HEADERS_DIR}/answer_option.h
     question_utils.cpp
     ${HEADERS_DIR}/question_utils.h
-    )
+)
 target_include_directories(utils PUBLIC ${HEADERS_DIR})
 target_link_libraries(utils PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 # new_questions library
 add_library(new_questions STATIC
     new_questions.cpp
-    new_questions_window.cpp
     ${HEADERS_DIR}/new_questions.h
-    )
+)
 target_include_directories(new_questions PUBLIC ${HEADERS_DIR})
 target_link_libraries(new_questions PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     utils
-    )
+)
+
+# task_solving library
+add_library(task_solving
+    task_solving.cpp
+    ${HEADERS_DIR}/task_solving.h
+)
+target_include_directories(new_questions PUBLIC ${HEADERS_DIR})
+target_link_libraries(new_questions PRIVATE
+    Qt${QT_VERSION_MAJOR}::Widgets
+    utils
+)
 
 # main executable
 add_executable(questioning_app

@@ -1,6 +1,5 @@
 #ifndef NEW_QUESTIONS_H
 #define NEW_QUESTIONS_H
-#include <QDialog>
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -13,7 +12,6 @@
 #include <fstream>
 
 #include <answer_option.h>
-#include <question_utils.h>
 
 using namespace std;
 
