@@ -25,3 +25,9 @@ bool AnswerOption::isChecked()
 {
     return radio_button->isChecked();
 }
+
+
+string AnswerOption::get_text()
+{
+    return text_edit->toPlainText().toStdString();
+}

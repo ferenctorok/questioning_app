@@ -159,9 +159,34 @@ void NewQuestionsWindow::save_question()
         if (outfile.is_open())
         {
             outfile << "QUESTION" << to_string(question_counter) << endl;
-            outfile << "question_text:";
+            outfile << "type:";
+            if (textAnswerRB->isChecked()) outfile << "text" << endl;
+            else outfile << "multi" << endl;
+            outfile << "question:";
             outfile << QuestionTextEdit->toPlainText().toStdString() << endl;
+
+            if (textAnswerRB->isChecked())
+            {
+                outfile << "answer:";
+                outfile << AnswerTextEdit->toPlainText().toStdString() << endl;
+            }
+            else
+            {
+                int i = 0;
+                vector<int> answers;
+                outfile << "answer_options:" << endl;
+                for (auto &option: answerOptionList)
+                {
+                    outfile << "*" << option->get_text() << endl;
+                    if (option->isChecked()) answers.push_back(i);
+                    i++;
+                }
+                outfile << "answers:";
+                for (auto &answer: answers) outfile << to_string(answer) << ",";
+                outfile << endl;
+            }
             outfile.close();
+
         }
     }
 }

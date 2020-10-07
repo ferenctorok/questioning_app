@@ -1,9 +1,12 @@
 #ifndef QUESTION_OPTION_H
 #define QUESTION_OPTION_H
+#include <iostream>
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QRadioButton>
 #include <QTextEdit>
+
+using namespace std;
 
 
 class AnswerOption : public QWidget
@@ -15,6 +18,7 @@ public:
                  QWidget *parent = nullptr);
     ~AnswerOption() {};
 
+    string get_text();
     bool isChecked();
 
 signals:
