@@ -1,34 +1,89 @@
 #include <question_utils.h>
 
-
-template <class T>
-Question<T>::Question(string *question,
-                      T *answer)
+// Question:
+// base class for questions.
+Question::Question(string *question,
+                   string *type)
 {
     this->question = question;
-    this->answer = answer;
+    this->type = type;
 }
-// explicit instanciation:
-template Question<string>::Question(string *, string *);
-template Question<vector<int>>::Question(string *, vector<int> *);
 
 
-template <class T>
-Question<T>::~Question()
+Question::~Question()
 {
     delete question;
+    delete type;
+}
+
+
+string Question::getQuestion()
+{
+    return *question;
+}
+
+
+string Question::getType()
+{
+    return *type;
+}
+
+
+// TextQuestion(public Question):
+// child class of Question for text answer based questions.
+TextQuestion::TextQuestion(string *question,
+                           string *type,
+                           string *answer):
+    Question(question, type)
+{
+    this->answer = answer;
+}
+
+
+TextQuestion::~TextQuestion()
+{
     delete answer;
 }
-// explicit instanciation:
-template Question<string>::~Question();
-template Question<vector<int>>::~Question();
 
 
-template <class T>
-bool Question<T>::isCorrectAnswer(const T &candidate_answer)
+bool TextQuestion::isCorrectAnswer(const string *given_answer)
 {
-    return (*answer == candidate_answer);
+    return (*answer == *given_answer);
 }
-// explicit instanciation:
-template bool Question<string>::isCorrectAnswer(const string &);
-template bool Question<vector<int>>::isCorrectAnswer(const vector<int> &);
+
+
+// MultiChoiceQuestion(public Question):
+// child class of Question for Multiple choice questions.
+MultiChoiceQuestion::MultiChoiceQuestion(string *question,
+                                         string *type,
+                                         vector<string *> *options,
+                                         vector<int> *answer):
+    Question(question, type)
+{
+    this->options = options;
+    this->answer = answer;
+}
+
+
+MultiChoiceQuestion::~MultiChoiceQuestion()
+{
+    delete options;
+    delete answer;
+}
+
+
+bool MultiChoiceQuestion::isCorrectAnswer(vector<int> *given_answer)
+{
+    return (*answer == *given_answer);
+}
+
+
+vector<string *>* MultiChoiceQuestion::getOptions()
+{
+    return options;
+}
+
+
+
+
+

@@ -6,19 +6,53 @@
 using namespace std;
 
 
-template<class T>
 class Question
 {
 public:
     Question(string *question = nullptr,
-             T *answer = nullptr);
-    ~Question();
+             string *type = nullptr);
+    virtual ~Question();
 
-    string getQuestion(){return *question;}
-    bool isCorrectAnswer(const T &candidate_answer);
+    string getQuestion();
+    string getType();
+    virtual bool isCorrectAnswer(const string given_answer);
+    virtual bool isCorrectAnswer(const vector<int> given_answer);
 
-protected:
+private:
     string *question;
-    T *answer;
+    string *type;
 };
+
+
+class TextQuestion: public Question
+{
+public:
+    TextQuestion(string *question = nullptr,
+                 string *type = nullptr,
+                 string *answer = nullptr);
+    ~TextQuestion();
+
+    bool isCorrectAnswer(const string *given_answer);
+
+private:
+    string *answer;
+};
+
+
+class MultiChoiceQuestion: public Question
+{
+public:
+    MultiChoiceQuestion(string *question = nullptr,
+                        string *type = nullptr,
+                        vector<string *> *options = nullptr,
+                        vector<int> *answer = nullptr);
+    ~MultiChoiceQuestion();
+
+    bool isCorrectAnswer(vector<int> *given_answer);
+    vector<string *>* getOptions();
+private:
+    vector<string *> *options;
+    vector<int> *answer;
+};
+
 #endif
