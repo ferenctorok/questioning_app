@@ -10,6 +10,10 @@ NewQuestionsWindow::NewQuestionsWindow(QString filename,
 {
     // setting up output file
     this->filename = filename.toStdString();
+    ofstream outfile(this->filename);
+    outfile.close();
+
+    question_counter = 1;
 
     // setting up the widget (window)
     setAttribute(Qt::WA_DeleteOnClose);
@@ -135,6 +139,8 @@ void NewQuestionsWindow::add_new_question()
         add_option_to_list(answerOptionList, MultipleChoiceWidget, 3);
         add_OptionList_to_layout(answerOptionList, MultipleChoiceLayout);
     }
+
+    question_counter++;
 }
 
 
@@ -147,12 +153,16 @@ void NewQuestionsWindow::save_and_quit()
 
 void NewQuestionsWindow::save_question()
 {
-    ofstream outfile(filename, ios_base::app);
-    if (outfile.is_open())
+    if (!QuestionTextEdit->toPlainText().isEmpty())
     {
-        outfile << "yolo" << endl;
-        outfile << "yololo" << endl;
-        outfile.close();
+        ofstream outfile(filename, ios_base::app);
+        if (outfile.is_open())
+        {
+            outfile << "QUESTION" << to_string(question_counter) << endl;
+            outfile << "question_text:";
+            outfile << QuestionTextEdit->toPlainText().toStdString() << endl;
+            outfile.close();
+        }
     }
 }
 
