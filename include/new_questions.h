@@ -1,5 +1,10 @@
 #ifndef NEW_QUESTIONS_H
 #define NEW_QUESTIONS_H
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -8,9 +13,6 @@
 #include <QList>
 #include <QCloseEvent>
 #include <QTextEdit>
-#include <vector>
-#include <iostream>
-#include <fstream>
 
 #include <answer_option.h>
 
@@ -58,5 +60,6 @@ private:
 
     void closeEvent(QCloseEvent *event);
     void save_question();
+    string read_from_textedit(QTextEdit *textEdit);
 };
 #endif

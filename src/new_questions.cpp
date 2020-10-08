@@ -164,12 +164,12 @@ void NewQuestionsWindow::save_question()
             if (textAnswerRB->isChecked()) outfile << "text" << endl;
             else outfile << "multi" << endl;
             outfile << "question:";
-            outfile << QuestionTextEdit->toPlainText().toStdString() << endl;
+            outfile << read_from_textedit(QuestionTextEdit) << endl;
 
             if (textAnswerRB->isChecked())
             {
                 outfile << "answer:";
-                outfile << AnswerTextEdit->toPlainText().toStdString() << endl;
+                outfile << read_from_textedit(AnswerTextEdit) << endl;
             }
             else
             {
@@ -193,5 +193,13 @@ void NewQuestionsWindow::save_question()
             outfile.close();
         }
     }
+}
+
+
+string NewQuestionsWindow::read_from_textedit(QTextEdit *textEdit)
+{
+    string str = textEdit->toPlainText().toStdString();
+    replace(str.begin(), str.end(), '\n', ' ');
+    return str;
 }
 

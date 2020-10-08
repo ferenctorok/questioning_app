@@ -1,5 +1,7 @@
 #ifndef QUESTIONINGAPP_H
 #define QUESTIONINGAPP_H
+#include <iostream>
+
 #include <QMainWindow>
 #include <QWidget>
 #include <QHBoxLayout>
@@ -42,7 +44,5 @@ protected:
                           string &error_msg,
                           const string after_this = "");
     vector<int> get_multi_answers_from_string(string str);
-
-
 };
 #endif // QUESTIONINGAPP_H
