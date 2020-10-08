@@ -36,9 +36,10 @@ protected:
     NewQuestionsWindow *new_questions_window;
 
     vector<Question *>* readQuestions(string filename);
-    vector<Question *>* question_file_corrupted();
+    vector<Question *>* question_file_corrupted(const string &error_msg = "");
     string get_text_after(ifstream &infile,
                           streampos &oldpos,
+                          string &error_msg,
                           const string after_this = "");
     vector<int> get_multi_answers_from_string(string str);
 

@@ -75,6 +75,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
     ifstream infile(filename);
     if (infile.is_open())
     {
+        string error_msg = "";
         streampos oldpos;
         string head_string;
         string next_head_string;
@@ -86,47 +87,45 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
         vector<string> answer_options_vect;
         vector<int> multi_answers_vect;
 
-        getline(infile, head_string);
-        // jumping over empty lines:
-        while (head_string.find_first_not_of(" ") == string::npos)
-        {
-            getline(infile, head_string);
-        }
         while (!infile.eof()) {
-            if (head_string.find("QUESTION") == string::npos) return question_file_corrupted();
+            //jump back to last read line if there is still left from the file:
+            infile.seekg(oldpos);
+            head_string = get_text_after(infile, oldpos, error_msg, "QUESTION");
+            if (head_string == "NOT_FOUND") return question_file_corrupted(error_msg);
 
-            type_string = get_text_after(infile, oldpos, "type:");
-            if (type_string != "text" && type_string != "multi") return question_file_corrupted();
+            type_string = get_text_after(infile, oldpos, error_msg, "type:");
+            if (type_string != "text" && type_string != "multi") return question_file_corrupted(error_msg);
 
-            question_string = get_text_after(infile, oldpos, "question:");
-            if (question_string == "NOT_FOUND") return question_file_corrupted();
+            question_string = get_text_after(infile, oldpos, error_msg, "question:");
+            if (question_string == "NOT_FOUND") return question_file_corrupted(error_msg);
 
             if (type_string == "text")
             {
-                answer_string = get_text_after(infile, oldpos, "answer:");
-                if (answer_string == "NOT_FOUND") return question_file_corrupted();
+                answer_string = get_text_after(infile, oldpos, error_msg, "answer:");
+                if (answer_string == "NOT_FOUND") return question_file_corrupted(error_msg);
             }
             else
             {
-                head_answer_option_string = get_text_after(infile, oldpos, "answer_options:");
-                if (head_answer_option_string == "NOT_FOUND") return question_file_corrupted();
+                head_answer_option_string = get_text_after(infile, oldpos, error_msg, "answer_options:");
+                if (head_answer_option_string == "NOT_FOUND") return question_file_corrupted(error_msg);
 
-                answer_option_string = get_text_after(infile, oldpos, "*");
-                if (answer_option_string == "NOT_FOUND") return question_file_corrupted();
+                answer_option_string = get_text_after(infile, oldpos, error_msg, "*");
+                if (answer_option_string == "NOT_FOUND") return question_file_corrupted(error_msg);
                 while (answer_option_string != "NOT_FOUND")
                 {
                     answer_options_vect.push_back(answer_option_string);
-                    answer_option_string = get_text_after(infile, oldpos, "*");
+                    answer_option_string = get_text_after(infile, oldpos, error_msg, "*");
                 }
                 //set back the file to the previous line for further reading:
                 infile.seekg(oldpos);
 
-                answer_string = get_text_after(infile, oldpos, "answers:");
-                if (answer_string == "NOT_FOUND") return question_file_corrupted();
+                answer_string = get_text_after(infile, oldpos, error_msg, "answers:");
+                if (answer_string == "NOT_FOUND") return question_file_corrupted(error_msg);
                 multi_answers_vect = get_multi_answers_from_string(answer_string);
             }
             // jumping over empty lines:
             getline(infile, head_string);
+            oldpos = infile.tellg();
             while (head_string.find_first_not_of(" ") == string::npos && !infile.eof())
             {
                 getline(infile, head_string);
@@ -139,15 +138,17 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
 }
 
 
-vector<Question *>* QuestioningApp::question_file_corrupted()
+vector<Question *>* QuestioningApp::question_file_corrupted(const string &error_msg)
 {
-    QMessageBox::critical(this, "Hiba!", "A kiválasztott fájl hibás!");
+    string message = "A kiválasztott fájl hibás!\n" + error_msg;
+    QMessageBox::critical(this, "Hiba!", QString::fromStdString(message));
     return new vector<Question *>;
 }
 
 
 string QuestioningApp::get_text_after(ifstream &infile,
                                       streampos &oldpos,
+                                      string &error_msg,
                                       const string after_this)
 {
     oldpos = infile.tellg();
@@ -162,7 +163,12 @@ string QuestioningApp::get_text_after(ifstream &infile,
 
     size_t pos = line.find(after_this);
     if (pos != string::npos) return line.substr(pos + after_this.length());
-    else return "NOT_FOUND";
+    else
+    {
+        error_msg = "expected keyword: \" " + after_this + " \"\n";
+        error_msg += "received line: \" " + line + " \"";
+        return "NOT_FOUND";
+    }
 }
 
 
