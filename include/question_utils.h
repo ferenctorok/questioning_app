@@ -11,9 +11,9 @@ using namespace std;
 class Question
 {
 public:
-    Question(string *question = nullptr,
-             string *type = nullptr);
-    virtual ~Question();
+    Question(string question = "",
+             string type = "");
+    virtual ~Question() {};
 
     string getQuestion();
     string getType();
@@ -21,8 +21,8 @@ public:
     virtual bool isCorrectAnswer(const vector<int> given_answer);
 
 private:
-    string *question;
-    string *type;
+    string question;
+    string type;
 };
 
 
@@ -31,15 +31,15 @@ private:
 class TextQuestion: public Question
 {
 public:
-    TextQuestion(string *question = nullptr,
-                 string *type = nullptr,
-                 string *answer = nullptr);
-    ~TextQuestion();
+    TextQuestion(string question = "",
+                 string type = "",
+                 string answer = "");
+    ~TextQuestion() {};
 
-    bool isCorrectAnswer(const string *given_answer);
+    bool isCorrectAnswer(const string given_answer);
 
 private:
-    string *answer;
+    string answer;
 };
 
 
@@ -48,18 +48,18 @@ private:
 class MultiChoiceQuestion: public Question
 {
 public:
-    MultiChoiceQuestion(string *question = nullptr,
-                        string *type = nullptr,
-                        vector<string *> *options = nullptr,
-                        vector<int> *answer = nullptr);
-    ~MultiChoiceQuestion();
+    MultiChoiceQuestion(string question = "",
+                        string type = "",
+                        vector<string *> options = vector<string *>(),
+                        vector<int> answer = vector<int>());
+    ~MultiChoiceQuestion() {};
 
-    bool isCorrectAnswer(vector<int> *given_answer);
+    bool isCorrectAnswer(vector<int> given_answer);
     vector<string *>* getOptions();
 
 private:
-    vector<string *> *options;
-    vector<int> *answer;
+    vector<string *> options;
+    vector<int> answer;
 };
 
 #endif

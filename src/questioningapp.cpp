@@ -86,6 +86,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
         string answer_option_string;
         vector<string> answer_options_vect;
         vector<int> multi_answers_vect;
+        vector<Question *> *questions_vect = new vector<Question *>;
 
         while (!infile.eof()) {
             //jump back to last read line if there is still left from the file:
@@ -103,6 +104,8 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             {
                 answer_string = get_text_after(infile, oldpos, error_msg, "answer:");
                 if (answer_string == "NOT_FOUND") return question_file_corrupted(error_msg);
+
+                //questions_vect->push_back(TextQuestion())
             }
             else
             {
