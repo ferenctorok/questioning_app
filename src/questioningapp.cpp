@@ -105,7 +105,8 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
                 answer_string = get_text_after(infile, oldpos, error_msg, "answer:");
                 if (answer_string == "NOT_FOUND") return question_file_corrupted(error_msg);
 
-                //questions_vect->push_back(TextQuestion())
+                // adding the new question to the vector:
+                questions_vect->push_back(new TextQuestion(question_string, type_string, answer_string));
             }
             else
             {
@@ -125,6 +126,10 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
                 answer_string = get_text_after(infile, oldpos, error_msg, "answers:");
                 if (answer_string == "NOT_FOUND") return question_file_corrupted(error_msg);
                 multi_answers_vect = get_multi_answers_from_string(answer_string);
+
+                // adding the new question to the vector:
+                questions_vect->push_back(new MultiChoiceQuestion(question_string, type_string,
+                                                                  answer_options_vect, multi_answers_vect));
             }
             // jumping over empty lines:
             getline(infile, head_string);
@@ -134,10 +139,9 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
                 getline(infile, head_string);
             }
         }
+        return questions_vect;
     }
-
-
-    return new vector<Question *>;
+    else return new vector<Question *>;
 }
 
 

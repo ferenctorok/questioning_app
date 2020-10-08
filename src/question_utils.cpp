@@ -43,7 +43,7 @@ bool TextQuestion::isCorrectAnswer(const string given_answer)
 // child class of Question for Multiple choice questions.
 MultiChoiceQuestion::MultiChoiceQuestion(string question,
                                          string type,
-                                         vector<string *> options,
+                                         vector<string> options,
                                          vector<int> answer):
     Question(question, type)
 {
@@ -58,7 +58,7 @@ bool MultiChoiceQuestion::isCorrectAnswer(vector<int> given_answer)
 }
 
 
-vector<string *>* MultiChoiceQuestion::getOptions()
+vector<string>* MultiChoiceQuestion::getOptions()
 {
     return &options;
 }

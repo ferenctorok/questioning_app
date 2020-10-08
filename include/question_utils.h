@@ -17,8 +17,8 @@ public:
 
     string getQuestion();
     string getType();
-    virtual bool isCorrectAnswer(const string given_answer);
-    virtual bool isCorrectAnswer(const vector<int> given_answer);
+    virtual bool isCorrectAnswer(const string given_answer) {};
+    virtual bool isCorrectAnswer(const vector<int> given_answer) {};
 
 private:
     string question;
@@ -50,15 +50,15 @@ class MultiChoiceQuestion: public Question
 public:
     MultiChoiceQuestion(string question = "",
                         string type = "",
-                        vector<string *> options = vector<string *>(),
+                        vector<string> options = vector<string>(),
                         vector<int> answer = vector<int>());
     ~MultiChoiceQuestion() {};
 
     bool isCorrectAnswer(vector<int> given_answer);
-    vector<string *>* getOptions();
+    vector<string>* getOptions();
 
 private:
-    vector<string *> options;
+    vector<string> options;
     vector<int> answer;
 };
 
