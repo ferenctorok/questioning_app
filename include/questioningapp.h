@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include <QStatusBar>
 #include <QMenuBar>
+#include <QMessageBox>
 
 #include <new_questions.h>
 #include <question_utils.h>
@@ -18,8 +19,6 @@ class QuestioningApp : public QMainWindow
 public:
     QuestioningApp(QWidget *parent = nullptr);
     virtual ~QuestioningApp() {};
-
-    vector<Question *>* readQuestions(string filename);
 
 protected slots:
     void button_new_questions_clicked();
@@ -35,5 +34,11 @@ protected:
     QStatusBar *statusbar;
 
     NewQuestionsWindow *new_questions_window;
+
+    vector<Question *>* readQuestions(string filename);
+    vector<Question *>* question_file_corrupted();
+    string read_type(ifstream &infile);
+
+
 };
 #endif // QUESTIONINGAPP_H

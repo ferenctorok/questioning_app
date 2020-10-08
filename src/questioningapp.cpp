@@ -73,5 +73,48 @@ void QuestioningApp::show_again()
 vector<Question *>* QuestioningApp::readQuestions(string filename)
 {
     ifstream infile(filename);
+    if (infile.is_open())
+    {
+        string head_string;
+        string type_string;
+        //while (!infile.eof()) {
+            getline(infile, head_string);
+            if (head_string.find("QUESTION") == string::npos) return question_file_corrupted();
+
+            type_string = read_type(infile);
+            if (type_string != "text" && type_string != "multi") return question_file_corrupted();
+
+
+        //}
+    }
+
+
     return new vector<Question *>;
 }
+
+
+vector<Question *>* QuestioningApp::question_file_corrupted()
+{
+    QMessageBox::critical(this, "Hiba!", "A kiválasztott fájl hibás!");
+    return new vector<Question *>;
+}
+
+
+string QuestioningApp::read_type(ifstream &infile)
+{
+    string line;
+    getline(infile, line);
+    size_t pos = line.find("type:");
+    if (pos != string::npos) return line.substr(pos + 5);
+    else return "";
+}
+
+
+
+
+
+
+
+
+
+
