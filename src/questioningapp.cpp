@@ -76,16 +76,43 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
     if (infile.is_open())
     {
         string head_string;
+        string next_head_string;
         string type_string;
-        //while (!infile.eof()) {
+        string question_string;
+        string answer_string;
+
+        getline(infile, head_string);
+        // jumping over empty lines:
+        while (head_string.find_first_not_of(" ") == string::npos)
+        {
             getline(infile, head_string);
+        }
+        while (!infile.eof()) {
             if (head_string.find("QUESTION") == string::npos) return question_file_corrupted();
 
-            type_string = read_type(infile);
+            type_string = get_text_after(infile, "type:");
             if (type_string != "text" && type_string != "multi") return question_file_corrupted();
 
+            question_string = get_text_after(infile, "question:");
+            if (question_string == "") return question_file_corrupted();
 
-        //}
+            if (type_string == "text")
+            {
+                answer_string = get_text_after(infile, "answer:");
+                if (answer_string == "") return question_file_corrupted();
+            }
+            else
+            {
+
+            }
+            cout << "whole question is done" << endl;
+            // jumping over empty lines:
+            getline(infile, head_string);
+            while (head_string.find_first_not_of(" ") == string::npos && !infile.eof())
+            {
+                getline(infile, head_string);
+            }
+        }
     }
 
 
@@ -100,12 +127,21 @@ vector<Question *>* QuestioningApp::question_file_corrupted()
 }
 
 
-string QuestioningApp::read_type(ifstream &infile)
+string QuestioningApp::get_text_after(ifstream &infile,
+                                      const string after_this)
 {
     string line;
     getline(infile, line);
-    size_t pos = line.find("type:");
-    if (pos != string::npos) return line.substr(pos + 5);
+
+    // jumping over empty lines
+    while (line.find_first_not_of(" ") == string::npos && !infile.eof())
+    {
+        getline(infile, line);
+    }
+
+    size_t pos = line.find(after_this);
+    cout << line << endl;
+    if (pos != string::npos) return line.substr(pos + after_this.length());
     else return "";
 }
 

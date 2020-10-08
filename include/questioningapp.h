@@ -37,7 +37,8 @@ protected:
 
     vector<Question *>* readQuestions(string filename);
     vector<Question *>* question_file_corrupted();
-    string read_type(ifstream &infile);
+    string get_text_after(ifstream &infile,
+                          const string after_this = "");
 
 
 };

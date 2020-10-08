@@ -137,7 +137,9 @@ void NewQuestionsWindow::add_new_question()
             answerOptionList.removeLast();
         }
         add_option_to_list(answerOptionList, MultipleChoiceWidget, 3);
+        MultipleChoiceLayout->removeItem(moreOrLessLayout);
         add_OptionList_to_layout(answerOptionList, MultipleChoiceLayout);
+        MultipleChoiceLayout->addLayout(moreOrLessLayout);
     }
 
     question_counter++;
