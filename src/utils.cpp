@@ -152,6 +152,16 @@ QLabel* set_QLabel(QWidget* parent,
     return label;
 }
 
+QSpinBox* set_QSpinBox(QWidget* parent,
+                       const QString name,
+                       QLayout *layout)
+{
+    QSpinBox *spinbox = new QSpinBox(parent);
+    spinbox->setObjectName(name);
+    layout->addWidget(spinbox);
+    return spinbox;
+}
+
 void add_option_to_list(QList<AnswerOption *> &list,
                      QWidget *parent,
                      const int num_of_rbs)

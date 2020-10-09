@@ -24,20 +24,24 @@ NewQuestionsWindow::NewQuestionsWindow(QString filename,
     // main layout
     mainlayout = set_QVBoxLayout(this, "mainlayout");
 
-    // question type choosing layout
+    // question type choosing layout and radio buttons:
     questionTypeLayout = set_QHBoxLayout(nullptr, "question_type_layout");
     mainlayout->addLayout(questionTypeLayout);
-
-    // radio button for choosing typed answer question
     textAnswerRB = set_QRadioButton(this, "text_answer_rb",
                                         "Szöveges válasz", questionTypeLayout);
     connect(textAnswerRB, SIGNAL(clicked()), this, SLOT(textAnsRb_clicked()));
     textAnswerRB->setChecked(true);
-
-    // radio button for choosing multiple choice question
     multipleChoiceRB = set_QRadioButton(300, 100, this, "multiple_choice_rb",
                                         "Feleletválasztós", questionTypeLayout);
     connect(multipleChoiceRB, SIGNAL(clicked()), this, SLOT(multiChRB_clicked()));
+
+    // number of trials layout, label and spinbox
+    numberOfTrialsLayout = set_QHBoxLayout(nullptr, "number_of_questions_layout");
+    mainlayout->addLayout(numberOfTrialsLayout);
+    numberOfTrialsLabel = set_QLabel(this, "Próbálkozások száma:",
+                                     "number_of_trials_layout", numberOfTrialsLayout);
+    numberOfTrialsSpinBox = set_QSpinBox(this, "number_of_trials_spin_box",
+                                         numberOfTrialsLayout);
 
     // textedit for questions:
     QuestionTextEdit = set_QTextEdit(this, "question_textedit",

@@ -13,6 +13,8 @@
 #include <QList>
 #include <QCloseEvent>
 #include <QTextEdit>
+#include <QSpinBox>
+#include <QLabel>
 
 #include <answer_option.h>
 
@@ -46,6 +48,9 @@ private:
     QHBoxLayout *questionTypeLayout;
     QRadioButton *multipleChoiceRB;
     QRadioButton *textAnswerRB;
+    QHBoxLayout *numberOfTrialsLayout;
+    QLabel *numberOfTrialsLabel;
+    QSpinBox *numberOfTrialsSpinBox;
     QTextEdit *QuestionTextEdit;
     QTextEdit *AnswerTextEdit;
     QWidget *MultipleChoiceWidget;
