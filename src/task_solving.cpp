@@ -85,7 +85,7 @@ void TaskSolvingWindow::displayNextQuestion()
         clearOptionList();
         for (auto &option: *question->getOptions())
         {
-            answerOptionList.append(new QRadioButton());
+            answerOptionList.append(new QCheckBox());
             answerOptionList.last()->setParent(MultipleChoiceWidget);
             answerOptionList.last()->setText(QString::fromStdString(option));
             MultipleChoiceLayout->addWidget(answerOptionList.last());

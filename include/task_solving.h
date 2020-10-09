@@ -3,7 +3,7 @@
 #include <QDialog>
 #include <QWidget>
 #include <QVBoxLayout>
-#include <QRadioButton>
+#include <QCheckBox>
 #include <QList>
 #include <QCloseEvent>
 #include <QTextEdit>
@@ -41,7 +41,7 @@ private:
     QTextEdit *AnswerTextEdit;
     QWidget *MultipleChoiceWidget;
     QVBoxLayout *MultipleChoiceLayout;
-    QList<QRadioButton *> answerOptionList;
+    QList<QCheckBox *> answerOptionList;
     QPushButton *NextQuestionButton;
 
     void closeEvent(QCloseEvent *event);
