@@ -55,8 +55,8 @@ QPushButton* set_QPushButton(QWidget *parent,
     return button;
 }
 
-QPushButton* set_QPushButton(const int max_width,
-                             const int max_height,
+QPushButton* set_QPushButton(const int width,
+                             const int height,
                              QWidget *parent,
                              const QString name,
                              const QString text,
@@ -64,7 +64,10 @@ QPushButton* set_QPushButton(const int max_width,
                              QLayout *layout)
 {
     QPushButton *button = set_QPushButton(parent, name, text, tip_text, layout);
-    button->setMaximumSize(max_width, max_height);
+    /*QSize size(max_width, max_height);
+    button->inputMethodHints()*/
+    button->setMinimumSize(width, height);
+    button->setMaximumSize(width, height);
     return button;
 }
 
@@ -125,15 +128,15 @@ QTextEdit* set_QTextEdit(QWidget *parent,
     return textedit;
 }
 
-QTextEdit* set_QTextEdit(const int max_width,
-                         const int max_height,
+QTextEdit* set_QTextEdit(const int width,
+                         const int height,
                          QWidget *parent,
                          const QString name,
                          const QString placeholder,
                          QLayout *layout)
 {
     QTextEdit *textedit = set_QTextEdit(parent, name, placeholder, layout);
-    textedit->setMaximumSize(max_width, max_height);
+    textedit->setMaximumSize(width, height);
     return textedit;
 }
 

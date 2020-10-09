@@ -29,7 +29,7 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
     MultipleChoiceWidget = set_Qwidget(this, "multiple_choice_widget", mainlayout);
     MultipleChoiceLayout = set_QVBoxLayout(MultipleChoiceWidget, "multiple_choice_layout");
 
-    NextQuestionButton = set_QPushButton(300, 120, this, "next_question_button",
+    NextQuestionButton = set_QPushButton(100, 40, this, "next_question_button",
                                          "Következő", "Következő kérdés", mainlayout);
     mainlayout->setAlignment(NextQuestionButton, Qt::AlignHCenter);
     connect(NextQuestionButton, SIGNAL(clicked()), this, SLOT(next_question_button_clicked()));
@@ -130,11 +130,12 @@ bool TaskSolvingWindow::isCorrectAnswer()
 string TaskSolvingWindow::readTextAnswer()
 {
     string str = AnswerTextEdit->toPlainText().toStdString();
+    string whitespaces =  " \t\f\v\n\r";
     // removing extra spaces at the beginning:
-    size_t pos = str.find_first_not_of(" ");
+    size_t pos = str.find_first_not_of(whitespaces);
     str.erase(0, pos);
     // removing extra spaces at the end:
-    pos = str.find_last_not_of(" ");
+    pos = str.find_last_not_of(whitespaces);
     str.erase(pos + 1, string::npos);
     return str;
 }

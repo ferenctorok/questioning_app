@@ -57,11 +57,11 @@ NewQuestionsWindow::NewQuestionsWindow(QString filename,
     // buttons for more or less options:
     moreOrLessLayout = new QHBoxLayout();
     MultipleChoiceLayout->addLayout(moreOrLessLayout);
-    moreOptionsButton =set_QPushButton(150, 80, MultipleChoiceWidget,
+    moreOptionsButton =set_QPushButton(100, 30, MultipleChoiceWidget,
                                        "more_options_button", "Több",
                                        "Még egy opció hozzáadása", moreOrLessLayout);
     connect(moreOptionsButton, SIGNAL(clicked()), this, SLOT(add_multi_choice_option()));
-    lessOptionsButton =set_QPushButton(150, 80, MultipleChoiceWidget,
+    lessOptionsButton =set_QPushButton(100, 30, MultipleChoiceWidget,
                                        "less_options_button", "Kevesebb",
                                        "Utolsó opció elvétele", moreOrLessLayout);
     connect(lessOptionsButton, SIGNAL(clicked()), this, SLOT(del_multi_choice_option()));
@@ -69,10 +69,10 @@ NewQuestionsWindow::NewQuestionsWindow(QString filename,
     // new question and save and end buttons and their layout:
     BottomButtonsLayout = new QHBoxLayout();
     mainlayout->addLayout(BottomButtonsLayout);
-    NewQuestionButton = set_QPushButton(200, 150, this, "new_question_button",
+    NewQuestionButton = set_QPushButton(150, 30, this, "new_question_button",
                                         "Új kérdés", "Új kérdés hozzáadása", BottomButtonsLayout);
     connect(NewQuestionButton, SIGNAL(clicked()), this, SLOT(add_new_question()));
-    SaveAndQuitButton = set_QPushButton(200, 150, this, "save_and_quit_button",
+    SaveAndQuitButton = set_QPushButton(150, 30, this, "save_and_quit_button",
                                         "Befejezés", "Befejezés és kérdések mentése", BottomButtonsLayout);
     connect(SaveAndQuitButton, SIGNAL(clicked()), this, SLOT(save_and_quit()));
 }
