@@ -116,18 +116,18 @@ bool TaskSolvingWindow::isCorrectAnswer()
 {
     if (current_question_type == "text")
     {
-        string answer = read_text_answer();
-        cout << answer << endl;
+        string answer = readTextAnswer();
         return questions->at(question_counter - 1)->isCorrectAnswer(answer);
     }
     else
     {
-        return true;
+        vector<int> answer = readMultiAnswer();
+        return questions->at(question_counter - 1)->isCorrectAnswer(answer);
     }
 }
 
 
-string TaskSolvingWindow::read_text_answer()
+string TaskSolvingWindow::readTextAnswer()
 {
     string str = AnswerTextEdit->toPlainText().toStdString();
     // removing extra spaces at the beginning:
@@ -137,4 +137,15 @@ string TaskSolvingWindow::read_text_answer()
     pos = str.find_last_not_of(" ");
     str.erase(pos + 1, string::npos);
     return str;
+}
+
+
+vector<int> TaskSolvingWindow::readMultiAnswer()
+{
+    vector<int> answer;
+    for (int i = 0; i < answerOptionList.count(); i++)
+    {
+        if (answerOptionList.at(i)->isChecked()) answer.push_back(i);
+    }
+    return answer;
 }

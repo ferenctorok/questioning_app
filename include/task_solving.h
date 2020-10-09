@@ -50,7 +50,8 @@ private:
     void displayNextQuestion();
     void clearOptionList();
     bool isCorrectAnswer();
-    string read_text_answer();
+    string readTextAnswer();
+    vector<int> readMultiAnswer();
 };
 
 
