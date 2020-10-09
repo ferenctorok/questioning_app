@@ -170,6 +170,7 @@ void NewQuestionsWindow::save_question()
         if (outfile.is_open())
         {
             outfile << "QUESTION" << to_string(question_counter) << endl;
+            outfile << "trials:" << numberOfTrialsSpinBox->value() << endl;
             outfile << "type:";
             if (textAnswerRB->isChecked()) outfile << "text" << endl;
             else outfile << "multi" << endl;
