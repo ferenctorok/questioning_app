@@ -49,9 +49,10 @@ private:
     QTextEdit *QuestionTextEdit;
     QTextEdit *AnswerTextEdit;
     QWidget *MultipleChoiceWidget;
+    QHBoxLayout *MultipleChoiceMainLayout;
     QVBoxLayout *MultipleChoiceLayout;
     QList<AnswerOption *> answerOptionList;
-    QHBoxLayout *moreOrLessLayout;
+    QVBoxLayout *moreOrLessLayout;
     QPushButton *moreOptionsButton;
     QPushButton *lessOptionsButton;
     QHBoxLayout *BottomButtonsLayout;

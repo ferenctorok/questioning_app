@@ -47,16 +47,22 @@ NewQuestionsWindow::NewQuestionsWindow(QString filename,
     AnswerTextEdit = set_QTextEdit(this, "answer_textedit",
                                     "Írd ide a választ...", mainlayout);
 
-    // multiple choice radiobuttons with layout:
+    // widget for the multiple choice questions:
     MultipleChoiceWidget = set_Qwidget(this, "multiple_choice_widget", mainlayout);
     MultipleChoiceWidget->hide();
-    MultipleChoiceLayout = set_QVBoxLayout(MultipleChoiceWidget, "multiple_choice_layout");
+    // main layout of the multiple questions widget.
+    MultipleChoiceMainLayout = set_QHBoxLayout(MultipleChoiceWidget, "multiple_choice_main_layout");
+    // vertical layout of the radio buttons.
+    MultipleChoiceLayout = new QVBoxLayout();
+    MultipleChoiceMainLayout->addLayout(MultipleChoiceLayout);
+    // adding options (radio buttons with text edit) to the vertical layout:
     add_option_to_list(answerOptionList, MultipleChoiceWidget, 3);
     add_OptionList_to_layout(answerOptionList, MultipleChoiceLayout);
 
     // buttons for more or less options:
-    moreOrLessLayout = new QHBoxLayout();
-    MultipleChoiceLayout->addLayout(moreOrLessLayout);
+    moreOrLessLayout = new QVBoxLayout();
+    moreOrLessLayout->setAlignment(Qt::AlignVCenter);
+    MultipleChoiceMainLayout->addLayout(moreOrLessLayout);
     moreOptionsButton =set_QPushButton(100, 30, MultipleChoiceWidget,
                                        "more_options_button", "Több",
                                        "Még egy opció hozzáadása", moreOrLessLayout);
