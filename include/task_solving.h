@@ -11,6 +11,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 #include <question_utils.h>
 #include <utils.h>
@@ -36,6 +37,7 @@ public slots:
 private:
     vector<Question *> *questions;
     int question_counter;
+    string current_question_type;
     QVBoxLayout *mainlayout;
     QLabel *QuestionLabel;
     QTextEdit *AnswerTextEdit;
@@ -47,6 +49,8 @@ private:
     void closeEvent(QCloseEvent *event);
     void displayNextQuestion();
     void clearOptionList();
+    bool isCorrectAnswer();
+    string read_text_answer();
 };
 
 

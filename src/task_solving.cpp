@@ -54,35 +54,40 @@ void TaskSolvingWindow::closeEvent(QCloseEvent *event)
 
 void TaskSolvingWindow::next_question_button_clicked()
 {
-    if (question_counter <= questions->size() - 1)
+    if (isCorrectAnswer())
     {
-        displayNextQuestion();
-        if (question_counter == questions->size())
+        if (question_counter <= questions->size() - 1)
         {
-            NextQuestionButton->setText("Befejezés");
-            NextQuestionButton->setToolTip("Kérdéssor Befejezése");
+            displayNextQuestion();
+            if (question_counter == questions->size())
+            {
+                NextQuestionButton->setText("Befejezés");
+                NextQuestionButton->setToolTip("Kérdéssor Befejezése");
+            }
         }
+        else close();
     }
-    else close();
 }
 
 void TaskSolvingWindow::displayNextQuestion()
 {
     Question *question = questions->at(question_counter);
+    current_question_type = question->getType();
 
+    // displaying the question text:
     QuestionLabel->setText(QString::fromStdString(question->getQuestion()));
-    if (question->getType() == "text")
+    if (current_question_type == "text")
     {
         MultipleChoiceWidget->hide();
+        AnswerTextEdit->clear();
         AnswerTextEdit->show();
     }
     else
     {
-        for (auto &option: *question->getOptions()) cout << option << endl;
-
         AnswerTextEdit->hide();
         MultipleChoiceWidget->show();
         clearOptionList();
+        // adding every option to the ist and displaying it.
         for (auto &option: *question->getOptions())
         {
             answerOptionList.append(new QCheckBox());
@@ -104,4 +109,32 @@ void TaskSolvingWindow::clearOptionList()
         delete option;
     }
     answerOptionList.clear();
+}
+
+
+bool TaskSolvingWindow::isCorrectAnswer()
+{
+    if (current_question_type == "text")
+    {
+        string answer = read_text_answer();
+        cout << answer << endl;
+        return questions->at(question_counter - 1)->isCorrectAnswer(answer);
+    }
+    else
+    {
+        return true;
+    }
+}
+
+
+string TaskSolvingWindow::read_text_answer()
+{
+    string str = AnswerTextEdit->toPlainText().toStdString();
+    // removing extra spaces at the beginning:
+    size_t pos = str.find_first_not_of(" ");
+    str.erase(0, pos);
+    // removing extra spaces at the end:
+    pos = str.find_last_not_of(" ");
+    str.erase(pos + 1, string::npos);
+    return str;
 }
