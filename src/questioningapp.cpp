@@ -81,7 +81,8 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
     {
         string error_msg = "";
         streampos oldpos;
-        string head_string;
+        string question_num_string;
+        int question_num;
         string next_head_string;
         string type_string;
         string question_string;
@@ -95,8 +96,9 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
         while (!infile.eof()) {
             //jump back to last read line if there is still left from the file:
             infile.seekg(oldpos);
-            head_string = get_text_after(infile, oldpos, error_msg, "QUESTION");
-            if (head_string == "NOT_FOUND") return question_file_corrupted(error_msg);
+            question_num_string = get_text_after(infile, oldpos, error_msg, "QUESTION");
+            if (question_num_string == "NOT_FOUND") return question_file_corrupted(error_msg);
+            question_num = stoi(question_num_string);
 
             type_string = get_text_after(infile, oldpos, error_msg, "type:");
             if (type_string != "text" && type_string != "multi") return question_file_corrupted(error_msg);
@@ -110,7 +112,8 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
                 if (answer_string == "NOT_FOUND") return question_file_corrupted(error_msg);
 
                 // adding the new question to the vector:
-                questions_vect->push_back(new TextQuestion(question_string, type_string, answer_string));
+                questions_vect->push_back(new TextQuestion(question_string, type_string,
+                                                           question_num, answer_string));
             }
             else
             {
@@ -132,15 +135,15 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
                 multi_answers_vect = get_multi_answers_from_string(answer_string);
 
                 // adding the new question to the vector:
-                questions_vect->push_back(new MultiChoiceQuestion(question_string, type_string,
+                questions_vect->push_back(new MultiChoiceQuestion(question_string, type_string, question_num,
                                                                   answer_options_vect, multi_answers_vect));
             }
             // jumping over empty lines:
-            getline(infile, head_string);
+            getline(infile, question_num_string);
             oldpos = infile.tellg();
-            while (head_string.find_first_not_of(" ") == string::npos && !infile.eof())
+            while (question_num_string.find_first_not_of(" ") == string::npos && !infile.eof())
             {
-                getline(infile, head_string);
+                getline(infile, question_num_string);
             }
         }
         return questions_vect;

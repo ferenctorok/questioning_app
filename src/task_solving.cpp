@@ -7,7 +7,7 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
 {
     this->questions = questions;
 
-    question_counter = 1;
+    question_counter = 0;
 
     // setting up the widget (window)
     setAttribute(Qt::WA_DeleteOnClose);
@@ -32,6 +32,10 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
     NextQuestionButton = set_QPushButton(300, 120, this, "next_question_button",
                                          "Következő", "Következő kérdés", mainlayout);
     mainlayout->setAlignment(NextQuestionButton, Qt::AlignHCenter);
+    connect(NextQuestionButton, SIGNAL(clicked()), this, SLOT(next_question_button_clicked()));
+
+    // displaying the first question:
+    displayNextQuestion();
 }
 
 
@@ -45,4 +49,35 @@ void TaskSolvingWindow::closeEvent(QCloseEvent *event)
 {
     emit IsClosed();
     QWidget::closeEvent(event);
+}
+
+
+void TaskSolvingWindow::next_question_button_clicked()
+{
+    if (question_counter <= questions->size() - 1)
+    {
+        displayNextQuestion();
+        if (question_counter == questions->size())
+        {
+            NextQuestionButton->setText("Befejezés");
+            NextQuestionButton->setToolTip("Kérdéssor Befejezése");
+        }
+    }
+    else close();
+}
+
+void TaskSolvingWindow::displayNextQuestion()
+{
+    Question *question = questions->at(question_counter);
+    QuestionLabel->setText(QString::fromStdString(question->getQuestion()));
+    if (question->getType() == "text")
+    {
+
+    }
+    else
+    {
+
+    }
+
+    question_counter++;
 }

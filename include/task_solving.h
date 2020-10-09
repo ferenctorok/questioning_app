@@ -29,6 +29,10 @@ public:
 
 signals:
     void IsClosed();
+
+public slots:
+    void next_question_button_clicked();
+
 private:
     vector<Question *> *questions;
     int question_counter;
@@ -41,6 +45,7 @@ private:
     QPushButton *NextQuestionButton;
 
     void closeEvent(QCloseEvent *event);
+    void displayNextQuestion();
 };
 
 

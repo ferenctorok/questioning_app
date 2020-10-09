@@ -12,17 +12,20 @@ class Question
 {
 public:
     Question(string question = "",
-             string type = "");
+             string type = "",
+             int number = 0);
     virtual ~Question() {};
 
     string getQuestion();
     string getType();
+    virtual vector<string>* getOptions() {};
     virtual bool isCorrectAnswer(const string given_answer) {};
     virtual bool isCorrectAnswer(const vector<int> given_answer) {};
 
 private:
     string question;
     string type;
+    int number;
 };
 
 
@@ -33,6 +36,7 @@ class TextQuestion: public Question
 public:
     TextQuestion(string question = "",
                  string type = "",
+                 int number = 0,
                  string answer = "");
     ~TextQuestion() {};
 
@@ -50,6 +54,7 @@ class MultiChoiceQuestion: public Question
 public:
     MultiChoiceQuestion(string question = "",
                         string type = "",
+                        int number = 0,
                         vector<string> options = vector<string>(),
                         vector<int> answer = vector<int>());
     ~MultiChoiceQuestion() {};

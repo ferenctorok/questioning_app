@@ -3,10 +3,12 @@
 // Question:
 // base class for questions.
 Question::Question(string question,
-                   string type)
+                   string type,
+                   int number)
 {
     this->question = question;
     this->type = type;
+    this->number = number;
 }
 
 
@@ -26,8 +28,9 @@ string Question::getType()
 // child class of Question for text answer based questions.
 TextQuestion::TextQuestion(string question,
                            string type,
+                           int number,
                            string answer):
-    Question(question, type)
+    Question(question, type, number)
 {
     this->answer = answer;
 }
@@ -43,9 +46,10 @@ bool TextQuestion::isCorrectAnswer(const string given_answer)
 // child class of Question for Multiple choice questions.
 MultiChoiceQuestion::MultiChoiceQuestion(string question,
                                          string type,
+                                         int number,
                                          vector<string> options,
                                          vector<int> answer):
-    Question(question, type)
+    Question(question, type, number)
 {
     this->options = options;
     this->answer = answer;
