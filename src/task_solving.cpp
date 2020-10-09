@@ -69,15 +69,39 @@ void TaskSolvingWindow::next_question_button_clicked()
 void TaskSolvingWindow::displayNextQuestion()
 {
     Question *question = questions->at(question_counter);
+
     QuestionLabel->setText(QString::fromStdString(question->getQuestion()));
     if (question->getType() == "text")
     {
-
+        MultipleChoiceWidget->hide();
+        AnswerTextEdit->show();
     }
     else
     {
+        for (auto &option: *question->getOptions()) cout << option << endl;
 
+        AnswerTextEdit->hide();
+        MultipleChoiceWidget->show();
+        clearOptionList();
+        for (auto &option: *question->getOptions())
+        {
+            answerOptionList.append(new QRadioButton());
+            answerOptionList.last()->setParent(MultipleChoiceWidget);
+            answerOptionList.last()->setText(QString::fromStdString(option));
+            MultipleChoiceLayout->addWidget(answerOptionList.last());
+        }
     }
 
     question_counter++;
+}
+
+
+void TaskSolvingWindow::clearOptionList()
+{
+    for (auto &option: answerOptionList)
+    {
+        MultipleChoiceLayout->removeWidget(option);
+        delete option;
+    }
+    answerOptionList.clear();
 }

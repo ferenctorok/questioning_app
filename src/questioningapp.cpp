@@ -94,6 +94,10 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
         vector<Question *> *questions_vect = new vector<Question *>;
 
         while (!infile.eof()) {
+            // empty vectors:
+            answer_options_vect.clear();
+            multi_answers_vect.clear();
+
             //jump back to last read line if there is still left from the file:
             infile.seekg(oldpos);
             question_num_string = get_text_after(infile, oldpos, error_msg, "QUESTION");

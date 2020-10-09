@@ -46,6 +46,7 @@ private:
 
     void closeEvent(QCloseEvent *event);
     void displayNextQuestion();
+    void clearOptionList();
 };
 
 
