@@ -11,6 +11,7 @@
 #include <QRadioButton>
 #include <QTextEdit>
 #include <QList>
+#include <QLabel>
 
 #include <answer_option.h>
 
@@ -71,6 +72,11 @@ QTextEdit* set_QTextEdit(const int max_width,
                          const QString name = "",
                          const QString placeholder = "",
                          QLayout *layout = nullptr);
+
+QLabel* set_QLabel(QWidget* parent = nullptr,
+                   const QString text = "",
+                   const QString name = "",
+                   QLayout *layout = nullptr);
 
 void add_option_to_list(QList<AnswerOption *> &list,
                      QWidget *parent = nullptr,

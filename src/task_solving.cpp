@@ -19,8 +19,7 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
     mainlayout = set_QVBoxLayout(this, "mainlayout");
 
     // textedit for questions:
-    QuestionTextEdit = set_QTextEdit(this, "question_textedit",
-                                     "Írd ide a kérdést...", mainlayout);
+    QuestionLabel = set_QLabel(this, "", "question_label",mainlayout);
 
     // textedit for answers:
     AnswerTextEdit = set_QTextEdit(this, "answer_textedit",
@@ -30,8 +29,9 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
     MultipleChoiceWidget = set_Qwidget(this, "multiple_choice_widget", mainlayout);
     MultipleChoiceLayout = set_QVBoxLayout(MultipleChoiceWidget, "multiple_choice_layout");
 
-    NextQuestionButton = set_QPushButton(200, 80, this, "next_question_button",
+    NextQuestionButton = set_QPushButton(300, 120, this, "next_question_button",
                                          "Következő", "Következő kérdés", mainlayout);
+    mainlayout->setAlignment(NextQuestionButton, Qt::AlignHCenter);
 }
 
 

@@ -3,11 +3,11 @@
 #include <QDialog>
 #include <QWidget>
 #include <QVBoxLayout>
-#include <QHBoxLayout>
 #include <QRadioButton>
 #include <QList>
 #include <QCloseEvent>
 #include <QTextEdit>
+#include <QLabel>
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -33,7 +33,7 @@ private:
     vector<Question *> *questions;
     int question_counter;
     QVBoxLayout *mainlayout;
-    QTextEdit *QuestionTextEdit;
+    QLabel *QuestionLabel;
     QTextEdit *AnswerTextEdit;
     QWidget *MultipleChoiceWidget;
     QVBoxLayout *MultipleChoiceLayout;

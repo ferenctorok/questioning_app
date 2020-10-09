@@ -137,6 +137,18 @@ QTextEdit* set_QTextEdit(const int max_width,
     return textedit;
 }
 
+
+QLabel* set_QLabel(QWidget* parent,
+                   const QString text,
+                   const QString name,
+                   QLayout *layout)
+{
+    QLabel *label = new QLabel(text, parent);
+    label->setObjectName(name);
+    layout->addWidget(label);
+    return label;
+}
+
 void add_option_to_list(QList<AnswerOption *> &list,
                      QWidget *parent,
                      const int num_of_rbs)
