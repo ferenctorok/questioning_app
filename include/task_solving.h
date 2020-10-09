@@ -8,6 +8,7 @@
 #include <QCloseEvent>
 #include <QTextEdit>
 #include <QLabel>
+#include <QMessageBox>
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -52,6 +53,8 @@ private:
     bool isCorrectAnswer();
     string readTextAnswer();
     vector<int> readMultiAnswer();
+    void incorrectAnswerDialog();
+    void correctAnswerDialog();
 };
 
 

@@ -56,6 +56,7 @@ void TaskSolvingWindow::next_question_button_clicked()
 {
     if (isCorrectAnswer())
     {
+        correctAnswerDialog();
         if (question_counter <= questions->size() - 1)
         {
             displayNextQuestion();
@@ -67,7 +68,12 @@ void TaskSolvingWindow::next_question_button_clicked()
         }
         else close();
     }
+    else
+    {
+        incorrectAnswerDialog();
+    }
 }
+
 
 void TaskSolvingWindow::displayNextQuestion()
 {
@@ -149,4 +155,18 @@ vector<int> TaskSolvingWindow::readMultiAnswer()
         if (answerOptionList.at(i)->isChecked()) answer.push_back(i);
     }
     return answer;
+}
+
+
+void TaskSolvingWindow::incorrectAnswerDialog()
+{
+    string message = "Sajnos nem ez a jó válasz!";
+    QMessageBox::critical(this, "Hibás válasz", QString::fromStdString(message));
+}
+
+
+void TaskSolvingWindow::correctAnswerDialog()
+{
+    string message = "Helyes válasz!!!";
+    QMessageBox::information(this, "Siker!", QString::fromStdString(message));
 }
