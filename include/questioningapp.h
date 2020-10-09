@@ -10,8 +10,9 @@
 #include <QMenuBar>
 #include <QMessageBox>
 
-#include <new_questions.h>
 #include <question_utils.h>
+#include <new_questions.h>
+#include <task_solving.h>
 
 
 class QuestioningApp : public QMainWindow
@@ -34,8 +35,8 @@ protected:
     QPushButton *buttonStart;
     QMenuBar *menubar;
     QStatusBar *statusbar;
-
     NewQuestionsWindow *new_questions_window;
+    TaskSolvingWindow *task_solving_window;
 
     vector<Question *>* readQuestions(string filename);
     vector<Question *>* question_file_corrupted(const string &error_msg = "");

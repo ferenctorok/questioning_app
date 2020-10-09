@@ -31,8 +31,8 @@ add_library(task_solving
     task_solving.cpp
     ${HEADERS_DIR}/task_solving.h
 )
-target_include_directories(new_questions PUBLIC ${HEADERS_DIR})
-target_link_libraries(new_questions PRIVATE
+target_include_directories(task_solving PUBLIC ${HEADERS_DIR})
+target_link_libraries(task_solving PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     utils
 )
@@ -47,5 +47,6 @@ target_include_directories(questioning_app PUBLIC ${HEADERS_DIR})
 target_link_libraries(questioning_app PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     new_questions
+    task_solving
     utils
 )

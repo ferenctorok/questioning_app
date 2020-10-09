@@ -60,6 +60,10 @@ void QuestioningApp::button_start_clicked()
     if (!fileName.isEmpty())
     {
         vector<Question *> *questions = readQuestions(fileName.toStdString());
+        task_solving_window = new TaskSolvingWindow(questions);
+        connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
+        hide();
+        task_solving_window->show();
     }
 }
 
