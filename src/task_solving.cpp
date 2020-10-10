@@ -236,7 +236,7 @@ void TaskSolvingWindow::writeResultToFile(Question *question,
     if (question->getType() == "text")
     {
         // real answer:
-        outfile << "real_answer" << question->getTextAnswer();
+        outfile << "real_answer:" << question->getTextAnswer() << endl;
         // given answers:
         outfile << "given_answers:" << endl;
         for (auto &answer: given_text_answers) outfile << answer << endl;

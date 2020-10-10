@@ -62,9 +62,8 @@ void QuestioningApp::button_start_clicked()
     {
         vector<Question *> *questions = readQuestions(fileName.toStdString());
         // file to save into:
-        QString resultFileName = QFileDialog::getSaveFileName(this,
-            QString("Eredmények mentési helye"), "", "Result files (*.res)");
-        task_solving_window = new TaskSolvingWindow(questions, resultFileName.toStdString());
+        string result_file_name = getResultFileName(fileName.toStdString());
+        task_solving_window = new TaskSolvingWindow(questions, result_file_name);
         connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
         hide();
         task_solving_window->show();
@@ -222,6 +221,16 @@ vector<int> QuestioningApp::get_multi_answers_from_string(string str)
         pos_end = str.find(",", pos_beg);
     }
     return answers;
+}
+
+
+string QuestioningApp::getResultFileName(string question_file_name)
+{
+    string result_file_name = question_file_name;
+    size_t end = result_file_name.rfind(".qq");
+    result_file_name = result_file_name.substr(0, end);
+    result_file_name += ".res";
+    return result_file_name;
 }
 
 

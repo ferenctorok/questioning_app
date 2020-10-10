@@ -45,5 +45,6 @@ protected:
                           string &error_msg,
                           const string after_this = "");
     vector<int> get_multi_answers_from_string(string str);
+    string getResultFileName(string question_file_name);
 };
 #endif // QUESTIONINGAPP_H
