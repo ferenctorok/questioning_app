@@ -21,9 +21,12 @@ public:
     string getType();
     int getQuestionNum();
     int getNumOfTrials();
+    int getUsedTrials();
     void useTrial();
     bool outOfTrials();
     int getRemainingTrials();
+    virtual string getTextAnswer() {};
+    virtual vector<int> getMultiAnswer() {};
     virtual vector<string>* getOptions() {};
     virtual bool isCorrectAnswer(const string given_answer) {};
     virtual bool isCorrectAnswer(const vector<int> given_answer) {};
@@ -50,6 +53,7 @@ public:
     ~TextQuestion() {};
 
     bool isCorrectAnswer(const string given_answer);
+    string getTextAnswer();
 
 private:
     string answer;
@@ -71,6 +75,7 @@ public:
 
     bool isCorrectAnswer(vector<int> given_answer);
     vector<string>* getOptions();
+    vector<int> getMultiAnswer();
 
 private:
     vector<string> options;

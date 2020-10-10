@@ -41,7 +41,7 @@ QuestioningApp::QuestioningApp(QWidget *parent)
 
 void QuestioningApp::button_new_questions_clicked()
 {
-    // file name to save:
+    // file to save into:
     QString fileName = QFileDialog::getSaveFileName(this,
         QString("Kérdéssor Mentése"), "", "Question files (*.qq)");
 
@@ -54,13 +54,17 @@ void QuestioningApp::button_new_questions_clicked()
 
 void QuestioningApp::button_start_clicked()
 {
+    // question file to open:
     QString fileName = QFileDialog::getOpenFileName(this, "Kérdéssor választása",
                                                     "",
                                                     "Question files (*.qq)");
     if (!fileName.isEmpty())
     {
         vector<Question *> *questions = readQuestions(fileName.toStdString());
-        task_solving_window = new TaskSolvingWindow(questions);
+        // file to save into:
+        QString resultFileName = QFileDialog::getSaveFileName(this,
+            QString("Eredmények mentési helye"), "", "Result files (*.res)");
+        task_solving_window = new TaskSolvingWindow(questions, resultFileName);
         connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
         hide();
         task_solving_window->show();

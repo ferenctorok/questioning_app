@@ -2,10 +2,12 @@
 
 
 TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
+                                     string outfileName,
                                      QWidget *parent):
     QWidget(parent)
 {
     this->questions = questions;
+    this->outfileName = outfileName;
 
     question_counter = 0;
 
@@ -190,4 +192,28 @@ void TaskSolvingWindow::refreshInfoLabel(Question *question)
     info_string += "\nHátralévő próbálkozások száma: ";
     info_string += to_string(question->getRemainingTrials());
     InfoLabel->setText(QString::fromStdString(info_string));
+}
+
+
+void TaskSolvingWindow::writeResultToFile(Question *question,
+                                 bool isCorrect)
+{
+    ofstream outfile(outfileName);
+
+    // header:
+    outfile << "QUESTION" << question_counter << endl;
+    // correctness:
+    outfile << "correct:" << isCorrect << endl;
+    // trials and used trials
+    outfile << "trials:" << question->getUsedTrials();
+    outfile << "/" << question->getNumOfTrials() << endl;
+    // type:
+    outfile << "type:" << question->getType() << endl;
+    // question:
+    outfile << "question:" << question->getQuestion() << endl;
+
+    if (question->getType() == "text")
+    {
+        outfile << "real_answer" << question->getTextAnswer();
+    }
 }

@@ -28,6 +28,7 @@ class TaskSolvingWindow: public QWidget
 
 public:
     TaskSolvingWindow(vector<Question *> *questions,
+                      string resultFileName,
                       QWidget *parent = nullptr);
     virtual ~TaskSolvingWindow();
 
@@ -38,6 +39,7 @@ public slots:
     void next_question_button_clicked();
 
 private:
+    string outfileName;
     vector<Question *> *questions;
     int question_counter;
     string current_question_type;
@@ -60,6 +62,8 @@ private:
     void incorrectAnswerDialog();
     void correctAnswerDialog();
     void refreshInfoLabel(Question *question);
+    void writeResultToFile(Question *question,
+                           bool isCorrect);
 };
 
 

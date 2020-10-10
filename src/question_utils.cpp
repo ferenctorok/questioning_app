@@ -22,6 +22,8 @@ int Question::getQuestionNum() {return number;}
 
 int Question::getNumOfTrials() {return num_of_trials;}
 
+int Question::getUsedTrials() {return used_trials;}
+
 void Question::useTrial() {used_trials++;}
 
 bool Question::outOfTrials() {return (num_of_trials <= used_trials);}
@@ -46,6 +48,8 @@ bool TextQuestion::isCorrectAnswer(const string given_answer)
 {
     return (answer == given_answer);
 }
+
+string TextQuestion::getTextAnswer() {return answer;}
 
 
 // MultiChoiceQuestion(public Question):
@@ -73,6 +77,8 @@ vector<string>* MultiChoiceQuestion::getOptions()
 {
     return &options;
 }
+
+vector<int> MultiChoiceQuestion::getMultiAnswer() {return answer;}
 
 
 
