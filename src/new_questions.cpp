@@ -163,6 +163,7 @@ void NewQuestionsWindow::save_question()
     if (!QuestionTextEdit->toPlainText().isEmpty())
     {
         ofstream outfile(filename, ios_base::app);
+        outfile << getTimestamp() << endl;
         if (outfile.is_open())
         {
             outfile << "QUESTION" << endl;
@@ -208,5 +209,14 @@ string NewQuestionsWindow::read_from_textedit(QTextEdit *textEdit)
     string str = textEdit->toPlainText().toStdString();
     replace(str.begin(), str.end(), '\n', ' ');
     return str;
+}
+
+
+string NewQuestionsWindow::getTimestamp()
+{
+    char stamp[15];
+    time_t t = time(0);
+    strftime(stamp, sizeof(stamp), "%Y%m%d%H%M%S", gmtime(&t));
+    return stamp;
 }
 

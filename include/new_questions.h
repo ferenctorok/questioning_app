@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <time.h>
 
 #include <QWidget>
 #include <QVBoxLayout>
@@ -66,5 +67,6 @@ private:
     void closeEvent(QCloseEvent *event);
     void save_question();
     string read_from_textedit(QTextEdit *textEdit);
+    string getTimestamp();
 };
 #endif
