@@ -18,37 +18,47 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
     // and if yes, starting from where it was left last time.
     checkLogfile();
 
-    // setting up the widget (window)
-    setAttribute(Qt::WA_DeleteOnClose);
-    resize(600, 400);
-    setObjectName("task_solving_window");
-    setWindowTitle("Feladatsor megoldása");
+    // if the file has been solved totally previously:
+    if (question_counter >= questions->size())
+    {
+        string message = "A feladatsort már egyszer megoldottad!";
+        QMessageBox::information(this, "A feladatsor már kész!", QString::fromStdString(message));
+        close();
+    }
+    else
+    {
+        // setting up the widget (window)
+        setAttribute(Qt::WA_DeleteOnClose);
+        resize(600, 400);
+        setObjectName("task_solving_window");
+        setWindowTitle("Feladatsor megoldása");
 
-    // main layout
-    mainlayout = set_QVBoxLayout(this, "mainlayout");
+        // main layout
+        mainlayout = set_QVBoxLayout(this, "mainlayout");
 
-    // info label:
-    InfoLabel = set_QLabel(this, "", "info_label", mainlayout);
-    InfoLabel->setMaximumHeight(100);
+        // info label:
+        InfoLabel = set_QLabel(this, "", "info_label", mainlayout);
+        InfoLabel->setMaximumHeight(100);
 
-    // textedit for questions:
-    QuestionLabel = set_QLabel(this, "", "question_label", mainlayout);
+        // textedit for questions:
+        QuestionLabel = set_QLabel(this, "", "question_label", mainlayout);
 
-    // textedit for answers:
-    AnswerTextEdit = set_QTextEdit(this, "answer_textedit",
-                                    "Írd ide a választ...", mainlayout);
+        // textedit for answers:
+        AnswerTextEdit = set_QTextEdit(this, "answer_textedit",
+                                        "Írd ide a választ...", mainlayout);
 
-    // multiple choice radiobuttons with layout:
-    MultipleChoiceFrame = set_QFrame(this, "multiple_choice_frame", mainlayout);
-    MultipleChoiceLayout = set_QVBoxLayout(MultipleChoiceFrame, "multiple_choice_layout");
+        // multiple choice radiobuttons with layout:
+        MultipleChoiceFrame = set_QFrame(this, "multiple_choice_frame", mainlayout);
+        MultipleChoiceLayout = set_QVBoxLayout(MultipleChoiceFrame, "multiple_choice_layout");
 
-    NextQuestionButton = set_QPushButton(100, 40, this, "next_question_button",
-                                         "Következő", "Következő kérdés", mainlayout);
-    mainlayout->setAlignment(NextQuestionButton, Qt::AlignHCenter);
-    connect(NextQuestionButton, SIGNAL(clicked()), this, SLOT(next_question_button_clicked()));
+        NextQuestionButton = set_QPushButton(100, 40, this, "next_question_button",
+                                             "Következő", "Következő kérdés", mainlayout);
+        mainlayout->setAlignment(NextQuestionButton, Qt::AlignHCenter);
+        connect(NextQuestionButton, SIGNAL(clicked()), this, SLOT(next_question_button_clicked()));
 
-    // displaying the first question:
-    displayNextQuestion();
+        // displaying the first question:
+        displayNextQuestion();
+    }
 }
 
 
@@ -303,17 +313,44 @@ void TaskSolvingWindow::checkLogfile()
 
     if (timestamp_found)
     {
+        // setting the number of questions where we have been:
+        string question_num_str = getTextAfter(logfile, "question_num:");
+        if (question_num_str != "NOT_FOUND") question_counter = stoi(question_num_str);
+        else question_counter = 0;
 
+        // setting the used trials to the sufficient value:
+        if (question_counter < questions->size())
+        {
+            string used_trials_string = getTextAfter(logfile, "num_used_trials:");
+            int used_trials = 0;
+            if (question_num_str != "NOT_FOUND") used_trials = stoi(used_trials_string);
+            for (int i = 0; i < used_trials; i++) questions->at(question_counter)->useTrial();
+        }
     }
     else
     {
         logfile.close();
         ofstream logoutfile(LOG_FILE, ios_base::app);
         logoutfile << "timestamp:" << timestamp << endl;
-        logoutfile << "question_num:" << endl;
-        logoutfile << "num_used_trials:" << endl;
+        logoutfile << "question_num:0" << endl;
+        logoutfile << "num_used_trials:0" << endl;
         logoutfile << endl;
 
         question_counter = 0;
+    }
+}
+
+
+string TaskSolvingWindow::getTextAfter(ifstream &infile,
+                                       string after_this)
+{
+    string line;
+    getline(infile, line);
+
+    size_t pos = line.find(after_this);
+    if (pos != string::npos) return line.substr(pos + after_this.length());
+    else
+    {
+        return "NOT_FOUND";
     }
 }
