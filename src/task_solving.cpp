@@ -62,10 +62,29 @@ void TaskSolvingWindow::next_question_button_clicked()
 {
     Question *question = questions->at(question_counter - 1);
     question->useTrial();
+
+    // logging the given answer for later writing it into the outfile.
+    if (question->getType() == "text") given_text_answers.push_back(readTextAnswer());
+    else given_multi_answers.push_back(readMultiAnswer());
+
+    // check the question and go on if its correct or if we are out of trials.
     if (isCorrectAnswer() || question->outOfTrials())
     {
-        if (question->outOfTrials()) incorrectAnswerDialog();
-        else correctAnswerDialog();
+        // emptying the logs:
+        given_text_answers.empty();
+        given_multi_answers.empty();
+        // dialog windows and log writing;
+        if (isCorrectAnswer())
+        {
+            writeResultToFile(question, true);
+            correctAnswerDialog();
+        }
+        else
+        {
+            writeResultToFile(question, false);
+            incorrectAnswerDialog();
+        }
+        // displaying next question:
         if (question_counter <= questions->size() - 1)
         {
             displayNextQuestion();
@@ -198,7 +217,9 @@ void TaskSolvingWindow::refreshInfoLabel(Question *question)
 void TaskSolvingWindow::writeResultToFile(Question *question,
                                  bool isCorrect)
 {
-    ofstream outfile(outfileName);
+    // opening file for appenging:
+    ofstream outfile;
+    outfile.open(outfileName, ios_base::app);
 
     // header:
     outfile << "QUESTION" << question_counter << endl;
@@ -214,6 +235,12 @@ void TaskSolvingWindow::writeResultToFile(Question *question,
 
     if (question->getType() == "text")
     {
+        // real answer:
         outfile << "real_answer" << question->getTextAnswer();
+        // given answers:
+        outfile << "given_answers:" << endl;
+        for (auto &answer: given_text_answers) outfile << answer << endl;
     }
+
+    outfile.close();
 }

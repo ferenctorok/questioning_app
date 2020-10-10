@@ -64,7 +64,7 @@ void QuestioningApp::button_start_clicked()
         // file to save into:
         QString resultFileName = QFileDialog::getSaveFileName(this,
             QString("Eredmények mentési helye"), "", "Result files (*.res)");
-        task_solving_window = new TaskSolvingWindow(questions, resultFileName);
+        task_solving_window = new TaskSolvingWindow(questions, resultFileName.toStdString());
         connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
         hide();
         task_solving_window->show();

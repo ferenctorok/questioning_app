@@ -43,6 +43,9 @@ private:
     vector<Question *> *questions;
     int question_counter;
     string current_question_type;
+    vector<string> given_text_answers;
+    vector<vector<int>> given_multi_answers;
+
     QVBoxLayout *mainlayout;
     QLabel *InfoLabel;
     QFrame *QuestionFrame;
