@@ -224,7 +224,7 @@ void TaskSolvingWindow::writeResultToFile(Question *question,
     outfile.open(outfileName, ios_base::app);
 
     // header:
-    outfile << "QUESTION" << question_counter << endl;
+    outfile << "QUESTION" << question_counter << "/" << questions->size() << endl;
     // correctness:
     outfile << "correct:" << isCorrect << endl;
     // trials and used trials
