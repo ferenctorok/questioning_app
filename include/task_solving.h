@@ -1,5 +1,5 @@
-#ifndef TASK_SOLVING_h
-#define TASK_SOLVING_h
+#ifndef TASK_SOLVING_H
+#define TASK_SOLVING_H
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -22,13 +22,16 @@
 using namespace std;
 
 
+extern const string LOG_FILE;
+
 class TaskSolvingWindow: public QWidget
 {
     Q_OBJECT
 
 public:
     TaskSolvingWindow(vector<Question *> *questions,
-                      string resultFileName,
+                      string outfileName,
+                      string timestamp,
                       QWidget *parent = nullptr);
     virtual ~TaskSolvingWindow();
 
@@ -40,6 +43,7 @@ public slots:
 
 private:
     string outfileName;
+    string timestamp;
     vector<Question *> *questions;
     int question_counter;
     string current_question_type;
@@ -67,6 +71,7 @@ private:
     void refreshInfoLabel(Question *question);
     void writeResultToFile(Question *question,
                            bool isCorrect);
+    void checkLogfile();
 };
 
 

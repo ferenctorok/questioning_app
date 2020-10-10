@@ -61,9 +61,10 @@ void QuestioningApp::button_start_clicked()
     if (!fileName.isEmpty())
     {
         vector<Question *> *questions = readQuestions(fileName.toStdString());
+        string timestamp = getTimestamp(fileName.toStdString());
         // file to save into:
         string result_file_name = getResultFileName(fileName.toStdString());
-        task_solving_window = new TaskSolvingWindow(questions, result_file_name);
+        task_solving_window = new TaskSolvingWindow(questions, result_file_name, timestamp);
         connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
         hide();
         task_solving_window->show();
@@ -240,6 +241,16 @@ string QuestioningApp::getResultFileName(string question_file_name)
     result_file_name = result_file_name.substr(0, end);
     result_file_name += ".res";
     return result_file_name;
+}
+
+
+string QuestioningApp::getTimestamp(string filename)
+{
+    ifstream infile(filename);
+    streampos oldpos;
+    string error_msg = "";
+    // reading the timestamp:
+    return get_text_after(infile, oldpos, error_msg, "timestamp:");
 }
 
 

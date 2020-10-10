@@ -1,15 +1,22 @@
 #include <task_solving.h>
 
 
+const string LOG_FILE = ".logfile";
+
+
 TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
                                      string outfileName,
+                                     string timestamp,
                                      QWidget *parent):
     QWidget(parent)
 {
     this->questions = questions;
     this->outfileName = outfileName;
+    this->timestamp = timestamp;
 
-    question_counter = 0;
+    // checking logfile: check if the question file has already been opened,
+    // and if yes, starting from where it was left last time.
+    checkLogfile();
 
     // setting up the widget (window)
     setAttribute(Qt::WA_DeleteOnClose);
@@ -263,4 +270,50 @@ void TaskSolvingWindow::writeResultToFile(Question *question,
     outfile << endl;
 
     outfile.close();
+}
+
+
+void TaskSolvingWindow::checkLogfile()
+{
+    ifstream logfile(LOG_FILE);
+    if (!logfile)
+    {
+        ofstream new_logfile(LOG_FILE);
+        new_logfile.close();
+        logfile.open(LOG_FILE);
+    }
+
+    // search for the timestamp in the logfile:
+    string search_str = "timestamp:";
+    string line;
+    size_t pos;
+    string timestamp_candidate;
+    bool timestamp_found = false;
+    while (!logfile.eof())
+    {
+        getline(logfile, line);
+        pos = line.find(search_str);
+        if (pos != string::npos) timestamp_candidate = line.substr(pos + search_str.length());
+        if (timestamp_candidate == timestamp)
+        {
+            timestamp_found = true;
+            break;
+        }
+    }
+
+    if (timestamp_found)
+    {
+
+    }
+    else
+    {
+        logfile.close();
+        ofstream logoutfile(LOG_FILE, ios_base::app);
+        logoutfile << "timestamp:" << timestamp << endl;
+        logoutfile << "question_num:" << endl;
+        logoutfile << "num_used_trials:" << endl;
+        logoutfile << endl;
+
+        question_counter = 0;
+    }
 }
