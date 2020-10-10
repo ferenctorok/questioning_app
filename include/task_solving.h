@@ -1,5 +1,10 @@
 #ifndef TASK_SOLVING_h
 #define TASK_SOLVING_h
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+
 #include <QDialog>
 #include <QWidget>
 #include <QVBoxLayout>
@@ -9,10 +14,7 @@
 #include <QTextEdit>
 #include <QLabel>
 #include <QMessageBox>
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <algorithm>
+#include <QFrame>
 
 #include <question_utils.h>
 #include <utils.h>
@@ -41,9 +43,10 @@ private:
     string current_question_type;
     QVBoxLayout *mainlayout;
     QLabel *InfoLabel;
+    QFrame *QuestionFrame;
     QLabel *QuestionLabel;
     QTextEdit *AnswerTextEdit;
-    QWidget *MultipleChoiceWidget;
+    QFrame *MultipleChoiceFrame;
     QVBoxLayout *MultipleChoiceLayout;
     QList<QCheckBox *> answerOptionList;
     QPushButton *NextQuestionButton;

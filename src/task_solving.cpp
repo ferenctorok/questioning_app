@@ -20,6 +20,7 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
 
     // info label:
     InfoLabel = set_QLabel(this, "", "info_label", mainlayout);
+    InfoLabel->setMaximumHeight(100);
 
     // textedit for questions:
     QuestionLabel = set_QLabel(this, "", "question_label", mainlayout);
@@ -29,8 +30,8 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
                                     "Írd ide a választ...", mainlayout);
 
     // multiple choice radiobuttons with layout:
-    MultipleChoiceWidget = set_Qwidget(this, "multiple_choice_widget", mainlayout);
-    MultipleChoiceLayout = set_QVBoxLayout(MultipleChoiceWidget, "multiple_choice_layout");
+    MultipleChoiceFrame = set_QFrame(this, "multiple_choice_frame", mainlayout);
+    MultipleChoiceLayout = set_QVBoxLayout(MultipleChoiceFrame, "multiple_choice_layout");
 
     NextQuestionButton = set_QPushButton(100, 40, this, "next_question_button",
                                          "Következő", "Következő kérdés", mainlayout);
@@ -93,20 +94,20 @@ void TaskSolvingWindow::displayNextQuestion()
 
     if (current_question_type == "text")
     {
-        MultipleChoiceWidget->hide();
+        MultipleChoiceFrame->hide();
         AnswerTextEdit->clear();
         AnswerTextEdit->show();
     }
     else
     {
         AnswerTextEdit->hide();
-        MultipleChoiceWidget->show();
+        MultipleChoiceFrame->show();
         clearOptionList();
         // adding every option to the ist and displaying it.
         for (auto &option: *question->getOptions())
         {
             answerOptionList.append(new QCheckBox());
-            answerOptionList.last()->setParent(MultipleChoiceWidget);
+            answerOptionList.last()->setParent(MultipleChoiceFrame);
             answerOptionList.last()->setText(QString::fromStdString(option));
             MultipleChoiceLayout->addWidget(answerOptionList.last());
         }

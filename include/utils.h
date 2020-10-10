@@ -13,6 +13,7 @@
 #include <QList>
 #include <QLabel>
 #include <QSpinBox>
+#include <QFrame>
 
 #include <answer_option.h>
 
@@ -82,6 +83,10 @@ QLabel* set_QLabel(QWidget* parent = nullptr,
 QSpinBox* set_QSpinBox(QWidget* parent = nullptr,
                        const QString name = "",
                        QLayout *layout = nullptr);
+
+QFrame* set_QFrame(QWidget* parent = nullptr,
+                   const QString name = "",
+                   QLayout *layout = nullptr);
 
 void add_option_to_list(QList<AnswerOption *> &list,
                      QWidget *parent = nullptr,

@@ -162,6 +162,18 @@ QSpinBox* set_QSpinBox(QWidget* parent,
     return spinbox;
 }
 
+QFrame* set_QFrame(QWidget* parent,
+                   const QString name,
+                   QLayout *layout)
+{
+    QFrame *frame = new QFrame(parent);
+    frame->setObjectName(name);
+    frame->setFrameStyle(QFrame::Panel | QFrame::Raised);
+    frame->setLineWidth(2);
+    layout->addWidget(frame);
+    return frame;
+}
+
 void add_option_to_list(QList<AnswerOption *> &list,
                      QWidget *parent,
                      const int num_of_rbs)
