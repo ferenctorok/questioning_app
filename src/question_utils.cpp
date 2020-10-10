@@ -18,6 +18,8 @@ string Question::getQuestion() {return question;}
 
 string Question::getType() {return type;}
 
+int Question::getQuestionNum() {return number;}
+
 int Question::getNumOfTrials() {return num_of_trials;}
 
 void Question::useTrial() {used_trials++;}

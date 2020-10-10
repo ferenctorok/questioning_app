@@ -18,8 +18,11 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
     // main layout
     mainlayout = set_QVBoxLayout(this, "mainlayout");
 
+    // info label:
+    InfoLabel = set_QLabel(this, "", "info_label", mainlayout);
+
     // textedit for questions:
-    QuestionLabel = set_QLabel(this, "", "question_label",mainlayout);
+    QuestionLabel = set_QLabel(this, "", "question_label", mainlayout);
 
     // textedit for answers:
     AnswerTextEdit = set_QTextEdit(this, "answer_textedit",
@@ -74,6 +77,7 @@ void TaskSolvingWindow::next_question_button_clicked()
     else
     {
         incorrectAnswerDialog();
+        refreshInfoLabel(question);
     }
 }
 
@@ -83,8 +87,10 @@ void TaskSolvingWindow::displayNextQuestion()
     Question *question = questions->at(question_counter);
     current_question_type = question->getType();
 
-    // displaying the question text:
+    // displaying the question and the info:
+    refreshInfoLabel(question);
     QuestionLabel->setText(QString::fromStdString(question->getQuestion()));
+
     if (current_question_type == "text")
     {
         MultipleChoiceWidget->hide();
@@ -172,4 +178,13 @@ void TaskSolvingWindow::correctAnswerDialog()
 {
     string message = "Helyes válasz!!!";
     QMessageBox::information(this, "Siker!", QString::fromStdString(message));
+}
+
+
+void TaskSolvingWindow::refreshInfoLabel(Question *question)
+{
+    string info_string = to_string(question->getQuestionNum());
+    info_string += ". kérdés\n Hátralévő próbálkozások száma: ";
+    info_string += to_string(question->getRemainingTrials());
+    InfoLabel->setText(QString::fromStdString(info_string));
 }

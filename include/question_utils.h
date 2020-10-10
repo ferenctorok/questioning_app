@@ -19,6 +19,7 @@ public:
 
     string getQuestion();
     string getType();
+    int getQuestionNum();
     int getNumOfTrials();
     void useTrial();
     bool outOfTrials();

@@ -40,6 +40,7 @@ private:
     int question_counter;
     string current_question_type;
     QVBoxLayout *mainlayout;
+    QLabel *InfoLabel;
     QLabel *QuestionLabel;
     QTextEdit *AnswerTextEdit;
     QWidget *MultipleChoiceWidget;
@@ -55,6 +56,7 @@ private:
     vector<int> readMultiAnswer();
     void incorrectAnswerDialog();
     void correctAnswerDialog();
+    void refreshInfoLabel(Question *question);
 };
 
 
