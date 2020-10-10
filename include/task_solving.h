@@ -72,6 +72,7 @@ private:
     void writeResultToFile(Question *question,
                            bool isCorrect);
     void checkLogfile();
+    void writeLogfile();
     string getTextAfter(ifstream &infile,
                         string after_this);
 };

@@ -70,6 +70,7 @@ TaskSolvingWindow::~TaskSolvingWindow()
 
 void TaskSolvingWindow::closeEvent(QCloseEvent *event)
 {
+    writeLogfile();
     emit IsClosed();
     QWidget::closeEvent(event);
 }
@@ -285,6 +286,8 @@ void TaskSolvingWindow::writeResultToFile(Question *question,
 
 void TaskSolvingWindow::checkLogfile()
 {
+    question_counter = 0;
+
     ifstream logfile(LOG_FILE);
     if (!logfile)
     {
@@ -298,7 +301,6 @@ void TaskSolvingWindow::checkLogfile()
     string line;
     size_t pos;
     string timestamp_candidate;
-    bool timestamp_found = false;
     while (!logfile.eof())
     {
         getline(logfile, line);
@@ -306,37 +308,21 @@ void TaskSolvingWindow::checkLogfile()
         if (pos != string::npos) timestamp_candidate = line.substr(pos + search_str.length());
         if (timestamp_candidate == timestamp)
         {
-            timestamp_found = true;
+            // setting the number of questions where we have been:
+            string question_num_str = getTextAfter(logfile, "question_num:");
+            if (question_num_str != "NOT_FOUND") question_counter = stoi(question_num_str);
+            else question_counter = 0;
+
+            // setting the used trials to the sufficient value:
+            if (question_counter < questions->size())
+            {
+                string used_trials_string = getTextAfter(logfile, "num_used_trials:");
+                int used_trials = 0;
+                if (question_num_str != "NOT_FOUND") used_trials = stoi(used_trials_string);
+                for (int i = 0; i < used_trials; i++) questions->at(question_counter)->useTrial();
+            }
             break;
         }
-    }
-
-    if (timestamp_found)
-    {
-        // setting the number of questions where we have been:
-        string question_num_str = getTextAfter(logfile, "question_num:");
-        if (question_num_str != "NOT_FOUND") question_counter = stoi(question_num_str);
-        else question_counter = 0;
-
-        // setting the used trials to the sufficient value:
-        if (question_counter < questions->size())
-        {
-            string used_trials_string = getTextAfter(logfile, "num_used_trials:");
-            int used_trials = 0;
-            if (question_num_str != "NOT_FOUND") used_trials = stoi(used_trials_string);
-            for (int i = 0; i < used_trials; i++) questions->at(question_counter)->useTrial();
-        }
-    }
-    else
-    {
-        logfile.close();
-        ofstream logoutfile(LOG_FILE, ios_base::app);
-        logoutfile << "timestamp:" << timestamp << endl;
-        logoutfile << "question_num:0" << endl;
-        logoutfile << "num_used_trials:0" << endl;
-        logoutfile << endl;
-
-        question_counter = 0;
     }
 }
 
@@ -352,5 +338,70 @@ string TaskSolvingWindow::getTextAfter(ifstream &infile,
     else
     {
         return "NOT_FOUND";
+    }
+}
+
+
+void TaskSolvingWindow::writeLogfile()
+{
+    ifstream logfile(LOG_FILE);
+    if (logfile)
+    {
+        // search for the timestamp in the logfile:
+        string search_str = "timestamp:";
+        string line;
+        size_t pos;
+        string timestamp_candidate;
+        bool timestamp_found = false;
+        while (!logfile.eof())
+        {
+            getline(logfile, line);
+            pos = line.find(search_str);
+            if (pos != string::npos) timestamp_candidate = line.substr(pos + search_str.length());
+            if (timestamp_candidate == timestamp)
+            {
+                timestamp_found = true;
+
+                // copying the parts until this point into a string.
+                streampos strpos = logfile.tellg();
+                string copy_string;
+                copy_string.resize(strpos);
+                ifstream readfile(LOG_FILE);
+                readfile.read(&copy_string[0], strpos);
+
+                // skipping the newxt 2 lines:
+                getline(logfile, line);
+                getline(logfile, line);
+
+                // adding the new data to the string.
+                copy_string += "question_num:" + to_string(question_counter - 1) + "\n";
+                copy_string += "num_used_trials:" + to_string(questions->at(question_counter - 1)->getUsedTrials()) + "\n";
+
+                // copying the rest of the file:
+                while (!logfile.eof())
+                {
+                    getline(logfile, line);
+                    copy_string += line + "\n";
+                }
+
+                // writing the new file:
+                logfile.close();
+                ofstream outfile(LOG_FILE);
+                outfile << copy_string;
+
+                break;
+            }
+        }
+
+        if (!timestamp_found)
+        {
+            logfile.close();
+            ofstream logoutfile(LOG_FILE, ios_base::app);
+            logoutfile << "timestamp:" << timestamp << endl;
+            logoutfile << "question_num:" << question_counter - 1 << endl;
+            logoutfile << "num_used_trials:" << questions->at(question_counter - 1)->getUsedTrials() << endl;
+            logoutfile << endl;
+        }
+
     }
 }
