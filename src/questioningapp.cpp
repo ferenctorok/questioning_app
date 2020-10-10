@@ -43,7 +43,7 @@ void QuestioningApp::button_new_questions_clicked()
 {
     // file name to save:
     QString fileName = QFileDialog::getSaveFileName(this,
-        QString("Kérdéssor Mentése"));
+        QString("Kérdéssor Mentése"), "", "Question files (*.qq)");
 
     // setting up new window:
     new_questions_window = new NewQuestionsWindow(fileName);
@@ -56,7 +56,7 @@ void QuestioningApp::button_start_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this, "Kérdéssor választása",
                                                     "",
-                                                    tr("Question files (*.txt)"));
+                                                    "Question files (*.qq)");
     if (!fileName.isEmpty())
     {
         vector<Question *> *questions = readQuestions(fileName.toStdString());
@@ -82,7 +82,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
         string error_msg = "";
         streampos oldpos;
         string question_num_string;
-        int question_num;
+        int question_num = 0;
         string next_head_string;
         string type_string;
         string num_of_trials_string;
@@ -104,7 +104,6 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             infile.seekg(oldpos);
             question_num_string = get_text_after(infile, oldpos, error_msg, "QUESTION");
             if (question_num_string == "NOT_FOUND") return question_file_corrupted(error_msg);
-            question_num = stoi(question_num_string);
 
             // reading the number of trials:
             num_of_trials_string = get_text_after(infile, oldpos, error_msg, "trials:");
@@ -162,6 +161,8 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             {
                 getline(infile, question_num_string);
             }
+
+            question_num++;
         }
         return questions_vect;
     }

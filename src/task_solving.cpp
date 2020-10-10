@@ -184,8 +184,10 @@ void TaskSolvingWindow::correctAnswerDialog()
 
 void TaskSolvingWindow::refreshInfoLabel(Question *question)
 {
-    string info_string = to_string(question->getQuestionNum());
-    info_string += ". kérdés\n Hátralévő próbálkozások száma: ";
+    string info_string = "Kérdés ";
+    info_string += to_string(question->getQuestionNum() + 1) + "/";
+    info_string += to_string(questions->size());
+    info_string += "\nHátralévő próbálkozások száma: ";
     info_string += to_string(question->getRemainingTrials());
     InfoLabel->setText(QString::fromStdString(info_string));
 }

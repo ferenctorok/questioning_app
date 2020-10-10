@@ -13,8 +13,6 @@ NewQuestionsWindow::NewQuestionsWindow(QString filename,
     ofstream outfile(this->filename);
     outfile.close();
 
-    question_counter = 1;
-
     // setting up the widget (window)
     setAttribute(Qt::WA_DeleteOnClose);
     resize(600, 400);
@@ -151,8 +149,6 @@ void NewQuestionsWindow::add_new_question()
         add_OptionList_to_layout(answerOptionList, MultipleChoiceLayout);
         MultipleChoiceLayout->addLayout(moreOrLessLayout);
     }
-
-    question_counter++;
 }
 
 
@@ -169,7 +165,7 @@ void NewQuestionsWindow::save_question()
         ofstream outfile(filename, ios_base::app);
         if (outfile.is_open())
         {
-            outfile << "QUESTION" << to_string(question_counter) << endl;
+            outfile << "QUESTION" << endl;
             outfile << "trials:" << numberOfTrialsSpinBox->value() << endl;
             outfile << "type:";
             if (textAnswerRB->isChecked()) outfile << "text" << endl;

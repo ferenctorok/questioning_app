@@ -43,7 +43,6 @@ signals:
 
 private:
     string filename;
-    int question_counter;
     QVBoxLayout *mainlayout;
     QHBoxLayout *questionTypeLayout;
     QRadioButton *multipleChoiceRB;
