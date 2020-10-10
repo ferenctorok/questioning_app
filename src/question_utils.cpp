@@ -4,24 +4,27 @@
 // base class for questions.
 Question::Question(string question,
                    string type,
-                   int number)
+                   int number,
+                   int num_of_trials)
 {
     this->question = question;
     this->type = type;
     this->number = number;
+    this->num_of_trials = num_of_trials;
 }
 
 
-string Question::getQuestion()
-{
-    return question;
-}
+string Question::getQuestion() {return question;}
 
+string Question::getType() {return type;}
 
-string Question::getType()
-{
-    return type;
-}
+int Question::getNumOfTrials() {return num_of_trials;}
+
+void Question::useTrial() {used_trials++;}
+
+bool Question::outOfTrials() {return (num_of_trials <= used_trials);}
+
+int Question::getRemainingTrials() {return num_of_trials - used_trials;}
 
 
 // TextQuestion(public Question):
@@ -29,8 +32,9 @@ string Question::getType()
 TextQuestion::TextQuestion(string question,
                            string type,
                            int number,
+                           int num_of_trials,
                            string answer):
-    Question(question, type, number)
+    Question(question, type, number, num_of_trials)
 {
     this->answer = answer;
 }
@@ -47,9 +51,10 @@ bool TextQuestion::isCorrectAnswer(const string given_answer)
 MultiChoiceQuestion::MultiChoiceQuestion(string question,
                                          string type,
                                          int number,
+                                         int num_of_trials,
                                          vector<string> options,
                                          vector<int> answer):
-    Question(question, type, number)
+    Question(question, type, number, num_of_trials)
 {
     this->options = options;
     this->answer = answer;

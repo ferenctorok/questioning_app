@@ -13,11 +13,16 @@ class Question
 public:
     Question(string question = "",
              string type = "",
-             int number = 0);
+             int number = 0,
+             int num_of_trials = 3);
     virtual ~Question() {};
 
     string getQuestion();
     string getType();
+    int getNumOfTrials();
+    void useTrial();
+    bool outOfTrials();
+    int getRemainingTrials();
     virtual vector<string>* getOptions() {};
     virtual bool isCorrectAnswer(const string given_answer) {};
     virtual bool isCorrectAnswer(const vector<int> given_answer) {};
@@ -26,6 +31,8 @@ private:
     string question;
     string type;
     int number;
+    int num_of_trials;
+    int used_trials = 0;
 };
 
 
@@ -37,6 +44,7 @@ public:
     TextQuestion(string question = "",
                  string type = "",
                  int number = 0,
+                 int num_of_trials = 3,
                  string answer = "");
     ~TextQuestion() {};
 
@@ -55,6 +63,7 @@ public:
     MultiChoiceQuestion(string question = "",
                         string type = "",
                         int number = 0,
+                        int num_of_trials = 3,
                         vector<string> options = vector<string>(),
                         vector<int> answer = vector<int>());
     ~MultiChoiceQuestion() {};

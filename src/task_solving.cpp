@@ -54,9 +54,12 @@ void TaskSolvingWindow::closeEvent(QCloseEvent *event)
 
 void TaskSolvingWindow::next_question_button_clicked()
 {
-    if (isCorrectAnswer())
+    Question *question = questions->at(question_counter - 1);
+    question->useTrial();
+    if (isCorrectAnswer() || question->outOfTrials())
     {
-        correctAnswerDialog();
+        if (question->outOfTrials()) incorrectAnswerDialog();
+        else correctAnswerDialog();
         if (question_counter <= questions->size() - 1)
         {
             displayNextQuestion();
