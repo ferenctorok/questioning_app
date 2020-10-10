@@ -70,9 +70,6 @@ void TaskSolvingWindow::next_question_button_clicked()
     // check the question and go on if its correct or if we are out of trials.
     if (isCorrectAnswer() || question->outOfTrials())
     {
-        // emptying the logs:
-        given_text_answers.empty();
-        given_multi_answers.empty();
         // dialog windows and log writing;
         if (isCorrectAnswer())
         {
@@ -84,6 +81,11 @@ void TaskSolvingWindow::next_question_button_clicked()
             writeResultToFile(question, false);
             incorrectAnswerDialog();
         }
+
+        // emptying the logs:
+        given_text_answers.clear();
+        given_multi_answers.clear();
+
         // displaying next question:
         if (question_counter <= questions->size() - 1)
         {
@@ -241,6 +243,24 @@ void TaskSolvingWindow::writeResultToFile(Question *question,
         outfile << "given_answers:" << endl;
         for (auto &answer: given_text_answers) outfile << answer << endl;
     }
+    else
+    {
+        // options:
+        outfile << "answer_options:" << endl;
+        for (auto &option: *question->getOptions()) outfile << "*" << option << endl;
+        // real answer:
+        outfile << "real_answer:" << endl;
+        for (auto &answer: question->getMultiAnswer()) outfile << answer << ",";
+        outfile << endl;
+        // given answers:
+        outfile << "given_answers:" << endl;
+        for (auto &answers_vect: given_multi_answers)
+        {
+            for (auto &answer: answers_vect) outfile << answer << ",";
+            outfile << endl;
+        }
+    }
+    outfile << endl;
 
     outfile.close();
 }
