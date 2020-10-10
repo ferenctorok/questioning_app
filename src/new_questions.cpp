@@ -11,6 +11,7 @@ NewQuestionsWindow::NewQuestionsWindow(QString filename,
     // setting up output file
     this->filename = filename.toStdString();
     ofstream outfile(this->filename);
+    outfile << "timestamp:" << getTimestamp() << endl << endl;
     outfile.close();
 
     // setting up the widget (window)
@@ -40,6 +41,7 @@ NewQuestionsWindow::NewQuestionsWindow(QString filename,
                                      "number_of_trials_layout", numberOfTrialsLayout);
     numberOfTrialsSpinBox = set_QSpinBox(this, "number_of_trials_spin_box",
                                          numberOfTrialsLayout);
+    numberOfTrialsSpinBox->setValue(3);
 
     // textedit for questions:
     QuestionTextEdit = set_QTextEdit(this, "question_textedit",
@@ -163,7 +165,7 @@ void NewQuestionsWindow::save_question()
     if (!QuestionTextEdit->toPlainText().isEmpty())
     {
         ofstream outfile(filename, ios_base::app);
-        outfile << getTimestamp() << endl;
+
         if (outfile.is_open())
         {
             outfile << "QUESTION" << endl;

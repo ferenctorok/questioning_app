@@ -84,6 +84,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
     {
         string error_msg = "";
         streampos oldpos;
+        string timestamp;
         string question_num_string;
         int question_num = 0;
         string next_head_string;
@@ -98,6 +99,14 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
         vector<int> multi_answers_vect;
         vector<Question *> *questions_vect = new vector<Question *>;
 
+        // reading the timestamp:
+        timestamp = get_text_after(infile, oldpos, error_msg, "timestamp:");
+        if (timestamp == "NOT_FOUND") return question_file_corrupted(error_msg);
+
+        // we have to set oldpos after the timestamp line to enter the while cycle correctly:
+        oldpos = infile.tellg();
+
+        // reading in the questions:
         while (!infile.eof()) {
             // empty vectors:
             answer_options_vect.clear();
