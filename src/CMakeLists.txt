@@ -37,6 +37,19 @@ target_link_libraries(task_solving PRIVATE
     utils
 )
 
+# results_window library:
+add_library(results_window
+    results_window.cpp
+    ${HEADERS_DIR}/results_window.h
+    result_details.cpp
+    ${HEADERS_DIR}/result_details.h
+)
+target_include_directories(results_window PUBLIC ${HEADERS_DIR})
+target_link_libraries(results_window PRIVATE
+    Qt${QT_VERSION_MAJOR}::Widgets
+    utils
+)
+
 # main executable
 add_executable(questioning_app
     main.cpp
@@ -48,5 +61,6 @@ target_link_libraries(questioning_app PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     new_questions
     task_solving
+    results_window
     utils
 )
