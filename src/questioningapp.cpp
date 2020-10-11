@@ -48,7 +48,11 @@ void QuestioningApp::button_new_questions_clicked()
 {
     // file to save into:
     QString fileName = QFileDialog::getSaveFileName(this,
-        QString("Kérdéssor Mentése"), "", "Question files (*.qq)");
+        QString("Kérdéssor Mentése"), "", "Question files (*.q)");
+
+    // setting up the filename with .q extension if it is missing
+    if (!fileName.contains(".q")) fileName.append(".q");
+    else if(fileName.lastIndexOf(".q") < (fileName.length() - 3)) fileName.append(".q");
 
     // setting up new window:
     new_questions_window = new NewQuestionsWindow(fileName);
@@ -62,7 +66,7 @@ void QuestioningApp::button_start_clicked()
     // question file to open:
     QString fileName = QFileDialog::getOpenFileName(this, "Kérdéssor választása",
                                                     "",
-                                                    "Question files (*.qq)");
+                                                    "Question files (*.q)");
     if (!fileName.isEmpty())
     {
         vector<Question *> *questions = readQuestions(fileName.toStdString());
@@ -163,7 +167,7 @@ vector<string> QuestioningApp::read_string_list(ifstream &infile,
 string QuestioningApp::getResultFileName(string question_file_name)
 {
     string result_file_name = question_file_name;
-    size_t end = result_file_name.rfind(".qq");
+    size_t end = result_file_name.rfind(".q");
     result_file_name = result_file_name.substr(0, end);
     result_file_name += ".res";
     return result_file_name;
