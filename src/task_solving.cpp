@@ -114,7 +114,11 @@ void TaskSolvingWindow::next_question_button_clicked()
                 NextQuestionButton->setToolTip("Kérdéssor Befejezése");
             }
         }
-        else close();
+        else
+        {
+            question_counter ++;
+            close();
+        }
     }
     else
     {
@@ -375,6 +379,7 @@ void TaskSolvingWindow::writeLogfile()
 
                 // adding the new data to the string.
                 copy_string += "question_num:" + to_string(question_counter - 1) + "\n";
+                if (question_counter >= questions->size()) question_counter = questions->size() - 1;
                 copy_string += "num_used_trials:" + to_string(questions->at(question_counter - 1)->getUsedTrials()) + "\n";
 
                 // copying the rest of the file:
