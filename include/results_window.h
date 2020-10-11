@@ -55,8 +55,21 @@ class ResultsWindow: public QWidget
 public:
     ResultsWindow(vector<Result *> *results,
                   QWidget *parent = nullptr);
+    ~ResultsWindow();
+
+protected:
+    vector<Result *> *results;
 };
 
 
 
 #endif
+
+
+
+
+
+
+
+
+

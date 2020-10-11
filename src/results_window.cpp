@@ -23,3 +23,14 @@ Result::Result(string question_number,
     this->real_multi_answer = real_multi_answer;
     this->given_multi_answers = given_multi_answers;
 }
+
+
+ResultsWindow::ResultsWindow(vector<Result *> *results,
+                             QWidget *parent):
+    QWidget(parent)
+{
+
+}
+
+
+ResultsWindow::~ResultsWindow() {delete results;}

@@ -39,7 +39,7 @@ protected:
     TaskSolvingWindow *task_solving_window;
 
     vector<Question *>* readQuestions(string filename);
-    vector<Question *>* question_file_corrupted(const string &error_msg = "");
+    vector<Question *>* file_corrupted(const string &error_msg = "");
     string get_text_after(ifstream &infile,
                           streampos &oldpos,
                           string &error_msg,
