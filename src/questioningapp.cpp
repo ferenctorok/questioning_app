@@ -87,23 +87,10 @@ void QuestioningApp::button_results_clicked()
     {
         vector<Result *> *results = readResults(fileName.toStdString());
 
-        for (auto &result: *results)
-        {
-            cout << "QUESTION:" << result->question_number << endl;
-            cout << "correct:" << result->correct << endl;
-            cout << "trials:" << result->trials << endl;
-            cout << "type:" << result->type << endl;
-            cout << "question:" << result->question << endl;
-            cout << "answer_options:" << endl;
-            for (auto &option: result->options) cout << "*" << option << endl;
-            cout << "real_answer:" << result->real_answer << endl;
-            cout << "given_answers:" << endl;
-            for (auto &answer: result->given_answers) cout << "*" << answer << endl;
-        }
-        /*task_solving_window = new TaskSolvingWindow(questions, result_file_name, timestamp);
-        connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
+        results_window = new ResultsWindow(results);
+        connect(results_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
         hide();
-        task_solving_window->show();*/
+        results_window->show();
     }
 }
 

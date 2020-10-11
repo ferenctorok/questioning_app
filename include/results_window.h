@@ -5,16 +5,14 @@
 #include <fstream>
 #include <algorithm>
 
-#include <QDialog>
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QCheckBox>
 #include <QList>
 #include <QCloseEvent>
-#include <QTextEdit>
 #include <QLabel>
-#include <QMessageBox>
 #include <QFrame>
+#include <QScrollArea>
 
 #include <question_utils.h>
 #include <utils.h>
@@ -48,13 +46,28 @@ public:
 
 class ResultsWindow: public QWidget
 {
+    Q_OBJECT
+
 public:
     ResultsWindow(vector<Result *> *results,
                   QWidget *parent = nullptr);
-    ~ResultsWindow();
+    virtual ~ResultsWindow();
 
-protected:
+signals:
+    void IsClosed();
+
+private:
     vector<Result *> *results;
+
+    QHBoxLayout *mainLayout;
+    QScrollArea *scrollArea;
+    QWidget *ScrollAreaWidget;
+    QVBoxLayout *ScrollAreaWidgetLayout;
+    QList<QPushButton *> *buttonList;
+    QList<QLabel *> *labelList;
+
+    void closeEvent(QCloseEvent *event);
+    void print_which_button();
 };
 
 

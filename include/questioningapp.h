@@ -40,6 +40,7 @@ protected:
     QStatusBar *statusbar;
     NewQuestionsWindow *new_questions_window;
     TaskSolvingWindow *task_solving_window;
+    ResultsWindow *results_window;
 
     vector<Question *>* readQuestions(string filename);
     vector<Result *>* readResults(string filename);

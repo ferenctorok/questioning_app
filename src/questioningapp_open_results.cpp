@@ -83,15 +83,8 @@ vector<Result *>* QuestioningApp::readResults(string filename)
                                           given_answers));
 
             // jumping over empty lines:
-            if (!infile.is_open()) cout << "file is not open" << endl;
-            if (infile.eof()) cout << "end of file" << endl;
-            else cout << "not the end of file" << endl;
             getline(infile, question_num);
             oldpos = infile.tellg();
-            if (infile.eof()) cout << "end of file" << endl;
-            else cout << "not the end of file" << endl;
-
-            if (!infile.good()) cout << "file is not good." << endl;
 
             while (question_num.find_first_not_of(" ") == string::npos && infile.good())
             {
