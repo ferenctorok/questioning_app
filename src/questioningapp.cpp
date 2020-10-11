@@ -36,6 +36,11 @@ QuestioningApp::QuestioningApp(QWidget *parent)
     buttonNewQuestions = set_QPushButton(300, 100, centralwidget, "buttonNewQuestions", "Új kérdéssor",
                                   "Új kérdéssor összeállítása", mainlayout);
     connect(buttonNewQuestions, SIGNAL(clicked()), this, SLOT(button_new_questions_clicked()));
+
+    // checking the results button:
+    buttonResults = set_QPushButton(300, 100, centralwidget, "button_results", "Eredmények",
+                                    "Eredmény megtekintése", mainlayout);
+    connect(buttonResults, SIGNAL(clicked()), this, SLOT(button_results_clicked()));
 }
 
 
@@ -68,6 +73,37 @@ void QuestioningApp::button_start_clicked()
         connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
         hide();
         task_solving_window->show();
+    }
+}
+
+
+void QuestioningApp::button_results_clicked()
+{
+    // result file to open:
+    QString fileName = QFileDialog::getOpenFileName(this, "Eredményfájl kiválasztása",
+                                                    "",
+                                                    "Result files (*.res)");
+    if (!fileName.isEmpty())
+    {
+        vector<Result *> *results = readResults(fileName.toStdString());
+
+        for (auto &result: *results)
+        {
+            cout << "QUESTION:" << result->question_number << endl;
+            cout << "correct:" << result->correct << endl;
+            cout << "trials:" << result->trials << endl;
+            cout << "type:" << result->type << endl;
+            cout << "question:" << result->question << endl;
+            cout << "answer_options:" << endl;
+            for (auto &option: result->options) cout << "*" << option << endl;
+            cout << "real_answer:" << result->real_answer << endl;
+            cout << "given_answers:" << endl;
+            for (auto &answer: result->given_answers) cout << "*" << answer << endl;
+        }
+        /*task_solving_window = new TaskSolvingWindow(questions, result_file_name, timestamp);
+        connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
+        hide();
+        task_solving_window->show();*/
     }
 }
 

@@ -22,7 +22,7 @@ vector<Result *>* QuestioningApp::readResults(string filename)
         vector<Result *> *results = new vector<Result *>;
 
         // reading in the questions:
-        while (!infile.eof()) {
+        while (infile.good()) {
             // empty vectors:
             answer_options_vect.clear();
             given_answers.clear();
@@ -83,32 +83,24 @@ vector<Result *>* QuestioningApp::readResults(string filename)
                                           given_answers));
 
             // jumping over empty lines:
+            if (!infile.is_open()) cout << "file is not open" << endl;
+            if (infile.eof()) cout << "end of file" << endl;
+            else cout << "not the end of file" << endl;
             getline(infile, question_num);
             oldpos = infile.tellg();
-            while (question_num.find_first_not_of(" ") == string::npos && !infile.eof())
+            if (infile.eof()) cout << "end of file" << endl;
+            else cout << "not the end of file" << endl;
+
+            if (!infile.good()) cout << "file is not good." << endl;
+
+            while (question_num.find_first_not_of(" ") == string::npos && infile.good())
             {
                 getline(infile, question_num);
             }
         }
+        infile.close();
         return results;
     }
     else return new vector<Result *>;
-}
-
-
-vector<int> QuestioningApp::get_multi_answers_from_string(string str)
-{
-    vector<int> answers;
-    size_t pos_end = str.find(",");
-    size_t pos_beg(0);
-    string actual_string;
-    while (pos_end != string::npos)
-    {
-        actual_string = str.substr(pos_beg, pos_end - pos_beg);
-        answers.push_back(std::stoi(actual_string));
-        pos_beg = pos_end + 1;
-        pos_end = str.find(",", pos_beg);
-    }
-    return answers;
 }
 

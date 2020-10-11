@@ -31,7 +31,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
         oldpos = infile.tellg();
 
         // reading in the questions:
-        while (!infile.eof()) {
+        while (infile.good()) {
             // empty vectors:
             answer_options_vect.clear();
             multi_answers_vect.clear();
@@ -91,13 +91,14 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             // jumping over empty lines:
             getline(infile, question_num_string);
             oldpos = infile.tellg();
-            while (question_num_string.find_first_not_of(" ") == string::npos && !infile.eof())
+            while (question_num_string.find_first_not_of(" ") == string::npos && infile.good())
             {
                 getline(infile, question_num_string);
             }
 
             question_num++;
         }
+        infile.close();
         return questions_vect;
     }
     else return new vector<Question *>;

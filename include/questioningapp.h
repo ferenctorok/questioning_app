@@ -27,6 +27,7 @@ public:
 protected slots:
     void button_new_questions_clicked();
     void button_start_clicked();
+    void button_results_clicked();
     void show_again();
 
 protected:
@@ -34,6 +35,7 @@ protected:
     QHBoxLayout *mainlayout;
     QPushButton *buttonNewQuestions;
     QPushButton *buttonStart;
+    QPushButton *buttonResults;
     QMenuBar *menubar;
     QStatusBar *statusbar;
     NewQuestionsWindow *new_questions_window;
