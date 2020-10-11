@@ -31,7 +31,7 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
         rewrite_logfile = true;
         // setting up the widget (window)
         setAttribute(Qt::WA_DeleteOnClose);
-        resize(600, 400);
+        resize(800, 600);
         setObjectName("task_solving_window");
         setWindowTitle("Feladatsor megoldása");
 
@@ -39,11 +39,11 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
         mainlayout = set_QVBoxLayout(this, "mainlayout");
 
         // info label:
-        InfoLabel = set_QLabel(this, "", "info_label", mainlayout);
+        InfoLabel = set_QLabel(750, this, "", "info_label", mainlayout);
         InfoLabel->setMaximumHeight(100);
 
         // textedit for questions:
-        QuestionLabel = set_QLabel(this, "", "question_label", mainlayout);
+        QuestionLabel = set_QLabel(750, this, "", "question_label", mainlayout);
 
         // textedit for answers:
         AnswerTextEdit = set_QTextEdit(this, "answer_textedit",

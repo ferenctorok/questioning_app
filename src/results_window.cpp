@@ -92,7 +92,7 @@ void ResultsWindow::set_up_lists(Result *result)
     if (result->correct) text += "JÓ\n";
     else text += "ROSSZ\n";
     text += "próbálkozások száma: " + result ->trials;
-    QLabel *label = set_QLabel(widget, QString::fromStdString(text),
+    QLabel *label = set_QLabel(800, widget, QString::fromStdString(text),
                                "", layoutList->last());
     labelList->append(label);
 
@@ -106,7 +106,6 @@ void ResultsWindow::set_up_lists(Result *result)
     // adding the new widget to the scrollable layout.
     ScrollAreaWidgetLayout->addWidget(widget);
 }
-
 
 
 void ResultsWindow::details_button_clicked()

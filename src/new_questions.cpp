@@ -16,7 +16,7 @@ NewQuestionsWindow::NewQuestionsWindow(QString filename,
 
     // setting up the widget (window)
     setAttribute(Qt::WA_DeleteOnClose);
-    resize(600, 400);
+    resize(800, 600);
     setObjectName("new_questions_window");
     setWindowTitle("új kérdéssor összeállítása");
 
@@ -37,7 +37,7 @@ NewQuestionsWindow::NewQuestionsWindow(QString filename,
     // number of trials layout, label and spinbox
     numberOfTrialsLayout = set_QHBoxLayout(nullptr, "number_of_questions_layout");
     mainlayout->addLayout(numberOfTrialsLayout);
-    numberOfTrialsLabel = set_QLabel(this, "Próbálkozások száma:",
+    numberOfTrialsLabel = set_QLabel(300, this, "Próbálkozások száma:",
                                      "number_of_trials_layout", numberOfTrialsLayout);
     numberOfTrialsSpinBox = set_QSpinBox(this, "number_of_trials_spin_box",
                                          numberOfTrialsLayout);
