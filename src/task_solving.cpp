@@ -150,7 +150,7 @@ void TaskSolvingWindow::displayNextQuestion()
         AnswerTextEdit->hide();
         MultipleChoiceFrame->show();
         clearOptionList();
-        // adding every option to the ist and displaying it.
+        // adding every option to the list and displaying it.
         for (auto &option: *question->getOptions())
         {
             answerOptionList.append(new QCheckBox());

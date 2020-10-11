@@ -40,7 +40,7 @@ ResultDetailsWindow::ResultDetailsWindow(Result *result,
     }
     else
     {
-
+        set_up_multiple_choice_frame();
     }
 
     // given answers:
@@ -53,3 +53,38 @@ ResultDetailsWindow::ResultDetailsWindow(Result *result,
 
 
 ResultDetailsWindow::~ResultDetailsWindow() {delete result;}
+
+
+void ResultDetailsWindow::set_up_multiple_choice_frame()
+{
+    MultipleChoiceFrame = set_QFrame(this, "multiple_choice_frame", mainlayout);
+    MultipleChoiceLayout = set_QVBoxLayout(MultipleChoiceFrame, "multiple_choice_layout");
+
+    string real_answer = result->real_answer;
+    int i = 0;
+    for (auto &option: result->options)
+    {
+        answerOptionList.append(new QCheckBox());
+        answerOptionList.last()->setParent(MultipleChoiceFrame);
+        string str = to_string(i) + ": " + option;
+        answerOptionList.last()->setText(QString::fromStdString(str));
+        MultipleChoiceLayout->addWidget(answerOptionList.last());
+
+        // check the checkbox if the answer was correct.
+        if (real_answer.find(to_string(i)) != string::npos)
+            answerOptionList.last()->setChecked(true);
+
+        // Instead of disabling it, we reset the state of the checkbox always, when it was
+        // clicked, because if it is enabled, than the color of it changes.
+        connect(answerOptionList.last(), SIGNAL(clicked()), this, SLOT(set_back_state()));
+        i ++;
+    }
+}
+
+
+void ResultDetailsWindow::set_back_state()
+{
+    QCheckBox *checkbox = qobject_cast<QCheckBox *>(sender());
+    if (checkbox->isChecked()) checkbox->setChecked(false);
+    else checkbox->setChecked(true);
+}

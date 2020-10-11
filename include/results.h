@@ -56,6 +56,8 @@ public:
                         QWidget *parent = nullptr);
     virtual ~ResultDetailsWindow();
 
+public slots:
+    void set_back_state();
 
 private:
     Result *result;
@@ -68,6 +70,8 @@ private:
     QVBoxLayout *MultipleChoiceLayout;
     QList<QCheckBox *> answerOptionList;
     QLabel *GivenAnswersLabel;
+
+    void set_up_multiple_choice_frame();
 };
 
 
