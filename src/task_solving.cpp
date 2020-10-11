@@ -23,10 +23,12 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
     {
         string message = "A feladatsort már egyszer megoldottad!";
         QMessageBox::information(this, "A feladatsor már kész!", QString::fromStdString(message));
+        rewrite_logfile = false;
         close();
     }
     else
     {
+        rewrite_logfile = true;
         // setting up the widget (window)
         setAttribute(Qt::WA_DeleteOnClose);
         resize(600, 400);
@@ -70,7 +72,7 @@ TaskSolvingWindow::~TaskSolvingWindow()
 
 void TaskSolvingWindow::closeEvent(QCloseEvent *event)
 {
-    writeLogfile();
+    if (rewrite_logfile) writeLogfile();
     emit IsClosed();
     QWidget::closeEvent(event);
 }

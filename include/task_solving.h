@@ -49,6 +49,7 @@ private:
     string current_question_type;
     vector<string> given_text_answers;
     vector<vector<int>> given_multi_answers;
+    bool rewrite_logfile;
 
     QVBoxLayout *mainlayout;
     QLabel *InfoLabel;
