@@ -28,14 +28,27 @@ ResultDetailsWindow::ResultDetailsWindow(Result *result,
 
     // question:
     string question_text = "Kérdés: " + result->question;
-    question_text += "\n\nHelyes válasz:";
     QuestionLabel = set_QLabel(550, this, QString::fromStdString(question_text),
                                "", mainlayout);
 
+    // correct answers:
+    if (result->type == "text")
+    {
+        string answer_text = "Helyes válasz:\n\t" + result->real_answer;
+        CorrectAnswerLabel = set_QLabel(550, this, QString::fromStdString(answer_text),
+                                        "correct_answer_label", mainlayout);
+    }
+    else
+    {
 
+    }
 
-
-
+    // given answers:
+    GivenAnswersLabel = set_QLabel(550, this, "", "given_answers_label", mainlayout);
+    string given_answers = "Adott válaszok:\n";
+    for (auto &answer: result->given_answers)
+        given_answers += "\t" + answer + "\n";
+    GivenAnswersLabel->setText(QString::fromStdString(given_answers));
 }
 
 
