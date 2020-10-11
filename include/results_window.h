@@ -13,6 +13,7 @@
 #include <QLabel>
 #include <QFrame>
 #include <QScrollArea>
+#include <QPalette>
 
 #include <question_utils.h>
 #include <utils.h>
@@ -53,6 +54,9 @@ public:
                   QWidget *parent = nullptr);
     virtual ~ResultsWindow();
 
+public slots:
+    void details_button_clicked();
+
 signals:
     void IsClosed();
 
@@ -63,11 +67,15 @@ private:
     QScrollArea *scrollArea;
     QWidget *ScrollAreaWidget;
     QVBoxLayout *ScrollAreaWidgetLayout;
+    QList<QWidget *> *widgetList;
     QList<QPushButton *> *buttonList;
     QList<QLabel *> *labelList;
+    QList<QHBoxLayout *> *layoutList;
+    QPalette *correctPalette;
+    QPalette *wrongPalette;
 
     void closeEvent(QCloseEvent *event);
-    void print_which_button();
+    void set_up_lists(Result *result);
 };
 
 

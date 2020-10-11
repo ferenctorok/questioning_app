@@ -44,13 +44,19 @@ ResultsWindow::ResultsWindow(vector<Result *> *results,
     ScrollAreaWidget = new QWidget();
     ScrollAreaWidgetLayout = set_QVBoxLayout(ScrollAreaWidget);
 
-    // List of buttons:
+    // setting up palettes:
+    correctPalette = new QPalette(Qt::green);
+    wrongPalette = new QPalette(Qt::red);
+
+
+    // Lists:
+    widgetList = new QList<QWidget *>;
     buttonList = new QList<QPushButton *>;
-    for (int i = 0; i < 10; i++)
-    {
-        buttonList->append(new QPushButton(ScrollAreaWidget));
-        ScrollAreaWidgetLayout->addWidget(buttonList->last());
-    }
+    labelList = new QList<QLabel *>;
+    layoutList = new QList<QHBoxLayout *>;
+
+    // setting up the list of results:
+    for (auto &result: *results) set_up_lists(result);
 
     scrollArea->setWidget(ScrollAreaWidget);
     mainLayout->addWidget(scrollArea);
@@ -64,6 +70,47 @@ void ResultsWindow::closeEvent(QCloseEvent *event)
 {
     emit IsClosed();
     QWidget::closeEvent(event);
+}
+
+
+void ResultsWindow::set_up_lists(Result *result)
+{
+    // setting up the label with background color:
+    QWidget *widget = new QWidget(ScrollAreaWidget);
+    if (result->correct) widget->setPalette(*correctPalette);
+    else widget->setPalette(*wrongPalette);
+    widgetList->append(widget);
+
+    // horizontal layout for each widget:
+    layoutList->append(new QHBoxLayout(widget));
+
+    // setting up the text to be displayed and the label:
+    string text = "";
+    text += "Feladat " + result->question_number + " : ";
+    if (result->correct) text += "JÓ\n";
+    else text += "ROSSZ\n";
+    text += "próbálkozások száma: " + result ->trials;
+    QLabel *label = set_QLabel(widget, QString::fromStdString(text),
+                               "", layoutList->last());
+    labelList->append(label);
+
+    // setting up the details button:
+    QPushButton *button = set_QPushButton(150, 60, widget, "",
+                                          "részletek", "A feladat részleteinek megjelenítése",
+                                          layoutList->last());
+    connect(button, SIGNAL(clicked()), this, SLOT(details_button_clicked()));
+    buttonList->append(button);
+
+    // adding the new widget to the scrollable layout.
+    ScrollAreaWidgetLayout->addWidget(widget);
+}
+
+
+
+void ResultsWindow::details_button_clicked()
+{
+    QPushButton *button = qobject_cast<QPushButton *>(sender());
+    cout << buttonList->indexOf(button) << endl;
 }
 
 
