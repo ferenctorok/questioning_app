@@ -55,7 +55,7 @@ add_executable(questioning_app
     main.cpp
     questioningapp.cpp
     questioningapp_open_task.cpp
-    questioningapp_open_results.cpp
+    #questioningapp_open_results.cpp
     ${HEADERS_DIR}/questioningapp.h
 )
 target_include_directories(questioning_app PUBLIC ${HEADERS_DIR})

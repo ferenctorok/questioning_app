@@ -12,7 +12,6 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
         string timestamp;
         string question_num_string;
         int question_num = 0;
-        string next_head_string;
         string type_string;
         string num_of_trials_string;
         int num_of_trials;
@@ -26,7 +25,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
 
         // reading the timestamp:
         timestamp = get_text_after(infile, oldpos, error_msg, "timestamp:");
-        if (timestamp == "NOT_FOUND") return file_corrupted(error_msg);
+        if (timestamp == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
         // we have to set oldpos after the timestamp line to enter the while cycle correctly:
         oldpos = infile.tellg();
@@ -40,26 +39,26 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             //jump back to last read line if there is still left from the file:
             infile.seekg(oldpos);
             question_num_string = get_text_after(infile, oldpos, error_msg, "QUESTION");
-            if (question_num_string == "NOT_FOUND") return file_corrupted(error_msg);
+            if (question_num_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
             // reading the number of trials:
             num_of_trials_string = get_text_after(infile, oldpos, error_msg, "trials:");
-            if (num_of_trials_string == "NOT_FOUND") return file_corrupted(error_msg);
+            if (num_of_trials_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
             num_of_trials = stoi(num_of_trials_string);
 
             // reading the type of the question:
             type_string = get_text_after(infile, oldpos, error_msg, "type:");
-            if (type_string != "text" && type_string != "multi") return file_corrupted(error_msg);
+            if (type_string != "text" && type_string != "multi") return file_corrupted<Question>(error_msg);
 
             // reading the question:
             question_string = get_text_after(infile, oldpos, error_msg, "question:");
-            if (question_string == "NOT_FOUND") return file_corrupted(error_msg);
+            if (question_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
             if (type_string == "text")
             {
                 // reading the answer:
                 answer_string = get_text_after(infile, oldpos, error_msg, "answer:");
-                if (answer_string == "NOT_FOUND") return file_corrupted(error_msg);
+                if (answer_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
                 // adding the new question to the vector:
                 questions_vect->push_back(new TextQuestion(question_string, type_string,
@@ -69,11 +68,11 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             {
                 // check whether there is the header answer_options:
                 head_answer_option_string = get_text_after(infile, oldpos, error_msg, "answer_options:");
-                if (head_answer_option_string == "NOT_FOUND") return file_corrupted(error_msg);
+                if (head_answer_option_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
                 // reading in the answer options:
                 answer_option_string = get_text_after(infile, oldpos, error_msg, "*");
-                if (answer_option_string == "NOT_FOUND") return file_corrupted(error_msg);
+                if (answer_option_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
                 while (answer_option_string != "NOT_FOUND")
                 {
                     answer_options_vect.push_back(answer_option_string);
@@ -84,7 +83,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
 
                 // reading the answers:
                 answer_string = get_text_after(infile, oldpos, error_msg, "answers:");
-                if (answer_string == "NOT_FOUND") return file_corrupted(error_msg);
+                if (answer_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
                 multi_answers_vect = get_multi_answers_from_string(answer_string);
 
                 // adding the new question to the vector:

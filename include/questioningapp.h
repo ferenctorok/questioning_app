@@ -13,6 +13,7 @@
 #include <question_utils.h>
 #include <new_questions.h>
 #include <task_solving.h>
+#include <results_window.h>
 
 
 class QuestioningApp : public QMainWindow
@@ -39,7 +40,8 @@ protected:
     TaskSolvingWindow *task_solving_window;
 
     vector<Question *>* readQuestions(string filename);
-    vector<Question *>* file_corrupted(const string &error_msg = "");
+    vector<Result *>* readResults(string filename);
+    template<class T> vector<T *>* file_corrupted(const string &error_msg = "");
     string get_text_after(ifstream &infile,
                           streampos &oldpos,
                           string &error_msg,

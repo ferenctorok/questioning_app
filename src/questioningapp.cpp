@@ -77,13 +77,18 @@ void QuestioningApp::show_again()
     show();
 }
 
-
-vector<Question *>* QuestioningApp::file_corrupted(const string &error_msg)
+template<class T>
+vector<T *>* QuestioningApp::file_corrupted(const string &error_msg)
 {
     string message = "A kiválasztott fájl hibás!\n" + error_msg;
     QMessageBox::critical(this, "Hiba!", QString::fromStdString(message));
-    return new vector<Question *>;
+    return new vector<T *>;
 }
+// explicit instantiations:
+template
+vector<Question *>* QuestioningApp::file_corrupted<Question>(const string &error_msg);
+template
+vector<Result *>* QuestioningApp::file_corrupted<Result>(const string &error_msg);
 
 
 string QuestioningApp::get_text_after(ifstream &infile,
