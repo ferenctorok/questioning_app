@@ -40,9 +40,8 @@ target_link_libraries(task_solving PRIVATE
 # results_window library:
 add_library(results_window
     results_window.cpp
-    ${HEADERS_DIR}/results_window.h
     result_details.cpp
-    ${HEADERS_DIR}/result_details.h
+    ${HEADERS_DIR}/results.h
 )
 target_include_directories(results_window PUBLIC ${HEADERS_DIR})
 target_link_libraries(results_window PRIVATE

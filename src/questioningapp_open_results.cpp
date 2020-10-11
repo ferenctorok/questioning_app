@@ -1,5 +1,5 @@
 #include <questioningapp.h>
-#include <results_window.h>
+#include <results.h>
 
 
 vector<Result *>* QuestioningApp::readResults(string filename)

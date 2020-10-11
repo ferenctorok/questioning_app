@@ -45,6 +45,32 @@ public:
 };
 
 
+
+
+class ResultDetailsWindow: public QWidget
+{
+    Q_OBJECT
+
+public:
+    ResultDetailsWindow(Result *result,
+                        QWidget *parent = nullptr);
+    virtual ~ResultDetailsWindow();
+
+
+private:
+    Result *result;
+
+    QVBoxLayout *mainlayout;
+    QLabel *InfoLabel;
+    QLabel *QuestionLabel;
+    QLabel *CorrectAnswerLabel;
+    QFrame *MultipleChoiceFrame;
+    QVBoxLayout *MultipleChoiceLayout;
+    QList<QCheckBox *> answerOptionList;
+    QLabel *GivenAnswersLabel;
+};
+
+
 class ResultsWindow: public QWidget
 {
     Q_OBJECT
@@ -62,6 +88,7 @@ signals:
 
 private:
     vector<Result *> *results;
+    ResultDetailsWindow *detail_window;
 
     QHBoxLayout *mainLayout;
     QScrollArea *scrollArea;
@@ -77,16 +104,4 @@ private:
     void closeEvent(QCloseEvent *event);
     void set_up_lists(Result *result);
 };
-
-
-
 #endif
-
-
-
-
-
-
-
-
-

@@ -13,7 +13,7 @@
 #include <question_utils.h>
 #include <new_questions.h>
 #include <task_solving.h>
-#include <results_window.h>
+#include <results.h>
 
 
 class QuestioningApp : public QMainWindow

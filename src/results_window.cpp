@@ -1,4 +1,4 @@
-#include <results_window.h>
+#include <results.h>
 
 
 Result::Result(string question_number,
@@ -26,6 +26,8 @@ ResultsWindow::ResultsWindow(vector<Result *> *results,
     QWidget(parent)
 {
     this->results = results;
+
+    detail_window = nullptr;
 
     // setting up the widget (window)
     setAttribute(Qt::WA_DeleteOnClose);
@@ -110,7 +112,9 @@ void ResultsWindow::set_up_lists(Result *result)
 void ResultsWindow::details_button_clicked()
 {
     QPushButton *button = qobject_cast<QPushButton *>(sender());
-    cout << buttonList->indexOf(button) << endl;
+    int index = buttonList->indexOf(button);
+    detail_window = new ResultDetailsWindow(results->at(index));
+    detail_window->show();
 }
 
 

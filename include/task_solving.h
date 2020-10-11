@@ -53,7 +53,6 @@ private:
 
     QVBoxLayout *mainlayout;
     QLabel *InfoLabel;
-    QFrame *QuestionFrame;
     QLabel *QuestionLabel;
     QTextEdit *AnswerTextEdit;
     QFrame *MultipleChoiceFrame;
