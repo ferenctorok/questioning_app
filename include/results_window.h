@@ -31,10 +31,9 @@ public:
            string type,
            string question,
            string real_text_answer = "",
-           string given_text_answer = "",
            vector<string> options = vector<string>(),
            string real_multi_answer = "",
-           vector<string> given_multi_answers = vector<string>());
+           vector<string> given_answers = vector<string>());
     ~Result() {};
 
     string question_number;
@@ -43,10 +42,9 @@ public:
     string type;
     string question;
     string real_text_answer;
-    string given_text_answer;
     vector<string> options;
     string real_multi_answer;
-    vector<string> given_multi_answers;
+    vector<string> given_answers;
 };
 
 

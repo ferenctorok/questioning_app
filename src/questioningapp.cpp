@@ -117,6 +117,26 @@ string QuestioningApp::get_text_after(ifstream &infile,
 }
 
 
+vector<string> QuestioningApp::read_string_list(ifstream &infile,
+                                                streampos &oldpos,
+                                                string &error_msg)
+{
+    vector<string> vect;
+    string str;
+    // reading in the answer options:
+    str = get_text_after(infile, oldpos, error_msg, "*");
+    if (str == "NOT_FOUND") return vect;
+    while (str != "NOT_FOUND")
+    {
+        vect.push_back(str);
+        str = get_text_after(infile, oldpos, error_msg, "*");
+    }
+    //set back the file to the previous line for further reading:
+    infile.seekg(oldpos);
+    return vect;
+}
+
+
 string QuestioningApp::getResultFileName(string question_file_name)
 {
     string result_file_name = question_file_name;

@@ -48,7 +48,12 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
 
             // reading the type of the question:
             type_string = get_text_after(infile, oldpos, error_msg, "type:");
-            if (type_string != "text" && type_string != "multi") return file_corrupted<Question>(error_msg);
+            if (type_string != "text" && type_string != "multi")
+            {
+                error_msg = "type must be either \"text\" or \"multi\"\n";
+                error_msg += "received" + type_string;
+                return file_corrupted<Question>(error_msg);
+            }
 
             // reading the question:
             question_string = get_text_after(infile, oldpos, error_msg, "question:");
@@ -71,15 +76,8 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
                 if (head_answer_option_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
                 // reading in the answer options:
-                answer_option_string = get_text_after(infile, oldpos, error_msg, "*");
-                if (answer_option_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
-                while (answer_option_string != "NOT_FOUND")
-                {
-                    answer_options_vect.push_back(answer_option_string);
-                    answer_option_string = get_text_after(infile, oldpos, error_msg, "*");
-                }
-                //set back the file to the previous line for further reading:
-                infile.seekg(oldpos);
+                answer_options_vect = read_string_list(infile, oldpos, error_msg);
+                if (answer_options_vect.empty()) return file_corrupted<Question>(error_msg);
 
                 // reading the answers:
                 answer_string = get_text_after(infile, oldpos, error_msg, "answers:");

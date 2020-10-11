@@ -265,7 +265,7 @@ void TaskSolvingWindow::writeResultToFile(Question *question,
         outfile << "real_answer:" << question->getTextAnswer() << endl;
         // given answers:
         outfile << "given_answers:" << endl;
-        for (auto &answer: given_text_answers) outfile << answer << endl;
+        for (auto &answer: given_text_answers) outfile << "*" << answer << endl;
     }
     else
     {
@@ -273,13 +273,14 @@ void TaskSolvingWindow::writeResultToFile(Question *question,
         outfile << "answer_options:" << endl;
         for (auto &option: *question->getOptions()) outfile << "*" << option << endl;
         // real answer:
-        outfile << "real_answer:" << endl;
+        outfile << "real_answer:";
         for (auto &answer: question->getMultiAnswer()) outfile << answer << ",";
         outfile << endl;
         // given answers:
         outfile << "given_answers:" << endl;
         for (auto &answers_vect: given_multi_answers)
         {
+            outfile << "*";
             for (auto &answer: answers_vect) outfile << answer << ",";
             outfile << endl;
         }
