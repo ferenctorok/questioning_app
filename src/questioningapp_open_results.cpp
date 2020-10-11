@@ -16,17 +16,14 @@ vector<Result *>* QuestioningApp::readResults(string filename)
         string type;
         string num_of_trials;
         string question;
-        string real_text_answer;
-        string answer_option;
+        string real_answer;
         vector<string> answer_options_vect;
-        string real_multi_answers;
         vector<string> given_answers;
         vector<Result *> *results = new vector<Result *>;
 
         // reading in the questions:
         while (!infile.eof()) {
             // empty vectors:
-            real_text_answer = "";
             answer_options_vect.clear();
             given_answers.clear();
 
@@ -57,64 +54,45 @@ vector<Result *>* QuestioningApp::readResults(string filename)
             question = get_text_after(infile, oldpos, error_msg, "question:");
             if (question == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
-            if (type == "text")
-            {
-                // reading the answer:
-                real_text_answer = get_text_after(infile, oldpos, error_msg, "real_answer:");
-                if (real_text_answer == "NOT_FOUND") return file_corrupted<Result>(error_msg);
-            }
-            else
+            if (type == "multi")
             {
                 // check whether there is the header answer_options:
-                head_answer_option_string = get_text_after(infile, oldpos, error_msg, "answer_options:");
-                if (head_answer_option_string == "NOT_FOUND") return file_corrupted<Result>(error_msg);
+                head_buffer = get_text_after(infile, oldpos, error_msg, "answer_options:");
+                if (head_buffer == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
                 // reading in the answer options:
-                answer_option_string = get_text_after(infile, oldpos, error_msg, "*");
-                if (answer_option_string == "NOT_FOUND") return file_corrupted<Result>(error_msg);
-                while (answer_option_string != "NOT_FOUND")
-                {
-                    answer_options_vect.push_back(answer_option_string);
-                    answer_option_string = get_text_after(infile, oldpos, error_msg, "*");
-                }
-                //set back the file to the previous line for further reading:
-                infile.seekg(oldpos);
-
-                // reading the answers:
-                answer_string = get_text_after(infile, oldpos, error_msg, "answers:");
-                if (answer_string == "NOT_FOUND") return file_corrupted<Result>(error_msg);
-                multi_answers_vect = get_multi_answers_from_string(answer_string);
-
-                // adding the new question to the vector:
-                questions_vect->push_back(new MultiChoiceQuestion(question_string, type_string, question_num,
-                                                                  num_of_trials, answer_options_vect, multi_answers_vect));
+                answer_options_vect = read_string_list(infile, oldpos, error_msg);
+                if (answer_options_vect.empty()) return file_corrupted<Result>(error_msg);
             }
+
+            // reading the real answer:
+            real_answer = get_text_after(infile, oldpos, error_msg, "real_answer:");
+            if (real_answer == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
             // finding the given answers header:
             head_buffer = get_text_after(infile, oldpos, error_msg, "given_answers:");
             if (head_buffer == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
             // reading the given answers:
-
+            given_answers = read_string_list(infile, oldpos, error_msg);
+            if (given_answers.empty()) return file_corrupted<Result>(error_msg);
 
             // adding the new Result object to the vector:
             results->push_back(new Result(question_num, correct, num_of_trials, type,
-                                          question, real_text_answer, answer_options_vect,
-                                          real_multi_answers, given_answers));
+                                          question, real_answer, answer_options_vect,
+                                          given_answers));
 
             // jumping over empty lines:
-            getline(infile, question_num_string);
+            getline(infile, question_num);
             oldpos = infile.tellg();
-            while (question_num_string.find_first_not_of(" ") == string::npos && !infile.eof())
+            while (question_num.find_first_not_of(" ") == string::npos && !infile.eof())
             {
-                getline(infile, question_num_string);
+                getline(infile, question_num);
             }
-
-            question_num++;
         }
-        return questions_vect;
+        return results;
     }
-    else return new vector<Question *>;
+    else return new vector<Result *>;
 }
 
 

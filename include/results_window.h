@@ -30,9 +30,8 @@ public:
            string trials,
            string type,
            string question,
-           string real_text_answer = "",
+           string real_answer = "",
            vector<string> options = vector<string>(),
-           string real_multi_answer = "",
            vector<string> given_answers = vector<string>());
     ~Result() {};
 
@@ -41,9 +40,8 @@ public:
     string trials;
     string type;
     string question;
-    string real_text_answer;
+    string real_answer;
     vector<string> options;
-    string real_multi_answer;
     vector<string> given_answers;
 };
 

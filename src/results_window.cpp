@@ -6,9 +6,8 @@ Result::Result(string question_number,
                string trials,
                string type,
                string question,
-               string real_text_answer,
+               string real_answer,
                vector<string> options,
-               string real_multi_answer,
                vector<string> given_answers)
 {
     this->question_number = question_number;
@@ -16,9 +15,8 @@ Result::Result(string question_number,
     this->trials = trials;
     this->type = type;
     this->question = question;
-    this->real_text_answer = real_text_answer;
+    this->real_answer = real_answer;
     this->options = options;
-    this->real_multi_answer = real_multi_answer;
     this->given_answers = given_answers;
 }
 
