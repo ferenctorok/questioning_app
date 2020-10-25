@@ -52,9 +52,6 @@ ResultDetailsWindow::ResultDetailsWindow(Result *result,
 }
 
 
-ResultDetailsWindow::~ResultDetailsWindow() {delete result;}
-
-
 void ResultDetailsWindow::set_up_multiple_choice_frame()
 {
     MultipleChoiceFrame = set_QFrame(this, "multiple_choice_frame", mainlayout);

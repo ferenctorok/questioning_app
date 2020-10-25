@@ -54,7 +54,7 @@ class ResultDetailsWindow: public QWidget
 public:
     ResultDetailsWindow(Result *result,
                         QWidget *parent = nullptr);
-    virtual ~ResultDetailsWindow();
+    ~ResultDetailsWindow() {};
 
 public slots:
     void set_back_state();
