@@ -4,12 +4,12 @@
 #include <utils.h>
 
 
-NewQuestionsWindow::NewQuestionsWindow(QString filename,
+NewQuestionsWindow::NewQuestionsWindow(string filename,
                                        QWidget *parent):
         QWidget(parent)
 {
     // setting up output file
-    this->filename = filename.toStdString();
+    this->filename = filename;
     ofstream outfile(this->filename);
     outfile << "timestamp:" << getTimestamp() << endl << endl;
     outfile.close();

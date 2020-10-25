@@ -16,6 +16,7 @@
 #include <QTextEdit>
 #include <QSpinBox>
 #include <QLabel>
+#include <QDir>
 
 #include <answer_option.h>
 
@@ -27,7 +28,7 @@ class NewQuestionsWindow: public QWidget
     Q_OBJECT
 
 public:
-    NewQuestionsWindow(QString filename,
+    NewQuestionsWindow(string filename,
                        QWidget *parent = nullptr);
     virtual ~NewQuestionsWindow() {};
 

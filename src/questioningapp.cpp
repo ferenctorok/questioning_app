@@ -52,12 +52,14 @@ void QuestioningApp::button_new_questions_clicked()
 
     if (!fileName.isEmpty())
     {
+        // converting into utf8 string
+        string utf8String = fileName.toLocal8Bit().constData();
         // setting up the filename with .q extension if it is missing
         if (!fileName.contains(".q")) fileName.append(".q");
         else if(fileName.lastIndexOf(".q") < (fileName.length() - 3)) fileName.append(".q");
 
         // setting up new window:
-        new_questions_window = new NewQuestionsWindow(fileName);
+        new_questions_window = new NewQuestionsWindow(utf8String);
         connect(new_questions_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
         hide();
         new_questions_window->show();
@@ -72,10 +74,13 @@ void QuestioningApp::button_start_clicked()
                                                     "Question files (*.q)");
     if (!fileName.isEmpty())
     {
-        vector<Question *> *questions = readQuestions(fileName.toStdString());
-        string timestamp = getTimestamp(fileName.toStdString());
+        // converting into utf8 string
+        string utf8String = fileName.toLocal8Bit().constData();
+        // reading in the questions from the file.
+        vector<Question *> *questions = readQuestions(utf8String);
+        string timestamp = getTimestamp(utf8String);
         // file to save into:
-        string result_file_name = getResultFileName(fileName.toStdString());
+        string result_file_name = getResultFileName(utf8String);
         task_solving_window = new TaskSolvingWindow(questions, result_file_name, timestamp);
         connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
         hide();
@@ -92,8 +97,11 @@ void QuestioningApp::button_results_clicked()
                                                     "Result files (*.res)");
     if (!fileName.isEmpty())
     {
-        vector<Result *> *results = readResults(fileName.toStdString());
-
+        // converting into utf8 string
+        string utf8String = fileName.toLocal8Bit().constData();
+        // reading in the results from the file:
+        vector<Result *> *results = readResults(utf8String);
+        // creating and showing results window:
         results_window = new ResultsWindow(results);
         connect(results_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
         hide();
