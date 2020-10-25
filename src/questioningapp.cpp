@@ -50,15 +50,18 @@ void QuestioningApp::button_new_questions_clicked()
     QString fileName = QFileDialog::getSaveFileName(this,
         QString("Kérdéssor Mentése"), "", "Question files (*.q)");
 
-    // setting up the filename with .q extension if it is missing
-    if (!fileName.contains(".q")) fileName.append(".q");
-    else if(fileName.lastIndexOf(".q") < (fileName.length() - 3)) fileName.append(".q");
+    if (!fileName.isEmpty())
+    {
+        // setting up the filename with .q extension if it is missing
+        if (!fileName.contains(".q")) fileName.append(".q");
+        else if(fileName.lastIndexOf(".q") < (fileName.length() - 3)) fileName.append(".q");
 
-    // setting up new window:
-    new_questions_window = new NewQuestionsWindow(fileName);
-    connect(new_questions_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
-    hide();
-    new_questions_window->show();
+        // setting up new window:
+        new_questions_window = new NewQuestionsWindow(fileName);
+        connect(new_questions_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
+        hide();
+        new_questions_window->show();
+    }
 }
 
 void QuestioningApp::button_start_clicked()
