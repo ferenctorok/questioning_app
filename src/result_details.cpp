@@ -46,8 +46,12 @@ ResultDetailsWindow::ResultDetailsWindow(Result *result,
     // given answers:
     GivenAnswersLabel = set_QLabel(550, this, "", "given_answers_label", mainlayout);
     string given_answers = "Adott válaszok:\n";
-    for (auto &answer: result->given_answers)
+    for (auto &answer: result->given_answers){
+        // cutting the last comma for multiple choice answers:
+        if (result->type == "multi") answer = answer.substr(0, answer.length() - 1);
+        // extending the string:
         given_answers += "\t" + answer + "\n";
+    }
     GivenAnswersLabel->setText(QString::fromStdString(given_answers));
 }
 
