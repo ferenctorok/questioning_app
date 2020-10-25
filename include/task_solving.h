@@ -73,6 +73,7 @@ private:
                            bool isCorrect);
     void checkLogfile();
     void writeLogfile();
+    string givenAnswersToSring();
     string getTextAfter(ifstream &infile,
                         string after_this);
 };

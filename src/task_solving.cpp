@@ -360,7 +360,7 @@ void TaskSolvingWindow::writeLogfile()
         size_t pos;
         string timestamp_candidate;
         bool timestamp_found = false;
-        while (!logfile.eof())
+        while (logfile.good())
         {
             getline(logfile, line);
             pos = line.find(search_str);
@@ -376,21 +376,33 @@ void TaskSolvingWindow::writeLogfile()
                 ifstream readfile(LOG_FILE);
                 readfile.read(&copy_string[0], strpos);
 
-                // skipping the newxt 2 lines:
-                getline(logfile, line);
-                getline(logfile, line);
-
                 // adding the new data to the string.
                 copy_string += "question_num:" + to_string(question_counter - 1) + "\n";
                 if (question_counter >= questions->size()) question_counter = questions->size() - 1;
                 copy_string += "num_used_trials:" + to_string(questions->at(question_counter - 1)->getUsedTrials()) + "\n";
+                copy_string += "given_answers:\n";
+                copy_string += givenAnswersToSring();
+                copy_string += "\n";
+
+                // skipping the old entries about this timestamp in the original file:
+                do {
+                    strpos = logfile.tellg();
+                    getline(logfile, line);
+                }
+                while ((line.find("timestamp:") == string::npos) && logfile.good());
 
                 // copying the rest of the file:
-                while (!logfile.eof())
-                {
-                    getline(logfile, line);
-                    copy_string += line + "\n";
+                if (logfile.good()){
+                    // setting back the stream before "timestamp:" for further reading.
+                    logfile.seekg(strpos);
+                    while (logfile.good())
+                    {
+                        getline(logfile, line);
+                        copy_string += line + "\n";
+                    }
                 }
+                // deleting last new line from the end:
+                copy_string = copy_string.substr(0, copy_string.length() - 1);
 
                 // writing the new file:
                 logfile.close();
@@ -408,8 +420,27 @@ void TaskSolvingWindow::writeLogfile()
             logoutfile << "timestamp:" << timestamp << endl;
             logoutfile << "question_num:" << question_counter - 1 << endl;
             logoutfile << "num_used_trials:" << questions->at(question_counter - 1)->getUsedTrials() << endl;
+            logoutfile << "given_answers:\n";
+            logoutfile << givenAnswersToSring();
             logoutfile << endl;
         }
 
     }
+}
+
+
+string TaskSolvingWindow::givenAnswersToSring()
+{
+    string str = "";
+    if (current_question_type == "text")
+        for (auto answer: given_text_answers) str += "*" + answer + "\n";
+    else
+    {
+        for (auto answer: given_multi_answers){
+            str += "*";
+            for (auto num: answer) str += to_string(num) + ",";
+            str += "\n";
+        }
+    }
+    return str;
 }
