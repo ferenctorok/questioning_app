@@ -308,7 +308,7 @@ void TaskSolvingWindow::checkLogfile()
     string line;
     size_t pos;
     string timestamp_candidate;
-    while (!logfile.eof())
+    while (logfile.good())
     {
         getline(logfile, line);
         pos = line.find(search_str);
@@ -321,13 +321,28 @@ void TaskSolvingWindow::checkLogfile()
             else question_counter = 0;
 
             // setting the used trials to the sufficient value:
+            int used_trials = 0;
             if (question_counter < questions->size())
             {
                 string used_trials_string = getTextAfter(logfile, "num_used_trials:");
-                int used_trials = 0;
                 if (question_num_str != "NOT_FOUND") used_trials = stoi(used_trials_string);
                 for (int i = 0; i < used_trials; i++) questions->at(question_counter)->useTrial();
             }
+
+            // setting the list of already given aswers:
+            if (getTextAfter(logfile, "given_answers:") != "NOT_FOUND"){
+                string given_answer_string;
+                if (questions->at(question_counter)->getType() == "text"){
+                    for (int i = 0; i < used_trials; i++){
+                        given_answer_string = getTextAfter(logfile, "*");
+                        if (given_answer_string != "NOT_FOUND") given_text_answers.push_back(given_answer_string);
+                    }
+                }
+                else{
+
+                }
+            }
+
             break;
         }
     }
