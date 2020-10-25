@@ -332,14 +332,18 @@ void TaskSolvingWindow::checkLogfile()
             // setting the list of already given aswers:
             if (getTextAfter(logfile, "given_answers:") != "NOT_FOUND"){
                 string given_answer_string;
-                if (questions->at(question_counter)->getType() == "text"){
-                    for (int i = 0; i < used_trials; i++){
-                        given_answer_string = getTextAfter(logfile, "*");
-                        if (given_answer_string != "NOT_FOUND") given_text_answers.push_back(given_answer_string);
+                // reading in the given answer as a string at first:
+                for (int i = 0; i < used_trials; i++){
+                    given_answer_string = getTextAfter(logfile, "*");
+                    // putting it in the vectors according to question type:
+                    if (given_answer_string != "NOT_FOUND"){
+                        if (questions->at(question_counter)->getType() == "text"){
+                            given_text_answers.push_back(given_answer_string);
+                        }
+                        else{
+                            given_multi_answers.push_back(get_multi_answers_from_string(given_answer_string));
+                        }
                     }
-                }
-                else{
-
                 }
             }
 

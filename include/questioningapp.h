@@ -52,7 +52,6 @@ protected:
     vector<string> read_string_list(ifstream &infile,
                                     streampos &oldpos,
                                     string &error_msg);
-    vector<int> get_multi_answers_from_string(string str);
     string getResultFileName(string question_file_name);
     string getTimestamp(string filename);
 };

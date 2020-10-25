@@ -198,7 +198,21 @@ void add_OptionList_to_layout(const QList<AnswerOption *> &list,
 }
 
 
-
+vector<int> get_multi_answers_from_string(string str)
+{
+    vector<int> answers;
+    size_t pos_end = str.find(",");
+    size_t pos_beg(0);
+    string actual_string;
+    while (pos_end != string::npos)
+    {
+        actual_string = str.substr(pos_beg, pos_end - pos_beg);
+        answers.push_back(std::stoi(actual_string));
+        pos_beg = pos_end + 1;
+        pos_end = str.find(",", pos_beg);
+    }
+    return answers;
+}
 
 
 

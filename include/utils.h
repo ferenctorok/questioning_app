@@ -96,5 +96,7 @@ void add_option_to_list(QList<AnswerOption *> &list,
 void add_OptionList_to_layout(const QList<AnswerOption *> &list,
                          QLayout *layout);
 
+vector<int> get_multi_answers_from_string(string str);
+
 
 #endif
