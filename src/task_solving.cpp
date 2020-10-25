@@ -200,6 +200,12 @@ string TaskSolvingWindow::readTextAnswer()
     // removing extra spaces at the end:
     pos = str.find_last_not_of(whitespaces);
     str.erase(pos + 1, string::npos);
+    // removing internal new lines:
+    pos = 0;
+    while (str.find_first_of("\n", pos) != string::npos){
+        pos = str.find_first_of("\n", pos);
+        str.erase(pos, 1);
+    }
     return str;
 }
 
