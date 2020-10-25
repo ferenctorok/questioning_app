@@ -141,17 +141,27 @@ QTextEdit* set_QTextEdit(const int width,
 }
 
 
-QLabel* set_QLabel(int max_width,
-                   QWidget* parent,
+QLabel* set_QLabel(QWidget* parent,
                    const QString text,
                    const QString name,
                    QLayout *layout)
 {
     QLabel *label = new QLabel(text, parent);
     label->setObjectName(name);
-    label->setMaximumWidth(max_width);
     label->setWordWrap(true);
     layout->addWidget(label);
+    return label;
+}
+
+
+QLabel* set_QLabel(int max_width,
+                   QWidget* parent,
+                   const QString text,
+                   const QString name,
+                   QLayout *layout)
+{
+    QLabel *label = set_QLabel(parent, text, name, layout);
+    label->setMaximumWidth(max_width);
     return label;
 }
 

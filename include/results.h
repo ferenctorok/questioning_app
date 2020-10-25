@@ -94,7 +94,10 @@ private:
     vector<Result *> *results;
     ResultDetailsWindow *detail_window;
 
-    QHBoxLayout *mainLayout;
+    QVBoxLayout *mainLayout;
+    QHBoxLayout *mainInfoLayout;
+    QLabel *mainInfoLabel;
+    QLabel *smileyLabel;
     QScrollArea *scrollArea;
     QWidget *ScrollAreaWidget;
     QVBoxLayout *ScrollAreaWidgetLayout;
@@ -102,10 +105,14 @@ private:
     QList<QPushButton *> *buttonList;
     QList<QLabel *> *labelList;
     QList<QHBoxLayout *> *layoutList;
+    QPalette *correctPaletteFirst;
     QPalette *correctPalette;
     QPalette *wrongPalette;
 
     void closeEvent(QCloseEvent *event);
     void set_up_lists(Result *result);
+    string getMainInfoString();
+    int getNumOfCorrectAnswers();
+    int getNumOfCorrectAnswersFirst();
 };
 #endif

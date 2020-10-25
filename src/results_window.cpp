@@ -33,10 +33,23 @@ ResultsWindow::ResultsWindow(vector<Result *> *results,
     setAttribute(Qt::WA_DeleteOnClose);
     resize(600, 400);
     setObjectName("results_window");
-    setWindowTitle("Eredmények megjelenítése");
+    setWindowTitle("Eredmények");
 
     // main layout of the window
-    mainLayout = set_QHBoxLayout(this, "main_layout");
+    mainLayout = set_QVBoxLayout(this, "main_layout");
+
+    // main info layout:
+    mainInfoLayout = set_QHBoxLayout(nullptr, "main_info_layout");
+    mainLayout->addLayout(mainInfoLayout);
+
+    // main info label:
+    string main_info_string = getMainInfoString();
+    mainInfoLabel = set_QLabel(this, QString::fromStdString(main_info_string),
+                               "main_info_label", mainInfoLayout);
+
+    // smiley label:
+    smileyLabel = set_QLabel(this, "", "smiley_label", mainInfoLayout);
+    //smileyLabel->setPixmap(QString("/home/ferenc/Documents/programming/questioning_app/src/img/smiley_best.png"));
 
     // scroll area:
     scrollArea = new QScrollArea(this);
@@ -47,7 +60,8 @@ ResultsWindow::ResultsWindow(vector<Result *> *results,
     ScrollAreaWidgetLayout = set_QVBoxLayout(ScrollAreaWidget);
 
     // setting up palettes:
-    correctPalette = new QPalette(Qt::green);
+    correctPaletteFirst = new QPalette(Qt::green);
+    correctPalette = new QPalette(Qt::yellow);
     wrongPalette = new QPalette(Qt::red);
 
 
@@ -79,7 +93,9 @@ void ResultsWindow::set_up_lists(Result *result)
 {
     // setting up the label with background color:
     QWidget *widget = new QWidget(ScrollAreaWidget);
-    if (result->correct) widget->setPalette(*correctPalette);
+    if (result->correct)
+        if (stoi(result->trials) == 1) widget->setPalette(*correctPaletteFirst);
+        else widget->setPalette(*correctPalette);
     else widget->setPalette(*wrongPalette);
     widgetList->append(widget);
 
@@ -89,7 +105,9 @@ void ResultsWindow::set_up_lists(Result *result)
     // setting up the text to be displayed and the label:
     string text = "";
     text += "Feladat " + result->question_number + " : ";
-    if (result->correct) text += "JÓ\n";
+    if (result->correct)
+        if (stoi(result->trials) == 1) text += "JÓ\n";
+        else text += "JÓ, de nem elsőre\n";
     else text += "ROSSZ\n";
     text += "próbálkozások száma: " + result ->trials;
     QLabel *label = set_QLabel(800, widget, QString::fromStdString(text),
@@ -114,6 +132,46 @@ void ResultsWindow::details_button_clicked()
     int index = buttonList->indexOf(button);
     detail_window = new ResultDetailsWindow(results->at(index));
     detail_window->show();
+}
+
+
+string ResultsWindow::getMainInfoString()
+{
+    string str = "";
+
+    int num_of_questions = results->size();
+    int num_correct_answers = getNumOfCorrectAnswers();
+    int num_correct_answers_first = getNumOfCorrectAnswersFirst();
+
+    double ratio = (double)num_correct_answers_first / (double)num_of_questions;
+    if (ratio >= 0.7) str += "Gratulálok! Büszke lehetsz a tudásodra!\n\n";
+    else if (ratio >= 0.4) str += "Sok mindent tudtál, de még van mit megtanulnod.\n\n";
+    else str += "Kapcsolj rá, mert a tudásod nagyon bizonytalan!\n\n";
+
+    str += "Összesen feltett kérdések száma: " + to_string(num_of_questions) + "\n";
+    str += "Helyesen megválaszolt kérdések száma: " + to_string(num_correct_answers) + "\n";
+    str += "Elsőre helyesen megválaszolt kérdések száma: " + to_string(getNumOfCorrectAnswersFirst());
+
+    return str;
+}
+
+
+int ResultsWindow::getNumOfCorrectAnswers()
+{
+    int counter = 0;
+    for (auto &result: *results)
+        if (result->correct) counter ++;
+    return counter;
+}
+
+
+int ResultsWindow::getNumOfCorrectAnswersFirst()
+{
+    int counter = 0;
+    for (auto &result: *results)
+        if (result->correct && (stoi(result->trials) == 1))
+            counter ++;
+    return counter;
 }
 
 

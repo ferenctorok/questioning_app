@@ -75,7 +75,12 @@ QTextEdit* set_QTextEdit(const int max_width,
                          const QString placeholder = "",
                          QLayout *layout = nullptr);
 
-QLabel* set_QLabel(int max_width = 1000,
+QLabel* set_QLabel(QWidget* parent = nullptr,
+                   const QString text = "",
+                   const QString name = "",
+                   QLayout *layout = nullptr);
+
+QLabel* set_QLabel(int max_width,
                    QWidget* parent = nullptr,
                    const QString text = "",
                    const QString name = "",
