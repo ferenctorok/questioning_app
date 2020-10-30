@@ -93,6 +93,7 @@ void ResultsWindow::set_up_lists(Result *result)
 {
     // setting up the label with background color:
     QWidget *widget = new QWidget(ScrollAreaWidget);
+    widget->setAutoFillBackground(true);
     if (result->correct)
         if (stoi(result->trials) == 1) widget->setPalette(*correctPaletteFirst);
         else widget->setPalette(*correctPalette);
