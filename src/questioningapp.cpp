@@ -139,13 +139,19 @@ string QuestioningApp::get_text_after(ifstream &infile,
     getline(infile, line);
 
     // jumping over empty lines
-    while (line.find_first_not_of(" ") == string::npos && !infile.eof())
+    string whitespaces =  " \t\f\v\n\r";
+    while (line.find_first_not_of(whitespaces) == string::npos && !infile.eof())
     {
         getline(infile, line);
     }
 
     size_t pos = line.find(after_this);
-    if (pos != string::npos) return line.substr(pos + after_this.length());
+    if (pos != string::npos)
+    {
+        string return_string = line.substr(pos + after_this.length());
+        return_string = return_string.substr(0, return_string.length() - 1);
+        return return_string;
+    }
     else
     {
         error_msg = "expected keyword: \" " + after_this + " \"\n";

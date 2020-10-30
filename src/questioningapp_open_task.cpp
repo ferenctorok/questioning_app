@@ -4,7 +4,7 @@
 
 vector<Question *>* QuestioningApp::readQuestions(string filename)
 {
-    ifstream infile(filename);
+    ifstream infile(filename, ios_base::binary);
     if (infile.is_open())
     {
         string error_msg = "";
@@ -23,6 +23,8 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
         vector<int> multi_answers_vect;
         vector<Question *> *questions_vect = new vector<Question *>;
 
+        string whitespaces =  " \t\f\v\n\r";
+
         // reading the timestamp:
         timestamp = get_text_after(infile, oldpos, error_msg, "timestamp:");
         if (timestamp == "NOT_FOUND") return file_corrupted<Question>(error_msg);
@@ -37,7 +39,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             multi_answers_vect.clear();
 
             //jump back to last read line if there is still left from the file:
-            infile.seekg(oldpos);
+            infile.seekg(oldpos);         
             question_num_string = get_text_after(infile, oldpos, error_msg, "QUESTION");
             if (question_num_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
@@ -91,7 +93,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             // jumping over empty lines:
             getline(infile, question_num_string);
             oldpos = infile.tellg();
-            while (question_num_string.find_first_not_of(" ") == string::npos && infile.good())
+            while (question_num_string.find_first_not_of(whitespaces) == string::npos && infile.good())
             {
                 getline(infile, question_num_string);
             }
