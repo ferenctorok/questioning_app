@@ -48,7 +48,7 @@ void QuestioningApp::button_new_questions_clicked()
 {
     // file to save into:
     QString fileName = QFileDialog::getSaveFileName(this,
-        QString("Kérdéssor Mentése"), "", "Question files (*.q)");
+        QString("Kérdéssor Mentése"), QDir::homePath(), "Question files (*.q)");
 
     if (!fileName.isEmpty())
     {
@@ -70,7 +70,7 @@ void QuestioningApp::button_start_clicked()
 {
     // question file to open:
     QString fileName = QFileDialog::getOpenFileName(this, "Kérdéssor választása",
-                                                    "",
+                                                    QDir::homePath(),
                                                     "Question files (*.q)");
     if (!fileName.isEmpty())
     {
@@ -93,7 +93,7 @@ void QuestioningApp::button_results_clicked()
 {
     // result file to open:
     QString fileName = QFileDialog::getOpenFileName(this, "Eredményfájl kiválasztása",
-                                                    "",
+                                                    QDir::homePath(),
                                                     "Result files (*.res)");
     if (!fileName.isEmpty())
     {
