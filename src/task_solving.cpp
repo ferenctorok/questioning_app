@@ -301,32 +301,30 @@ void TaskSolvingWindow::checkLogfile()
 {
     question_counter = 0;
 
-    ifstream logfile(LOG_FILE);
+    ifstream logfile(LOG_FILE, ios_base::binary);
     if (!logfile)
     {
         ofstream new_logfile(LOG_FILE);
         new_logfile.close();
-        logfile.open(LOG_FILE);
+        logfile.open(LOG_FILE, ios_base::binary);
     }
 
     // search for the timestamp in the logfile:
-    string search_str = "timestamp:";
     string line;
     size_t pos;
     string timestamp_candidate;
     while (logfile.good())
     {
-        getline(logfile, line);
-        pos = line.find(search_str);
-        if (pos != string::npos) timestamp_candidate = line.substr(pos + search_str.length());
+        // searching for the timestamp:
+        timestamp_candidate = getTextAfter(logfile, "timestamp:");
         if (timestamp_candidate == timestamp)
         {
-            // setting the number of questions where we have been:
+            // setting the question number:
             string question_num_str = getTextAfter(logfile, "question_num:");
             if (question_num_str != "NOT_FOUND") question_counter = stoi(question_num_str);
             else question_counter = 0;
 
-            // setting the used trials to the sufficient value:
+            // setting the used trials:
             int used_trials = 0;
             if (question_counter < questions->size())
             {
@@ -366,7 +364,12 @@ string TaskSolvingWindow::getTextAfter(ifstream &infile,
     getline(infile, line);
 
     size_t pos = line.find(after_this);
-    if (pos != string::npos) return line.substr(pos + after_this.length());
+    if (pos != string::npos)
+    {
+        string return_string = line.substr(pos + after_this.length());
+        return_string = return_string.substr(0, return_string.length() - 1);
+        return return_string;
+    }
     else
     {
         return "NOT_FOUND";
@@ -380,16 +383,14 @@ void TaskSolvingWindow::writeLogfile()
     if (logfile)
     {
         // search for the timestamp in the logfile:
-        string search_str = "timestamp:";
         string line;
         size_t pos;
         string timestamp_candidate;
         bool timestamp_found = false;
         while (logfile.good())
         {
-            getline(logfile, line);
-            pos = line.find(search_str);
-            if (pos != string::npos) timestamp_candidate = line.substr(pos + search_str.length());
+            // checking whether there is already a log with this timestamp:
+            timestamp_candidate = getTextAfter(logfile, "timestamp:");
             if (timestamp_candidate == timestamp)
             {
                 timestamp_found = true;

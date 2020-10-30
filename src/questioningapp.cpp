@@ -193,7 +193,7 @@ string QuestioningApp::getResultFileName(string question_file_name)
 
 string QuestioningApp::getTimestamp(string filename)
 {
-    ifstream infile(filename);
+    ifstream infile(filename, ios_base::binary);
     streampos oldpos;
     string error_msg = "";
     // reading the timestamp:

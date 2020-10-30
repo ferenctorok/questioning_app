@@ -209,7 +209,7 @@ void NewQuestionsWindow::save_question()
 string NewQuestionsWindow::read_from_textedit(QTextEdit *textEdit)
 {
     string str = textEdit->toPlainText().toStdString();
-    replace(str.begin(), str.end(), '\n', ' ');
+    replace(str.begin(), str.end(), '\r', ' ');
     return str;
 }
 
