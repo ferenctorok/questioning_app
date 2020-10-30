@@ -4,7 +4,7 @@
 
 vector<Result *>* QuestioningApp::readResults(string filename)
 {
-    ifstream infile(filename);
+    ifstream infile(filename, ios_base::binary);
     if (infile.is_open())
     {
         string error_msg = "";
@@ -20,6 +20,8 @@ vector<Result *>* QuestioningApp::readResults(string filename)
         vector<string> answer_options_vect;
         vector<string> given_answers;
         vector<Result *> *results = new vector<Result *>;
+
+        string whitespaces =  " \t\f\v\n\r";
 
         // reading in the questions:
         while (infile.good()) {
@@ -86,7 +88,7 @@ vector<Result *>* QuestioningApp::readResults(string filename)
             getline(infile, question_num);
             oldpos = infile.tellg();
 
-            while (question_num.find_first_not_of(" ") == string::npos && infile.good())
+            while (question_num.find_first_not_of(whitespaces) == string::npos && infile.good())
             {
                 getline(infile, question_num);
             }

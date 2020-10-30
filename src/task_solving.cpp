@@ -376,7 +376,7 @@ string TaskSolvingWindow::getTextAfter(ifstream &infile,
 
 void TaskSolvingWindow::writeLogfile()
 {
-    ifstream logfile(LOG_FILE);
+    ifstream logfile(LOG_FILE, ios_base::binary);
     if (logfile)
     {
         // search for the timestamp in the logfile:
@@ -444,8 +444,9 @@ void TaskSolvingWindow::writeLogfile()
             ofstream logoutfile(LOG_FILE, ios_base::app);
             logoutfile << "timestamp:" << timestamp << endl;
             logoutfile << "question_num:" << question_counter - 1 << endl;
+            if (question_counter >= questions->size()) question_counter = questions->size() - 1;
             logoutfile << "num_used_trials:" << questions->at(question_counter - 1)->getUsedTrials() << endl;
-            logoutfile << "given_answers:\n";
+            logoutfile << "given_answers:" << endl;
             logoutfile << givenAnswersToSring();
             logoutfile << endl;
         }
