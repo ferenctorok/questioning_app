@@ -26,8 +26,10 @@ ResultsWindow::ResultsWindow(vector<Result *> *results,
     QWidget(parent)
 {
     this->results = results;
-
     detail_window = nullptr;
+
+    // setting icon:
+    setWindowIcon(QIcon(":/img/question_mark.ico"));
 
     // setting up the widget (window)
     setAttribute(Qt::WA_DeleteOnClose);

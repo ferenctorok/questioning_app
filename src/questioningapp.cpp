@@ -12,6 +12,10 @@ QuestioningApp::QuestioningApp(QWidget *parent)
 {
     this->resize(800, 600);
     this->setWindowTitle("Kérdező app");
+
+    // setting icon:
+    setWindowIcon(QIcon(":/img/question_mark.ico"));
+
     // central widget
     centralwidget = set_centralwidget(this, "centralwidget");
 
@@ -29,7 +33,7 @@ QuestioningApp::QuestioningApp(QWidget *parent)
 
     // start button
     buttonStart = set_QPushButton(300, 100, centralwidget, "buttonStart", "Kezdés",
-                                  "Kérdések kezdése", mainlayout);
+                                  "Feladatsor megoldás", mainlayout);
     connect(buttonStart, SIGNAL(clicked()), this, SLOT(button_start_clicked()));
 
     // new questions button
@@ -48,7 +52,7 @@ void QuestioningApp::button_new_questions_clicked()
 {
     // file to save into:
     QString fileName = QFileDialog::getSaveFileName(this,
-        QString("Kérdéssor Mentése"), QDir::homePath(), "Question files (*.q)");
+        QString("Kérdéssor mentése ide"), QDir::homePath(), "Question files (*.q)");
 
     if (!fileName.isEmpty())
     {
@@ -69,9 +73,9 @@ void QuestioningApp::button_new_questions_clicked()
 void QuestioningApp::button_start_clicked()
 {
     // question file to open:
-    QString fileName = QFileDialog::getOpenFileName(this, "Kérdéssor választása",
+    QString fileName = QFileDialog::getOpenFileName(this, "Válassz feladatsort!",
                                                     QDir::homePath(),
-                                                    "Question files (*.q)");
+                                                    "feladatsor (*.q)");
     if (!fileName.isEmpty())
     {
         // converting into utf8 string
@@ -92,9 +96,9 @@ void QuestioningApp::button_start_clicked()
 void QuestioningApp::button_results_clicked()
 {
     // result file to open:
-    QString fileName = QFileDialog::getOpenFileName(this, "Eredményfájl kiválasztása",
+    QString fileName = QFileDialog::getOpenFileName(this, "Válassz eredmény fájlt!",
                                                     QDir::homePath(),
-                                                    "Result files (*.res)");
+                                                    "eredmény file (*.res)");
     if (!fileName.isEmpty())
     {
         // converting into utf8 string

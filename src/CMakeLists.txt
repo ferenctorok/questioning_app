@@ -51,11 +51,13 @@ target_link_libraries(results_window PRIVATE
 
 # main executable
 add_executable(questioning_app
+    WIN32
     main.cpp
     questioningapp.cpp
     questioningapp_open_task.cpp
     questioningapp_open_results.cpp
     ${HEADERS_DIR}/questioningapp.h
+    resources.qrc
 )
 target_include_directories(questioning_app PUBLIC ${HEADERS_DIR})
 target_link_libraries(questioning_app PRIVATE

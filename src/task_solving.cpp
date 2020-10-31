@@ -14,6 +14,9 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
     this->outfileName = outfileName;
     this->timestamp = timestamp;
 
+    // setting icon:
+    setWindowIcon(QIcon(":/img/question_mark.ico"));
+
     // checking logfile: check if the question file has already been opened,
     // and if yes, starting from where it was left last time.
     checkLogfile();
