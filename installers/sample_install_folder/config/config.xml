@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>QuestioningApp Installer</Name>
+    <Version>1.0.2</Version>
+    <Title>QuestioningApp</Title>
+    <Publisher>Ferenc Török</Publisher>
+    <!-- Directory name is used in component.xml -->
+    <!--StartMenuDir>QuestioningApp</StartMenuDir -->
+    <TargetDir>@ApplicationsDir@/QuestioningApp</TargetDir>
+</Installer>
