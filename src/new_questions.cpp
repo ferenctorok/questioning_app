@@ -9,7 +9,7 @@ NewQuestionsWindow::NewQuestionsWindow(string filename,
         QWidget(parent)
 {
     // setting icon:
-    setWindowIcon(QIcon(":/img/question_mark.ico"));
+    setWindowIcon(QIcon(":/question_mark.ico"));
 
     // setting up output file
     this->filename = filename;

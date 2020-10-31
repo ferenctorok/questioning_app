@@ -14,7 +14,7 @@ QuestioningApp::QuestioningApp(QWidget *parent)
     this->setWindowTitle("Kérdező app");
 
     // setting icon:
-    setWindowIcon(QIcon(":/img/question_mark.ico"));
+    setWindowIcon(QIcon(":/question_mark.ico"));
 
     // central widget
     centralwidget = set_centralwidget(this, "centralwidget");

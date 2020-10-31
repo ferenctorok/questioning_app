@@ -57,7 +57,7 @@ add_executable(questioning_app
     questioningapp_open_task.cpp
     questioningapp_open_results.cpp
     ${HEADERS_DIR}/questioningapp.h
-    resources.qrc
+    ${CMAKE_IMG_RESOURCES}
 )
 target_include_directories(questioning_app PUBLIC ${HEADERS_DIR})
 target_link_libraries(questioning_app PRIVATE

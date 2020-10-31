@@ -29,7 +29,7 @@ ResultsWindow::ResultsWindow(vector<Result *> *results,
     detail_window = nullptr;
 
     // setting icon:
-    setWindowIcon(QIcon(":/img/question_mark.ico"));
+    setWindowIcon(QIcon(":/question_mark.ico"));
 
     // setting up the widget (window)
     setAttribute(Qt::WA_DeleteOnClose);
