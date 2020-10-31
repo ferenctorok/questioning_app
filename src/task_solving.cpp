@@ -252,7 +252,7 @@ void TaskSolvingWindow::refreshInfoLabel(Question *question)
 void TaskSolvingWindow::writeResultToFile(Question *question,
                                  bool isCorrect)
 {
-    // opening file for appenging:
+    // opening file for appending:
     ofstream outfile;
     outfile.open(outfileName, ios_base::app);
 
@@ -407,7 +407,9 @@ void TaskSolvingWindow::writeLogfile()
 
                 // adding the new data to the string.
                 copy_string += "question_num:" + to_string(question_counter - 1) + "\n";
-                if (question_counter >= questions->size()) question_counter = questions->size() - 1;
+                // this is needed because question_counter is also increased one last time after the last question.
+                // if this modification would not be here, it would cause out of range errors for the vectors:
+                if (question_counter > questions->size()) question_counter = questions->size();
                 copy_string += "num_used_trials:" + to_string(questions->at(question_counter - 1)->getUsedTrials()) + "\n";
                 copy_string += "given_answers:\n";
                 copy_string += givenAnswersToSring();
@@ -448,7 +450,9 @@ void TaskSolvingWindow::writeLogfile()
             ofstream logoutfile(LOG_FILE, ios_base::app);
             logoutfile << "timestamp:" << timestamp << endl;
             logoutfile << "question_num:" << question_counter - 1 << endl;
-            if (question_counter >= questions->size()) question_counter = questions->size() - 1;
+            // this is needed because question_counter is also increased one last time after the last question.
+            // if this modification would not be here, it would cause out of range errors for the vectors:
+            if (question_counter > questions->size()) question_counter = questions->size();
             logoutfile << "num_used_trials:" << questions->at(question_counter - 1)->getUsedTrials() << endl;
             logoutfile << "given_answers:" << endl;
             logoutfile << givenAnswersToSring();
