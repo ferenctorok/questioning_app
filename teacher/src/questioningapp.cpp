@@ -11,7 +11,7 @@ QuestioningApp::QuestioningApp(QWidget *parent)
     : QMainWindow(parent)
 {
     this->resize(800, 600);
-    this->setWindowTitle("Kérdező app");
+    this->setWindowTitle("Kérdező app - Tanár verzió");
 
     // setting icon:
     setWindowIcon(QIcon(":/question_mark.ico"));
@@ -82,10 +82,11 @@ void QuestioningApp::button_start_clicked()
         string utf8String = fileName.toLocal8Bit().constData();
         // reading in the questions from the file.
         vector<Question *> *questions = readQuestions(utf8String);
+        // only left here, because then it complains if the timestamp is incorrect.
         string timestamp = getTimestamp(utf8String);
         // file to save into:
         string result_file_name = getResultFileName(utf8String);
-        task_solving_window = new TaskSolvingWindow(questions, result_file_name, timestamp);
+        task_solving_window = new TaskSolvingWindow(questions);
         connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
         hide();
         task_solving_window->show();

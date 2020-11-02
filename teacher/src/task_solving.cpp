@@ -2,14 +2,10 @@
 
 
 TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
-                                     string outfileName,
-                                     string timestamp,
                                      QWidget *parent):
     QWidget(parent)
 {
     this->questions = questions;
-    this->outfileName = outfileName;
-    this->timestamp = timestamp;
 
     question_counter = 0;
     current_question_type = "";
@@ -67,7 +63,6 @@ void TaskSolvingWindow::closeEvent(QCloseEvent *event)
 void TaskSolvingWindow::next_question_button_clicked()
 {
     Question *question = questions->at(question_counter - 1);
-    question->useTrial();
 
     // logging the given answer for later writing it into the outfile.
     if (question->getType() == "text") given_text_answers.push_back(readTextAnswer());
@@ -76,8 +71,6 @@ void TaskSolvingWindow::next_question_button_clicked()
     // check the question and go on if its correct or if we are out of trials.
     if (isCorrectAnswer())
     {
-        // dialog window and results writing;
-        writeResultToFile(question, true);
         correctAnswerDialog();
 
         // emptying the vectors of given answers:
@@ -218,60 +211,9 @@ void TaskSolvingWindow::refreshInfoLabel(Question *question)
     string info_string = "Kérdés ";
     info_string += to_string(question->getQuestionNum() + 1) + "/";
     info_string += to_string(questions->size());
-    info_string += "\nHátralévő próbálkozások száma: ";
+    info_string += "\nPróbálkozások száma: ";
     info_string += to_string(question->getRemainingTrials());
     InfoLabel->setText(QString::fromStdString(info_string));
-}
-
-
-void TaskSolvingWindow::writeResultToFile(Question *question,
-                                 bool isCorrect)
-{
-    // opening file for appending:
-    ofstream outfile;
-    outfile.open(outfileName, ios_base::app);
-
-    // header:
-    outfile << "QUESTION" << question_counter << "/" << questions->size() << endl;
-    // correctness:
-    outfile << "correct:" << isCorrect << endl;
-    // trials and used trials
-    outfile << "trials:" << question->getUsedTrials();
-    outfile << "/" << question->getNumOfTrials() << endl;
-    // type:
-    outfile << "type:" << question->getType() << endl;
-    // question:
-    outfile << "question:" << question->getQuestion() << endl;
-
-    if (question->getType() == "text")
-    {
-        // real answer:
-        outfile << "real_answer:" << question->getTextAnswer() << endl;
-        // given answers:
-        outfile << "given_answers:" << endl;
-        for (auto &answer: given_text_answers) outfile << "*" << answer << endl;
-    }
-    else
-    {
-        // options:
-        outfile << "answer_options:" << endl;
-        for (auto &option: *question->getOptions()) outfile << "*" << option << endl;
-        // real answer:
-        outfile << "real_answer:";
-        for (auto &answer: question->getMultiAnswer()) outfile << answer << ",";
-        outfile << endl;
-        // given answers:
-        outfile << "given_answers:" << endl;
-        for (auto &answers_vect: given_multi_answers)
-        {
-            outfile << "*";
-            for (auto &answer: answers_vect) outfile << answer << ",";
-            outfile << endl;
-        }
-    }
-    outfile << endl;
-
-    outfile.close();
 }
 
 

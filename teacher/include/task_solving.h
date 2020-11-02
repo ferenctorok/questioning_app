@@ -28,8 +28,6 @@ class TaskSolvingWindow: public QWidget
 
 public:
     TaskSolvingWindow(vector<Question *> *questions,
-                      string outfileName,
-                      string timestamp,
                       QWidget *parent = nullptr);
     virtual ~TaskSolvingWindow();
 
@@ -40,8 +38,6 @@ public slots:
     void next_question_button_clicked();
 
 private:
-    string outfileName;
-    string timestamp;
     vector<Question *> *questions;
     int question_counter;
     string current_question_type;
