@@ -74,21 +74,13 @@ void TaskSolvingWindow::next_question_button_clicked()
     else given_multi_answers.push_back(readMultiAnswer());
 
     // check the question and go on if its correct or if we are out of trials.
-    if (isCorrectAnswer() || question->outOfTrials())
+    if (isCorrectAnswer())
     {
-        // dialog windows and log writing;
-        if (isCorrectAnswer())
-        {
-            writeResultToFile(question, true);
-            correctAnswerDialog();
-        }
-        else
-        {
-            writeResultToFile(question, false);
-            incorrectAnswerDialog();
-        }
+        // dialog window and results writing;
+        writeResultToFile(question, true);
+        correctAnswerDialog();
 
-        // emptying the logs:
+        // emptying the vectors of given answers:
         given_text_answers.clear();
         given_multi_answers.clear();
 
