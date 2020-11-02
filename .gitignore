@@ -1,0 +1,4 @@
+# root level gitignore
+
+# QTCreator build directories:
+build-*/
