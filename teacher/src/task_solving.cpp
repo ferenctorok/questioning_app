@@ -1,9 +1,6 @@
 #include <task_solving.h>
 
 
-const string LOG_FILE = ".logfile";
-
-
 TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
                                      string outfileName,
                                      string timestamp,
@@ -14,56 +11,43 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
     this->outfileName = outfileName;
     this->timestamp = timestamp;
 
+    question_counter = 0;
+    current_question_type = "";
+
     // setting icon:
     setWindowIcon(QIcon(":/question_mark.ico"));
 
-    // checking logfile: check if the question file has already been opened,
-    // and if yes, starting from where it was left last time.
-    checkLogfile();
+    // setting up the widget (window)
+    setAttribute(Qt::WA_DeleteOnClose);
+    resize(800, 600);
+    setObjectName("task_solving_window");
+    setWindowTitle("Feladatsor megoldása");
 
-    // if the file has been solved totally previously:
-    if (question_counter >= questions->size())
-    {
-        string message = "A feladatsort már egyszer megoldottad!";
-        QMessageBox::information(this, "A feladatsor már kész!", QString::fromStdString(message));
-        rewrite_logfile = false;
-        close();
-    }
-    else
-    {
-        rewrite_logfile = true;
-        // setting up the widget (window)
-        setAttribute(Qt::WA_DeleteOnClose);
-        resize(800, 600);
-        setObjectName("task_solving_window");
-        setWindowTitle("Feladatsor megoldása");
+    // main layout
+    mainlayout = set_QVBoxLayout(this, "mainlayout");
 
-        // main layout
-        mainlayout = set_QVBoxLayout(this, "mainlayout");
+    // info label:
+    InfoLabel = set_QLabel(750, this, "", "info_label", mainlayout);
+    InfoLabel->setMaximumHeight(100);
 
-        // info label:
-        InfoLabel = set_QLabel(750, this, "", "info_label", mainlayout);
-        InfoLabel->setMaximumHeight(100);
+    // textedit for questions:
+    QuestionLabel = set_QLabel(750, this, "", "question_label", mainlayout);
 
-        // textedit for questions:
-        QuestionLabel = set_QLabel(750, this, "", "question_label", mainlayout);
+    // textedit for answers:
+    AnswerTextEdit = set_QTextEdit(this, "answer_textedit",
+                                    "Írd ide a választ...", mainlayout);
 
-        // textedit for answers:
-        AnswerTextEdit = set_QTextEdit(this, "answer_textedit",
-                                        "Írd ide a választ...", mainlayout);
+    // multiple choice radiobuttons with layout:
+    MultipleChoiceFrame = set_QFrame(this, "multiple_choice_frame", mainlayout);
+    MultipleChoiceLayout = set_QVBoxLayout(MultipleChoiceFrame, "multiple_choice_layout");
 
-        // multiple choice radiobuttons with layout:
-        MultipleChoiceFrame = set_QFrame(this, "multiple_choice_frame", mainlayout);
-        MultipleChoiceLayout = set_QVBoxLayout(MultipleChoiceFrame, "multiple_choice_layout");
+    NextQuestionButton = set_QPushButton(100, 40, this, "next_question_button",
+                                         "Következő", "Következő kérdés", mainlayout);
+    mainlayout->setAlignment(NextQuestionButton, Qt::AlignHCenter);
+    connect(NextQuestionButton, SIGNAL(clicked()), this, SLOT(next_question_button_clicked()));
 
-        NextQuestionButton = set_QPushButton(100, 40, this, "next_question_button",
-                                             "Következő", "Következő kérdés", mainlayout);
-        mainlayout->setAlignment(NextQuestionButton, Qt::AlignHCenter);
-        connect(NextQuestionButton, SIGNAL(clicked()), this, SLOT(next_question_button_clicked()));
-
-        // displaying the first question:
-        displayNextQuestion();
-    }
+    // displaying the first question:
+    displayNextQuestion();
 }
 
 
@@ -75,7 +59,6 @@ TaskSolvingWindow::~TaskSolvingWindow()
 
 void TaskSolvingWindow::closeEvent(QCloseEvent *event)
 {
-    if (rewrite_logfile) writeLogfile();
     emit IsClosed();
     QWidget::closeEvent(event);
 }
@@ -300,66 +283,6 @@ void TaskSolvingWindow::writeResultToFile(Question *question,
 }
 
 
-void TaskSolvingWindow::checkLogfile()
-{
-    question_counter = 0;
-
-    ifstream logfile(LOG_FILE, ios_base::binary);
-    if (!logfile)
-    {
-        ofstream new_logfile(LOG_FILE);
-        new_logfile.close();
-        logfile.open(LOG_FILE, ios_base::binary);
-    }
-
-    // search for the timestamp in the logfile:
-    string line;
-    size_t pos;
-    string timestamp_candidate;
-    while (logfile.good())
-    {
-        // searching for the timestamp:
-        timestamp_candidate = getTextAfter(logfile, "timestamp:");
-        if (timestamp_candidate == timestamp)
-        {
-            // setting the question number:
-            string question_num_str = getTextAfter(logfile, "question_num:");
-            if (question_num_str != "NOT_FOUND") question_counter = stoi(question_num_str);
-            else question_counter = 0;
-
-            // setting the used trials:
-            int used_trials = 0;
-            if (question_counter < questions->size())
-            {
-                string used_trials_string = getTextAfter(logfile, "num_used_trials:");
-                if (question_num_str != "NOT_FOUND") used_trials = stoi(used_trials_string);
-                for (int i = 0; i < used_trials; i++) questions->at(question_counter)->useTrial();
-            }
-
-            // setting the list of already given aswers:
-            if (getTextAfter(logfile, "given_answers:") != "NOT_FOUND"){
-                string given_answer_string;
-                // reading in the given answer as a string at first:
-                for (int i = 0; i < used_trials; i++){
-                    given_answer_string = getTextAfter(logfile, "*");
-                    // putting it in the vectors according to question type:
-                    if (given_answer_string != "NOT_FOUND"){
-                        if (questions->at(question_counter)->getType() == "text"){
-                            given_text_answers.push_back(given_answer_string);
-                        }
-                        else{
-                            given_multi_answers.push_back(get_multi_answers_from_string(given_answer_string));
-                        }
-                    }
-                }
-            }
-
-            break;
-        }
-    }
-}
-
-
 string TaskSolvingWindow::getTextAfter(ifstream &infile,
                                        string after_this)
 {
@@ -376,89 +299,6 @@ string TaskSolvingWindow::getTextAfter(ifstream &infile,
     else
     {
         return "NOT_FOUND";
-    }
-}
-
-
-void TaskSolvingWindow::writeLogfile()
-{
-    ifstream logfile(LOG_FILE, ios_base::binary);
-    if (logfile)
-    {
-        // search for the timestamp in the logfile:
-        string line;
-        size_t pos;
-        string timestamp_candidate;
-        bool timestamp_found = false;
-        while (logfile.good())
-        {
-            // checking whether there is already a log with this timestamp:
-            timestamp_candidate = getTextAfter(logfile, "timestamp:");
-            if (timestamp_candidate == timestamp)
-            {
-                timestamp_found = true;
-
-                // copying the parts until this point into a string.
-                streampos strpos = logfile.tellg();
-                string copy_string;
-                copy_string.resize(strpos);
-                ifstream readfile(LOG_FILE);
-                readfile.read(&copy_string[0], strpos);
-
-                // adding the new data to the string.
-                copy_string += "question_num:" + to_string(question_counter - 1) + "\n";
-                // this is needed because question_counter is also increased one last time after the last question.
-                // if this modification would not be here, it would cause out of range errors for the vectors:
-                if (question_counter > questions->size()) question_counter = questions->size();
-                copy_string += "num_used_trials:" + to_string(questions->at(question_counter - 1)->getUsedTrials()) + "\n";
-                copy_string += "given_answers:\n";
-                copy_string += givenAnswersToSring();
-                copy_string += "\n";
-
-                // skipping the old entries about this timestamp in the original file:
-                do {
-                    strpos = logfile.tellg();
-                    getline(logfile, line);
-                }
-                while ((line.find("timestamp:") == string::npos) && logfile.good());
-
-                // copying the rest of the file:
-                if (logfile.good()){
-                    // setting back the stream before "timestamp:" for further reading.
-                    logfile.seekg(strpos);
-                    while (logfile.good())
-                    {
-                        getline(logfile, line);
-                        copy_string += line + "\n";
-                    }
-                }
-                // deleting last new line from the end:
-                copy_string = copy_string.substr(0, copy_string.length() - 1);
-
-                // writing the new file:
-                logfile.close();
-                ofstream outfile(LOG_FILE);
-                outfile << copy_string;
-
-                break;
-            }
-        }
-
-        if (!timestamp_found)
-        {
-            logfile.close();
-            ofstream logoutfile(LOG_FILE, ios_base::app);
-            logoutfile << "timestamp:" << timestamp << endl;
-            logoutfile << "question_num:" << question_counter - 1 << endl;
-            // this is needed because question_counter is also increased one last time after the last question.
-            // if this modification would not be here, it would cause out of range errors for the vectors:
-            if (question_counter > questions->size()) question_counter = questions->size();
-            logoutfile << "num_used_trials:" << questions->at(question_counter - 1)->getUsedTrials() << endl;
-            logoutfile << "given_answers:" << endl;
-            logoutfile << givenAnswersToSring();
-            logoutfile << endl;
-        }
-
     }
 }
 

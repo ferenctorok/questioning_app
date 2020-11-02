@@ -50,7 +50,7 @@ target_link_libraries(results_window PRIVATE
 )
 
 # main executable
-add_executable(questioning_app
+add_executable(QATeacher
     WIN32
     main.cpp
     questioningapp.cpp
@@ -59,8 +59,8 @@ add_executable(questioning_app
     ${HEADERS_DIR}/questioningapp.h
     ${CMAKE_IMG_RESOURCES}
 )
-target_include_directories(questioning_app PUBLIC ${HEADERS_DIR})
-target_link_libraries(questioning_app PRIVATE
+target_include_directories(QATeacher PUBLIC ${HEADERS_DIR})
+target_link_libraries(QATeacher PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     new_questions
     task_solving

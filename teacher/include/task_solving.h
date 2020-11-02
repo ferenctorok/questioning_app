@@ -22,8 +22,6 @@
 using namespace std;
 
 
-extern const string LOG_FILE;
-
 class TaskSolvingWindow: public QWidget
 {
     Q_OBJECT
@@ -49,7 +47,6 @@ private:
     string current_question_type;
     vector<string> given_text_answers;
     vector<vector<int>> given_multi_answers;
-    bool rewrite_logfile;
 
     QVBoxLayout *mainlayout;
     QLabel *InfoLabel;
@@ -71,8 +68,6 @@ private:
     void refreshInfoLabel(Question *question);
     void writeResultToFile(Question *question,
                            bool isCorrect);
-    void checkLogfile();
-    void writeLogfile();
     string givenAnswersToSring();
     string getTextAfter(ifstream &infile,
                         string after_this);
