@@ -1,6 +1,6 @@
 #ifndef _resource_rc
 #define _resource_rc
 
-MAINICON ICON "question_mark_t.ico"
+MAINICON ICON "question_mark.ico"
 
 #endif
