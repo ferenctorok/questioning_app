@@ -83,11 +83,19 @@ void QuestioningApp::button_results_clicked()
         string utf8String = fileName.toLocal8Bit().constData();
         // reading in the results from the file:
         vector<Result *> *results = readResults(utf8String);
-        // creating and showing results window:
-        results_window = new ResultsWindow(results);
-        connect(results_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
-        hide();
-        results_window->show();
+        if (results->size() > 0)
+        {
+            // creating and showing results window:
+            results_window = new ResultsWindow(results);
+            connect(results_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
+            hide();
+            results_window->show();
+        }
+        else
+        {
+            string message = "A kiválasztott fájl nem tartalmaz eredményeket, vagy hibás.";
+            QMessageBox::critical(this, "Hiba!", QString::fromStdString(message));
+        }
     }
 }
 
