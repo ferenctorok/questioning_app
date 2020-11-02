@@ -35,7 +35,9 @@ signals:
     void IsClosed();
 
 public slots:
-    void next_question_button_clicked();
+    void correction_button_clicked();
+    void previous_button_clicked();
+    void next_button_clicked();
 
 private:
     vector<Question *> *questions;
@@ -51,10 +53,13 @@ private:
     QFrame *MultipleChoiceFrame;
     QVBoxLayout *MultipleChoiceLayout;
     QList<QCheckBox *> answerOptionList;
-    QPushButton *NextQuestionButton;
+    QHBoxLayout *ButtonLayout;
+    QPushButton *CorrectionButton;
+    QPushButton *PreviousButton;
+    QPushButton *NextButton;
 
     void closeEvent(QCloseEvent *event);
-    void displayNextQuestion();
+    void displayQuestion();
     void clearOptionList();
     bool isCorrectAnswer();
     string readTextAnswer();

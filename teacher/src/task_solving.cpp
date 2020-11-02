@@ -37,13 +37,29 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
     MultipleChoiceFrame = set_QFrame(this, "multiple_choice_frame", mainlayout);
     MultipleChoiceLayout = set_QVBoxLayout(MultipleChoiceFrame, "multiple_choice_layout");
 
-    NextQuestionButton = set_QPushButton(100, 40, this, "next_question_button",
-                                         "Következő", "Következő kérdés", mainlayout);
-    mainlayout->setAlignment(NextQuestionButton, Qt::AlignHCenter);
-    connect(NextQuestionButton, SIGNAL(clicked()), this, SLOT(next_question_button_clicked()));
+    // Layout of the buttons:
+    ButtonLayout = set_QHBoxLayout(nullptr, "button_layout");
+    mainlayout->addLayout(ButtonLayout);
+
+    // Button for displaying the previous question:
+    PreviousButton = set_QPushButton(100, 40, this, "previous_button",
+                                         "Előző", "Előző kérdés mutatása", ButtonLayout);
+    connect(PreviousButton, SIGNAL(clicked()), this, SLOT(previous_button_clicked()));
+    PreviousButton->setEnabled(false);
+
+    // Button for checking the correctness of the answers:
+    CorrectionButton = set_QPushButton(100, 40, this, "correction_button",
+                                         "Ellenőrzés", "Kérdés ellenőrzése", ButtonLayout);
+    connect(CorrectionButton, SIGNAL(clicked()), this, SLOT(correction_button_clicked()));
+
+    // Button for displaying the next question:
+    NextButton = set_QPushButton(100, 40, this, "next_button",
+                                         "Következő", "Következő kérdés mutatása", ButtonLayout);
+    connect(NextButton, SIGNAL(clicked()), this, SLOT(next_button_clicked()));
+    if (questions->size() <= 1) NextButton->setEnabled(false);
 
     // displaying the first question:
-    displayNextQuestion();
+    displayQuestion();
 }
 
 
@@ -60,48 +76,32 @@ void TaskSolvingWindow::closeEvent(QCloseEvent *event)
 }
 
 
-void TaskSolvingWindow::next_question_button_clicked()
+void TaskSolvingWindow::previous_button_clicked()
 {
-    Question *question = questions->at(question_counter - 1);
-
-    // logging the given answer for later writing it into the outfile.
-    if (question->getType() == "text") given_text_answers.push_back(readTextAnswer());
-    else given_multi_answers.push_back(readMultiAnswer());
-
-    // check the question and go on if its correct or if we are out of trials.
-    if (isCorrectAnswer())
-    {
-        correctAnswerDialog();
-
-        // emptying the vectors of given answers:
-        given_text_answers.clear();
-        given_multi_answers.clear();
-
-        // displaying next question:
-        if (question_counter <= questions->size() - 1)
-        {
-            displayNextQuestion();
-            if (question_counter == questions->size())
-            {
-                NextQuestionButton->setText("Befejezés");
-                NextQuestionButton->setToolTip("Kérdéssor Befejezése");
-            }
-        }
-        else
-        {
-            question_counter ++;
-            close();
-        }
-    }
-    else
-    {
-        incorrectAnswerDialog();
-        refreshInfoLabel(question);
-    }
+    NextButton->setEnabled(true);
+    if (question_counter - 1 >= 0) question_counter--;
+    displayQuestion();
+    if (question_counter <= 0) PreviousButton->setEnabled(false);
 }
 
 
-void TaskSolvingWindow::displayNextQuestion()
+void TaskSolvingWindow::next_button_clicked()
+{
+    PreviousButton->setEnabled(true);
+    if (question_counter + 1 < questions->size()) question_counter++;
+    displayQuestion();
+    if (question_counter >= (questions->size() - 1)) NextButton->setEnabled(false);
+}
+
+
+void TaskSolvingWindow::correction_button_clicked()
+{
+    if (isCorrectAnswer()) correctAnswerDialog();
+    else incorrectAnswerDialog();
+}
+
+
+void TaskSolvingWindow::displayQuestion()
 {
     Question *question = questions->at(question_counter);
     current_question_type = question->getType();
@@ -130,8 +130,6 @@ void TaskSolvingWindow::displayNextQuestion()
             MultipleChoiceLayout->addWidget(answerOptionList.last());
         }
     }
-
-    question_counter++;
 }
 
 
@@ -151,12 +149,12 @@ bool TaskSolvingWindow::isCorrectAnswer()
     if (current_question_type == "text")
     {
         string answer = readTextAnswer();
-        return questions->at(question_counter - 1)->isCorrectAnswer(answer);
+        return questions->at(question_counter)->isCorrectAnswer(answer);
     }
     else
     {
         vector<int> answer = readMultiAnswer();
-        return questions->at(question_counter - 1)->isCorrectAnswer(answer);
+        return questions->at(question_counter)->isCorrectAnswer(answer);
     }
 }
 
