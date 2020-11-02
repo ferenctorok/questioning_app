@@ -84,12 +84,18 @@ void QuestioningApp::button_start_clicked()
         vector<Question *> *questions = readQuestions(utf8String);
         // only left here, because then it complains if the timestamp is incorrect.
         string timestamp = getTimestamp(utf8String);
-        // file to save into:
-        string result_file_name = getResultFileName(utf8String);
-        task_solving_window = new TaskSolvingWindow(questions);
-        connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
-        hide();
-        task_solving_window->show();
+        if (questions->size() > 0)
+        {
+            task_solving_window = new TaskSolvingWindow(questions);
+            connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
+            hide();
+            task_solving_window->show();
+        }
+        else
+        {
+            string message = "A kiválasztott fájl nem tartalmaz kérdéseket, vagy hibás.";
+            QMessageBox::critical(this, "Hiba!", QString::fromStdString(message));
+        }
     }
 }
 
