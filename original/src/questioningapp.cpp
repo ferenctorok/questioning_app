@@ -12,6 +12,7 @@ QuestioningApp::QuestioningApp(QWidget *parent)
 {
     this->resize(800, 600);
     this->setWindowTitle("Kérdező app");
+    this->setFont(QFont("Times", 14));
 
     // setting icon:
     setWindowIcon(QIcon(":/question_mark.ico"));
