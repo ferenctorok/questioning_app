@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include <new_questions.h>
 #include <utils.h>
 
@@ -222,14 +220,14 @@ void NewQuestionsWindow::save_question()
 }
 
 
-void NewQuestionsWindow::write_section(ofstream &outfile,
+/*void NewQuestionsWindow::write_section(ofstream &outfile,
                                        string header,
                                        string content)
 {
     outfile << "<" << header << ">" << endl;
     outfile << content << endl;
     outfile << "</" << header << ">" << endl;
-}
+}*/
 
 
 string NewQuestionsWindow::read_from_textedit(QTextEdit *textEdit)

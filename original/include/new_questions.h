@@ -19,6 +19,7 @@
 #include <QDir>
 
 #include <answer_option.h>
+#include <utils.h>
 
 using namespace std;
 
@@ -67,9 +68,6 @@ private:
 
     void closeEvent(QCloseEvent *event);
     void save_question();
-    void write_section(ofstream &outfile,
-                       string header,
-                       string content);
     string read_from_textedit(QTextEdit *textEdit);
     string getTimestamp();
 };

@@ -16,6 +16,10 @@
 #include <QFrame>
 
 #include <answer_option.h>
+#include <fstream>
+#include <iostream>
+
+using namespace std;
 
 
 QWidget* set_centralwidget(QMainWindow *parent = nullptr,
@@ -103,5 +107,15 @@ void add_OptionList_to_layout(const QList<AnswerOption *> &list,
 
 vector<int> get_multi_answers_from_string(string str);
 
+void write_section(ofstream &outfile,
+                   string header,
+                   string content);
+
+vector<string> get_options(string options_string);
+
+string read_section(ifstream &infile,
+                    streampos &oldpos,
+                    const string header,
+                    string &error_msg);
 
 #endif

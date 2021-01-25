@@ -14,6 +14,7 @@
 #include <new_questions.h>
 #include <task_solving.h>
 #include <results.h>
+#include <utils.h>
 
 
 class QuestioningApp : public QMainWindow
@@ -49,11 +50,6 @@ protected:
                           streampos &oldpos,
                           string &error_msg,
                           const string after_this = "");
-    string read_section(ifstream &infile,
-                        streampos &oldpos,
-                        const string header,
-                        string &error_msg);
-    vector<string> get_options(string options_string);
     vector<string> read_string_list(ifstream &infile,
                                     streampos &oldpos,
                                     string &error_msg);
