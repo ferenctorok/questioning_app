@@ -6,6 +6,7 @@ set(HEADERS_DIR ${CMAKE_SOURCE_DIR}/include)
 # ui_utils library
 add_library(utils STATIC
     utils.cpp
+    read_write_utils.cpp
     ${HEADERS_DIR}/utils.h
     answer_option.cpp
     ${HEADERS_DIR}/answer_option.h

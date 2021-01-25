@@ -1,5 +1,8 @@
 #ifndef UI_UTILS_H
 #define UI_UTILS_H
+#include <iostream>
+#include <fstream>
+
 #include <QMainWindow>
 #include <QString>
 #include <QWidget>
@@ -102,6 +105,17 @@ void add_OptionList_to_layout(const QList<AnswerOption *> &list,
                          QLayout *layout);
 
 vector<int> get_multi_answers_from_string(string str);
+
+void write_section(ofstream &outfile,
+                   string header,
+                   string content);
+
+vector<string> vectorize_string(string options_string);
+
+string read_section(ifstream &infile,
+                    streampos &oldpos,
+                    const string header,
+                    string &error_msg);
 
 
 #endif

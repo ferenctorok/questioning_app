@@ -17,7 +17,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
         string question_string;
         string answer_string;
         string head_answer_option_string;
-        string answer_option_string;
+        string answer_options_string;
         vector<string> answer_options_vect;
         vector<int> multi_answers_vect;
         vector<Question *> *questions_vect = new vector<Question *>;
@@ -43,12 +43,12 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             if (question_num_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
             // reading the number of trials:
-            num_of_trials_string = get_text_after(infile, oldpos, error_msg, "trials:");
+            num_of_trials_string = read_section(infile, oldpos, "trials", error_msg);
             if (num_of_trials_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
             num_of_trials = stoi(num_of_trials_string);
 
             // reading the type of the question:
-            type_string = get_text_after(infile, oldpos, error_msg, "type:");
+            type_string = read_section(infile, oldpos, "type", error_msg);
             if (type_string != "text" && type_string != "multi")
             {
                 error_msg = "type must be either \"text\" or \"multi\"\n";
@@ -57,13 +57,13 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             }
 
             // reading the question:
-            question_string = get_text_after(infile, oldpos, error_msg, "question:");
+            question_string = read_section(infile, oldpos, "question", error_msg);
             if (question_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
             if (type_string == "text")
             {
                 // reading the answer:
-                answer_string = get_text_after(infile, oldpos, error_msg, "answer:");
+                answer_string = read_section(infile, oldpos, "answer", error_msg);
                 if (answer_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
                 // adding the new question to the vector:
@@ -72,16 +72,15 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             }
             else
             {
-                // check whether there is the header answer_options:
-                head_answer_option_string = get_text_after(infile, oldpos, error_msg, "answer_options:");
-                if (head_answer_option_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
+                answer_options_string = read_section(infile, oldpos, "answer_options", error_msg);
+                if (answer_options_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
                 // reading in the answer options:
-                answer_options_vect = read_string_list(infile, oldpos, error_msg);
-                if (answer_options_vect.empty()) return file_corrupted<Question>(error_msg);
+                answer_options_vect = vectorize_string(answer_options_string);
+                if (answer_options_vect.empty()) return file_corrupted<Question>("Error reading the answer options.");
 
                 // reading the answers:
-                answer_string = get_text_after(infile, oldpos, error_msg, "answers:");
+                answer_string = read_section(infile, oldpos, "answers", error_msg);
                 if (answer_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
                 multi_answers_vect = get_multi_answers_from_string(answer_string);
 

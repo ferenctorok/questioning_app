@@ -259,46 +259,56 @@ void TaskSolvingWindow::writeResultToFile(Question *question,
     // header:
     outfile << "QUESTION" << question_counter << "/" << questions->size() << endl;
     // correctness:
-    outfile << "correct:" << isCorrect << endl;
+    write_section(outfile, "correct", to_string(isCorrect));
+
     // trials and used trials
-    outfile << "trials:" << question->getUsedTrials();
-    outfile << "/" << question->getNumOfTrials() << endl;
+    string trials_str = to_string(question->getUsedTrials());
+    trials_str += ("/" + to_string(question->getNumOfTrials()));
+    write_section(outfile, "trials", trials_str);
+
     // type:
-    outfile << "type:" << question->getType() << endl;
+    write_section(outfile, "type", question->getType());
+
     // question:
-    outfile << "question:" << question->getQuestion() << endl;
+    write_section(outfile, "question", question->getQuestion());
 
     if (question->getType() == "text")
     {
         // real answer:
-        outfile << "real_answer:" << question->getTextAnswer() << endl;
+        write_section(outfile, "real_answer", question->getTextAnswer());
+
         // given answers:
-        outfile << "given_answers:" << endl;
+        outfile << "<given_answers>" << endl;
         for (auto &answer: given_text_answers) outfile << "*" << answer << endl;
+        outfile << "</given_answers>" << endl;
     }
     else
     {
         // options:
-        outfile << "answer_options:" << endl;
+        outfile << "<answer_options>" << endl;
         for (auto &option: *question->getOptions()) outfile << "*" << option << endl;
+        outfile << "</answer_options>" << endl;
+
         // real answer:
-        outfile << "real_answer:";
-        for (auto &answer: question->getMultiAnswer()) outfile << answer << ",";
-        outfile << endl;
+        string real_answer_str = "";
+        for (auto &answer: question->getMultiAnswer())
+            real_answer_str += (to_string(answer) + ",");
+        write_section(outfile, "real_answer", real_answer_str);
+
         // given answers:
-        outfile << "given_answers:" << endl;
+        outfile << "<given_answers>" << endl;
         for (auto &answers_vect: given_multi_answers)
         {
             outfile << "*";
             for (auto &answer: answers_vect) outfile << answer << ",";
             outfile << endl;
         }
+        outfile << "</given_answers>" << endl;
     }
     outfile << endl;
 
     outfile.close();
 }
-
 
 void TaskSolvingWindow::checkLogfile()
 {
