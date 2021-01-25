@@ -77,8 +77,8 @@ vector<string> get_options(string options_string)
         pos = options_string.find("*");
         if (pos != string::npos)
         {
-            // in this case pos - 1, since the /r also has to be deleted.
-            options.push_back(options_string.substr(0, pos - 1));
+            // in this case pos - 1, since the /r and /n also has to be deleted.
+            options.push_back(options_string.substr(0, pos - 2));
             options_string = options_string.substr(pos);
         }
         else
