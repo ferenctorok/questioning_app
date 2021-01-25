@@ -111,7 +111,7 @@ void write_section(ofstream &outfile,
                    string header,
                    string content);
 
-vector<string> get_options(string options_string);
+vector<string> vectorize_string(string options_string);
 
 string read_section(ifstream &infile,
                     streampos &oldpos,

@@ -220,16 +220,6 @@ void NewQuestionsWindow::save_question()
 }
 
 
-/*void NewQuestionsWindow::write_section(ofstream &outfile,
-                                       string header,
-                                       string content)
-{
-    outfile << "<" << header << ">" << endl;
-    outfile << content << endl;
-    outfile << "</" << header << ">" << endl;
-}*/
-
-
 string NewQuestionsWindow::read_from_textedit(QTextEdit *textEdit)
 {
     string str = textEdit->toPlainText().toStdString();

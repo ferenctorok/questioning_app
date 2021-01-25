@@ -61,7 +61,7 @@ string read_section(ifstream &infile,
 }
 
 
-vector<string> get_options(string options_string)
+vector<string> vectorize_string(string options_string)
 {
     vector<string> options;
     size_t pos;

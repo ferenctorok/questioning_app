@@ -77,7 +77,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
                 if (answer_options_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
                 // reading in the answer options:
-                answer_options_vect = get_options(answer_options_string);
+                answer_options_vect = vectorize_string(answer_options_string);
                 if (answer_options_vect.empty()) return file_corrupted<Question>("Error reading the answer options.");
 
                 // reading the answers:
