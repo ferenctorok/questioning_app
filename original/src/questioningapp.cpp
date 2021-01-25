@@ -199,6 +199,7 @@ string QuestioningApp::read_section(ifstream &infile,
     }
 
     size_t pos = line.find("<" + header + ">");
+    size_t pos_q;
     if (pos != string::npos)
     {
         string return_string = "";
@@ -206,16 +207,20 @@ string QuestioningApp::read_section(ifstream &infile,
         {
             getline(infile, line);
             pos = line.find("</" + header + ">");
-            if (pos == string::npos) return_string += (line + "\n");
-            else
+            pos_q = line.find("QUESTION");
+            if (pos_q == string::npos)
             {
-                // 2 has to be devided, because there is already \r at the end of the lines
-                // and we add an extra \n to it.
-                return return_string.substr(0, return_string.length() - 2);
+                if (pos == string::npos) return_string += (line + "\n");
+                else
+                {
+                    // 2 has to be devided, because there is already \r at the end of the lines
+                    // and we add an extra \n to it.
+                    return return_string.substr(0, return_string.length() - 2);
+                }
             }
+            else break;
         }
-        error_msg = "expected header: </" + header + ">\n";
-        error_msg += "received line: \" " + line + " \"";
+        error_msg = "Reached end of QUESTION \n without finding </" + header + ">";
     }
     else
     {
