@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <questioningapp.h>
+#include <QStyle>
 
 
 int main(int argc, char *argv[])

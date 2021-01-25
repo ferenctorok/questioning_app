@@ -67,6 +67,9 @@ private:
 
     void closeEvent(QCloseEvent *event);
     void save_question();
+    void write_section(ofstream &outfile,
+                       string header,
+                       string content);
     string read_from_textedit(QTextEdit *textEdit);
     string getTimestamp();
 };
