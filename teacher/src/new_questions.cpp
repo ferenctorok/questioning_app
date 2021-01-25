@@ -172,23 +172,33 @@ void NewQuestionsWindow::save_question()
         if (outfile.is_open())
         {
             outfile << "QUESTION" << endl;
-            outfile << "trials:" << numberOfTrialsSpinBox->value() << endl;
-            outfile << "type:";
-            if (textAnswerRB->isChecked()) outfile << "text" << endl;
-            else outfile << "multi" << endl;
-            outfile << "question:";
-            outfile << read_from_textedit(QuestionTextEdit) << endl;
 
+            // num of trials:
+            write_section(outfile, "trials",
+                          to_string(numberOfTrialsSpinBox->value()));
+
+            // type of question:
+            if (textAnswerRB->isChecked())
+                write_section(outfile, "type", "text");
+            else
+                write_section(outfile, "type", "multi");
+
+            // question text:
+            write_section(outfile, "question",
+                          read_from_textedit(QuestionTextEdit));
+
+            // answer:
             if (textAnswerRB->isChecked())
             {
-                outfile << "answer:";
-                outfile << read_from_textedit(AnswerTextEdit) << endl;
+                write_section(outfile, "answer",
+                              read_from_textedit(AnswerTextEdit));
             }
             else
             {
+                // answer options
                 int i = 0;
                 vector<int> answers;
-                outfile << "answer_options:" << endl;
+                outfile << "<answer_options>" << endl;
                 for (auto &option: answerOptionList)
                 {
                     if (option->get_text() != "")
@@ -198,9 +208,12 @@ void NewQuestionsWindow::save_question()
                         i++;
                     }
                 }
-                outfile << "answers:";
-                for (auto &answer: answers) outfile << to_string(answer) << ",";
-                outfile << endl;
+                outfile << "</answer_options>" << endl;
+
+                // correct answers
+                string answers_string = "";
+                for (auto &answer: answers) answers_string += (to_string(answer) + ",");
+                write_section(outfile, "answers", answers_string);
             }
             outfile << endl;
             outfile.close();

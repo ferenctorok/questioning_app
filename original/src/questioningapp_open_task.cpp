@@ -1,5 +1,4 @@
 #include <questioningapp.h>
-#include <new_questions.h>
 
 
 vector<Question *>* QuestioningApp::readQuestions(string filename)

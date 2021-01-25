@@ -17,7 +17,9 @@ vector<Result *>* QuestioningApp::readResults(string filename)
         string num_of_trials;
         string question;
         string real_answer;
+        string answer_options_string;
         vector<string> answer_options_vect;
+        string given_answers_string;
         vector<string> given_answers;
         vector<Result *> *results = new vector<Result *>;
 
@@ -35,16 +37,16 @@ vector<Result *>* QuestioningApp::readResults(string filename)
             if (question_num == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
             // reading whether the answer was correct or not:
-            correct_string = get_text_after(infile, oldpos, error_msg, "correct:");
+            correct_string = read_section(infile, oldpos, "correct", error_msg);
             if (correct_string == "NOT_FOUND") return file_corrupted<Result>(error_msg);
             correct = stoi(correct_string);
 
             // reading the number of trials:
-            num_of_trials = get_text_after(infile, oldpos, error_msg, "trials:");
+            num_of_trials = read_section(infile, oldpos, "trials", error_msg);
             if (num_of_trials == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
             // reading the type of the question:
-            type = get_text_after(infile, oldpos, error_msg, "type:");
+            type = read_section(infile, oldpos, "type", error_msg);
             if (type != "text" && type != "multi")
             {
                 error_msg = "type must be either \"text\" or \"multi\"\n";
@@ -53,30 +55,30 @@ vector<Result *>* QuestioningApp::readResults(string filename)
             }
 
             // reading the question:
-            question = get_text_after(infile, oldpos, error_msg, "question:");
+            question = read_section(infile, oldpos, "question", error_msg);
             if (question == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
             if (type == "multi")
             {
                 // check whether there is the header answer_options:
-                head_buffer = get_text_after(infile, oldpos, error_msg, "answer_options:");
-                if (head_buffer == "NOT_FOUND") return file_corrupted<Result>(error_msg);
+                answer_options_string =read_section(infile, oldpos, "answer_options", error_msg);
+                if (answer_options_string == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
                 // reading in the answer options:
-                answer_options_vect = read_string_list(infile, oldpos, error_msg);
+                answer_options_vect = vectorize_string(answer_options_string);
                 if (answer_options_vect.empty()) return file_corrupted<Result>(error_msg);
             }
 
             // reading the real answer:
-            real_answer = get_text_after(infile, oldpos, error_msg, "real_answer:");
+            real_answer = read_section(infile, oldpos, "real_answer", error_msg);
             if (real_answer == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
             // finding the given answers header:
-            head_buffer = get_text_after(infile, oldpos, error_msg, "given_answers:");
-            if (head_buffer == "NOT_FOUND") return file_corrupted<Result>(error_msg);
+            given_answers_string = read_section(infile, oldpos, "given_answers", error_msg);
+            if (given_answers_string == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
             // reading the given answers:
-            given_answers = read_string_list(infile, oldpos, error_msg);
+            given_answers = vectorize_string(given_answers_string);
             if (given_answers.empty()) return file_corrupted<Result>(error_msg);
 
             // adding the new Result object to the vector:
