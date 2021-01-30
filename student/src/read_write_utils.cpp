@@ -14,7 +14,7 @@ void write_section(ofstream &outfile,
 string read_section(ifstream &infile,
                     streampos &oldpos,
                     const string header,
-                    const string section_marker,
+                    const string chapter_marker,
                     string &error_msg)
 {
     oldpos = infile.tellg();
@@ -37,7 +37,7 @@ string read_section(ifstream &infile,
         {
             getline(infile, line);
             pos = line.find("</" + header + ">");
-            pos_q = line.find(section_marker);
+            pos_q = line.find(chapter_marker);
             if (pos_q == string::npos)
             {
                 if (pos == string::npos) return_string += (line + "\n");

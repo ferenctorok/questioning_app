@@ -28,6 +28,9 @@ ResultsWindow::ResultsWindow(vector<Result *> *results,
     this->results = results;
     detail_window = nullptr;
 
+    // setting fontsize:
+    this->setFont(QFont("Times", 12));
+
     // setting icon:
     setWindowIcon(QIcon(":/question_mark.ico"));
 

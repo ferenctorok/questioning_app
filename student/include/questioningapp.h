@@ -9,6 +9,7 @@
 #include <QStatusBar>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QFont>
 
 #include <question_utils.h>
 #include <task_solving.h>

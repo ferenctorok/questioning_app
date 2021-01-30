@@ -14,6 +14,9 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
     this->outfileName = outfileName;
     this->timestamp = timestamp;
 
+    // setting fontsize:
+    this->setFont(QFont("Times", 12));
+
     // setting icon:
     setWindowIcon(QIcon(":/question_mark.ico"));
 

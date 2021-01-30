@@ -10,6 +10,9 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
     question_counter = 0;
     current_question_type = "";
 
+    // setting font size:
+    this->setFont(QFont("Times", 12));
+
     // setting icon:
     setWindowIcon(QIcon(":/question_mark.ico"));
 

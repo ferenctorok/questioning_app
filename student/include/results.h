@@ -14,6 +14,7 @@
 #include <QFrame>
 #include <QScrollArea>
 #include <QPalette>
+#include <QFont>
 
 #include <question_utils.h>
 #include <utils.h>

@@ -15,6 +15,7 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QFrame>
+#include <QFont>
 
 #include <question_utils.h>
 #include <utils.h>

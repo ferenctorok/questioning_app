@@ -116,6 +116,7 @@ vector<string> vectorize_string(string options_string);
 string read_section(ifstream &infile,
                     streampos &oldpos,
                     const string header,
+                    const string chapter_marker,
                     string &error_msg);
 
 #endif

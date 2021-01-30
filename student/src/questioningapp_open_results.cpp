@@ -7,7 +7,7 @@ vector<Result *>* QuestioningApp::readResults(string filename)
     ifstream infile(filename, ios_base::binary);
     if (infile.is_open())
     {
-        string section_marker = "QUESTION";
+        string chapter_marker = "QUESTION";
         string error_msg = "";
         streampos oldpos;
         string head_buffer;
@@ -38,16 +38,16 @@ vector<Result *>* QuestioningApp::readResults(string filename)
             if (question_num == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
             // reading whether the answer was correct or not:
-            correct_string = read_section(infile, oldpos, "correct", section_marker, error_msg);
+            correct_string = read_section(infile, oldpos, "correct", chapter_marker, error_msg);
             if (correct_string == "NOT_FOUND") return file_corrupted<Result>(error_msg);
             correct = stoi(correct_string);
 
             // reading the number of trials:
-            num_of_trials = read_section(infile, oldpos, "trials", section_marker, error_msg);
+            num_of_trials = read_section(infile, oldpos, "trials", chapter_marker, error_msg);
             if (num_of_trials == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
             // reading the type of the question:
-            type = read_section(infile, oldpos, "type", section_marker, error_msg);
+            type = read_section(infile, oldpos, "type", chapter_marker, error_msg);
             if (type != "text" && type != "multi")
             {
                 error_msg = "type must be either \"text\" or \"multi\"\n";
@@ -56,13 +56,13 @@ vector<Result *>* QuestioningApp::readResults(string filename)
             }
 
             // reading the question:
-            question = read_section(infile, oldpos, "question", section_marker, error_msg);
+            question = read_section(infile, oldpos, "question", chapter_marker, error_msg);
             if (question == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
             if (type == "multi")
             {
                 // check whether there is the header answer_options:
-                answer_options_string =read_section(infile, oldpos, "answer_options", section_marker, error_msg);
+                answer_options_string =read_section(infile, oldpos, "answer_options", chapter_marker, error_msg);
                 if (answer_options_string == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
                 // reading in the answer options:
@@ -71,11 +71,11 @@ vector<Result *>* QuestioningApp::readResults(string filename)
             }
 
             // reading the real answer:
-            real_answer = read_section(infile, oldpos, "real_answer", section_marker, error_msg);
+            real_answer = read_section(infile, oldpos, "real_answer", chapter_marker, error_msg);
             if (real_answer == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
             // finding the given answers header:
-            given_answers_string = read_section(infile, oldpos, "given_answers", section_marker, error_msg);
+            given_answers_string = read_section(infile, oldpos, "given_answers", chapter_marker, error_msg);
             if (given_answers_string == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
             // reading the given answers:
