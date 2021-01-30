@@ -59,7 +59,7 @@ void QuestioningApp::button_start_clicked()
         if (questions->size() > 0)
         {
             // get student name, class and result file name from log, if ther is any:
-            string student_name, student_class, result_file_name;
+            string student_name, student_class, student_name_utf8, student_class_utf8, result_file_name;
             getStudentDataFromLog(timestamp, student_name, student_class, result_file_name);
 
             // if there was no entry yet about this test in the log file, get student name, class
@@ -67,8 +67,9 @@ void QuestioningApp::button_start_clicked()
             bool student_data_ok = true;
             if (result_file_name == "NOT_FOUND")
             {
-                getStudentData(student_name, student_class, student_data_ok);
-                result_file_name = getResultFileName(utf8String, student_name, student_class);
+                getStudentData(student_name_utf8, student_class_utf8,
+                               student_name, student_class, student_data_ok);
+                result_file_name = getResultFileName(utf8String, student_name_utf8, student_class_utf8);
             }
 
             // if the student data was from any of the sources provided, open the task solving window:
@@ -101,11 +102,12 @@ void QuestioningApp::button_results_clicked()
         // converting into utf8 string
         string utf8String = fileName.toLocal8Bit().constData();
         // reading in the results from the file:
-        vector<Result *> *results = readResults(utf8String);
+        string student_name, student_class;
+        vector<Result *> *results = readResults(utf8String, student_name, student_class);
         if (results->size() > 0)
         {
             // creating and showing results window:
-            results_window = new ResultsWindow(results);
+            results_window = new ResultsWindow(results, student_name, student_class);
             connect(results_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
             hide();
             results_window->show();
@@ -271,7 +273,9 @@ void QuestioningApp::getStudentDataFromLog(string timestamp,
 }
 
 
-void QuestioningApp::getStudentData(string& student_name,
+void QuestioningApp::getStudentData(string& student_name_utf8,
+                                    string& student_class_utf8,
+                                    string& student_name,
                                     string& student_class,
                                     bool& student_data_ok)
 {
@@ -280,7 +284,10 @@ void QuestioningApp::getStudentData(string& student_name,
                                            "Kérlek add meg a nevedet", QLineEdit::Normal,
                                            "Vezetéknév Keresztnév", &student_data_ok);
     if (student_data_ok && !q_student_name.isEmpty())
-        student_name = q_student_name.toLocal8Bit().constData();
+    {
+        student_name_utf8 = q_student_name.toLocal8Bit().constData();
+        student_name = q_student_name.toStdString();
+    }
 
     else return;
 
@@ -289,7 +296,10 @@ void QuestioningApp::getStudentData(string& student_name,
                                            "Kérlek add meg az osztályodat!", QLineEdit::Normal,
                                            "2a", &student_data_ok);
     if (student_data_ok && !q_student_class.isEmpty())
-        student_class = q_student_class.toLocal8Bit().constData();
+    {
+        student_class_utf8 = q_student_class.toLocal8Bit().constData();
+        student_class = q_student_class.toStdString();
+    }
 }
 
 

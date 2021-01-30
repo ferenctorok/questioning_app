@@ -32,6 +32,10 @@ TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
     else
     {
         rewrite_logfile = true;
+
+        // initializing the result file:
+        initResultFile();
+
         // setting up the widget (window)
         setAttribute(Qt::WA_DeleteOnClose);
         resize(800, 600);
@@ -248,6 +252,23 @@ void TaskSolvingWindow::refreshInfoLabel(Question *question)
     InfoLabel->setText(QString::fromStdString(info_string));
 }
 
+
+void TaskSolvingWindow::initResultFile()
+{
+    // initializing a result file, if there is not yet one and
+    // writing the name and class of the student into it.
+    ifstream outfile(outfileName, ios_base::binary);
+    if (!outfile)
+    {
+        ofstream new_outfile(outfileName, ios_base::app);
+        if (new_outfile.good())
+        {
+            write_section(new_outfile, "student_name", student_name);
+            write_section(new_outfile, "student_class", student_class);
+            new_outfile << endl;
+        }
+    }
+}
 
 void TaskSolvingWindow::writeResultToFile(Question *question,
                                  bool isCorrect)

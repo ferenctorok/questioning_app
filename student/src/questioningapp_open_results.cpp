@@ -2,7 +2,9 @@
 #include <results.h>
 
 
-vector<Result *>* QuestioningApp::readResults(string filename)
+vector<Result *>* QuestioningApp::readResults(string filename,
+                                              string& student_name,
+                                              string& student_class)
 {
     ifstream infile(filename, ios_base::binary);
     if (infile.is_open())
@@ -10,7 +12,6 @@ vector<Result *>* QuestioningApp::readResults(string filename)
         string chapter_marker = "QUESTION";
         string error_msg = "";
         streampos oldpos;
-        string head_buffer;
         string question_num;
         string correct_string;
         bool correct;
@@ -26,6 +27,20 @@ vector<Result *>* QuestioningApp::readResults(string filename)
 
         string whitespaces =  " \t\f\v\n\r";
 
+        // read the name of the student:
+        student_name = read_section(infile, oldpos, "student_name", chapter_marker, error_msg);
+        if (student_name == "NOT_FOUND") return file_corrupted<Result>(error_msg);
+
+        // read the class of the student:
+        student_class = read_section(infile, oldpos, "student_class", chapter_marker, error_msg);
+        if (student_class == "NOT_FOUND") return file_corrupted<Result>(error_msg);
+
+        // search until the first QUESTION line:
+        do {
+            question_num = get_text_after(infile, oldpos, error_msg, chapter_marker);
+        }
+        while ((question_num == "NOT_FOUND") && infile.good());
+
         // reading in the questions:
         while (infile.good()) {
             // empty vectors:
@@ -33,8 +48,8 @@ vector<Result *>* QuestioningApp::readResults(string filename)
             given_answers.clear();
 
             //jump back to last read line if there is still left from the file:
-            infile.seekg(oldpos);
-            question_num = get_text_after(infile, oldpos, error_msg, "QUESTION");
+            //infile.seekg(oldpos);
+            //question_num = get_text_after(infile, oldpos, error_msg, "QUESTION");
             if (question_num == "NOT_FOUND") return file_corrupted<Result>(error_msg);
 
             // reading whether the answer was correct or not:
@@ -87,15 +102,13 @@ vector<Result *>* QuestioningApp::readResults(string filename)
                                           question, real_answer, answer_options_vect,
                                           given_answers));
 
-            // jumping over empty lines:
-            getline(infile, question_num);
-            oldpos = infile.tellg();
-
-            while (question_num.find_first_not_of(whitespaces) == string::npos && infile.good())
-            {
-                getline(infile, question_num);
+            // search for the next QUESTION line:
+            do {
+                question_num = get_text_after(infile, oldpos, error_msg, chapter_marker);
             }
+            while ((question_num == "NOT_FOUND") && infile.good());
         }
+
         infile.close();
         return results;
     }

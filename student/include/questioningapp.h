@@ -44,7 +44,9 @@ protected:
     ResultsWindow *results_window;
 
     vector<Question *>* readQuestions(string filename);
-    vector<Result *>* readResults(string filename);
+    vector<Result *>* readResults(string filename,
+                                  string& student_name,
+                                  string& student_class);
     template<class T> vector<T *>* file_corrupted(const string &error_msg = "");
     string get_text_after(ifstream &infile,
                           streampos &oldpos,
@@ -60,7 +62,9 @@ protected:
                                  string& student_name,
                                  string& student_class,
                                  string& result_file_string);
-    void getStudentData(string& student_name,
+    void getStudentData(string& student_name_utf8,
+                        string& student_class_utf8,
+                        string& student_name,
                         string& student_class,
                         bool& student_data_ok);
     string getTimestamp(string filename);

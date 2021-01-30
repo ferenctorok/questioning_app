@@ -74,6 +74,7 @@ private:
     void incorrectAnswerDialog();
     void correctAnswerDialog();
     void refreshInfoLabel(Question *question);
+    void initResultFile();
     void writeResultToFile(Question *question,
                            bool isCorrect);
     void checkLogfile();
