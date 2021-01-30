@@ -7,6 +7,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
     if (infile.is_open())
     {
         string chapter_marker = "QUESTION";
+        string line;
         string error_msg = "";
         streampos oldpos;
         string timestamp;
@@ -29,19 +30,15 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
         timestamp = get_text_after(infile, oldpos, error_msg, "timestamp:");
         if (timestamp == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
-        // we have to set oldpos after the timestamp line to enter the while cycle correctly:
-        oldpos = infile.tellg();
+        // search until the first QUESTION line:
+        do getline(infile, line);
+        while ((line.find(chapter_marker) == string::npos) && infile.good());
 
         // reading in the questions:
         while (infile.good()) {
             // empty vectors:
             answer_options_vect.clear();
             multi_answers_vect.clear();
-
-            //jump back to last read line if there is still left from the file:
-            infile.seekg(oldpos);         
-            question_num_string = get_text_after(infile, oldpos, error_msg, chapter_marker);
-            if (question_num_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
             // reading the number of trials:
             num_of_trials_string = read_section(infile, oldpos, "trials", chapter_marker, error_msg);
@@ -89,13 +86,10 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
                 questions_vect->push_back(new MultiChoiceQuestion(question_string, type_string, question_num,
                                                                   num_of_trials, answer_options_vect, multi_answers_vect));
             }
-            // jumping over empty lines:
-            getline(infile, question_num_string);
-            oldpos = infile.tellg();
-            while (question_num_string.find_first_not_of(whitespaces) == string::npos && infile.good())
-            {
-                getline(infile, question_num_string);
-            }
+
+            // search until the next QUESTION line:
+            do getline(infile, line);
+            while ((line.find(chapter_marker) == string::npos) && infile.good());
 
             question_num++;
         }

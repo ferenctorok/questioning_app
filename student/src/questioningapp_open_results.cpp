@@ -47,11 +47,6 @@ vector<Result *>* QuestioningApp::readResults(string filename,
             answer_options_vect.clear();
             given_answers.clear();
 
-            //jump back to last read line if there is still left from the file:
-            //infile.seekg(oldpos);
-            //question_num = get_text_after(infile, oldpos, error_msg, "QUESTION");
-            if (question_num == "NOT_FOUND") return file_corrupted<Result>(error_msg);
-
             // reading whether the answer was correct or not:
             correct_string = read_section(infile, oldpos, "correct", chapter_marker, error_msg);
             if (correct_string == "NOT_FOUND") return file_corrupted<Result>(error_msg);

@@ -354,9 +354,7 @@ void TaskSolvingWindow::checkLogfile()
     string buffer;
 
     // search until the first LOG line:
-    do {
-        getline(logfile, line);
-    }
+    do getline(logfile, line);
     while ((line.find(chapter_marker) == string::npos) && logfile.good());
 
     while (logfile.good())
@@ -414,9 +412,7 @@ void TaskSolvingWindow::checkLogfile()
         else
         {
             // search until next LOG or until the end of the file:
-            do {
-                getline(logfile, line);
-            }
+            do getline(logfile, line);
             while ((line.find(chapter_marker) == string::npos) && logfile.good());
         }
     }
