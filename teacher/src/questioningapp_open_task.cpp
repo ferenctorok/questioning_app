@@ -6,6 +6,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
     ifstream infile(filename, ios_base::binary);
     if (infile.is_open())
     {
+        string section_marker = "QUESTION";
         string error_msg = "";
         streampos oldpos;
         string timestamp;
@@ -43,12 +44,12 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             if (question_num_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
             // reading the number of trials:
-            num_of_trials_string = read_section(infile, oldpos, "trials", error_msg);
+            num_of_trials_string = read_section(infile, oldpos, "trials", section_marker, error_msg);
             if (num_of_trials_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
             num_of_trials = stoi(num_of_trials_string);
 
             // reading the type of the question:
-            type_string = read_section(infile, oldpos, "type", error_msg);
+            type_string = read_section(infile, oldpos, "type", section_marker, error_msg);
             if (type_string != "text" && type_string != "multi")
             {
                 error_msg = "type must be either \"text\" or \"multi\"\n";
@@ -57,13 +58,13 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             }
 
             // reading the question:
-            question_string = read_section(infile, oldpos, "question", error_msg);
+            question_string = read_section(infile, oldpos, "question", section_marker, error_msg);
             if (question_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
             if (type_string == "text")
             {
                 // reading the answer:
-                answer_string = read_section(infile, oldpos, "answer", error_msg);
+                answer_string = read_section(infile, oldpos, "answer", section_marker, error_msg);
                 if (answer_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
                 // adding the new question to the vector:
@@ -72,7 +73,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
             }
             else
             {
-                answer_options_string = read_section(infile, oldpos, "answer_options", error_msg);
+                answer_options_string = read_section(infile, oldpos, "answer_options", section_marker, error_msg);
                 if (answer_options_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
                 // reading in the answer options:
@@ -80,7 +81,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
                 if (answer_options_vect.empty()) return file_corrupted<Question>("Error reading the answer options.");
 
                 // reading the answers:
-                answer_string = read_section(infile, oldpos, "answers", error_msg);
+                answer_string = read_section(infile, oldpos, "answers", section_marker, error_msg);
                 if (answer_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
                 multi_answers_vect = get_multi_answers_from_string(answer_string);
 

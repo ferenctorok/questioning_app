@@ -14,6 +14,7 @@ void write_section(ofstream &outfile,
 string read_section(ifstream &infile,
                     streampos &oldpos,
                     const string header,
+                    const string section_marker,
                     string &error_msg)
 {
     oldpos = infile.tellg();
@@ -36,7 +37,7 @@ string read_section(ifstream &infile,
         {
             getline(infile, line);
             pos = line.find("</" + header + ">");
-            pos_q = line.find("QUESTION");
+            pos_q = line.find(section_marker);
             if (pos_q == string::npos)
             {
                 if (pos == string::npos) return_string += (line + "\n");
@@ -49,7 +50,7 @@ string read_section(ifstream &infile,
             }
             else break;
         }
-        error_msg = "Reached end of QUESTION \n without finding </" + header + ">";
+        error_msg = "Reached end of section\n without finding </" + header + ">";
     }
     else
     {
