@@ -58,12 +58,28 @@ void QuestioningApp::button_start_clicked()
         string timestamp = getTimestamp(utf8String);
         if (questions->size() > 0)
         {
-            // file to save into:
-            string result_file_name = getResultFileName(utf8String);
-            task_solving_window = new TaskSolvingWindow(questions, result_file_name, timestamp);
-            connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
-            hide();
-            task_solving_window->show();
+            // get student name, class and result file name from log, if ther is any:
+            string student_name, student_class, result_file_name;
+            getStudentDataFromLog(timestamp, student_name, student_class, result_file_name);
+
+            // if there was no entry yet about this test in the log file, get student name, class
+            // and logfile name:
+            bool student_data_ok = true;
+            if (result_file_name == "NOT_FOUND")
+            {
+                getStudentData(student_name, student_class, student_data_ok);
+                result_file_name = getResultFileName(utf8String, student_name, student_class);
+            }
+
+            // if the student data was from any of the sources provided, open the task solving window:
+            if (student_data_ok)
+            {
+                task_solving_window = new TaskSolvingWindow(questions, result_file_name, timestamp,
+                                                            student_name, student_class);
+                connect(task_solving_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
+                hide();
+                task_solving_window->show();
+            }
         }
         else
         {
@@ -174,13 +190,106 @@ vector<string> QuestioningApp::read_string_list(ifstream &infile,
 }
 
 
-string QuestioningApp::getResultFileName(string question_file_name)
+string QuestioningApp::getResultFileName(string question_file_name,
+                                         const string student_name,
+                                         const string student_class)
 {
+    // removing the spaces and points from the name and the class:
+    string stud_name_nospace = student_name;
+    stud_name_nospace.erase(std::remove(stud_name_nospace.begin(), stud_name_nospace.end(), ' '),
+                            stud_name_nospace.end());
+    stud_name_nospace.erase(std::remove(stud_name_nospace.begin(), stud_name_nospace.end(), '.'),
+                            stud_name_nospace.end());
+
+    string stud_class_nospace = student_class;
+    stud_class_nospace.erase(std::remove(stud_class_nospace.begin(), stud_class_nospace.end(), ' '),
+                            stud_class_nospace.end());
+    stud_class_nospace.erase(std::remove(stud_class_nospace.begin(), stud_class_nospace.end(), '.'),
+                            stud_class_nospace.end());
+
+
+    // creating the file name from this:
     string result_file_name = question_file_name;
     size_t end = result_file_name.rfind(".q");
     result_file_name = result_file_name.substr(0, end);
+    result_file_name += ("_" + stud_class_nospace + "_" + stud_name_nospace);
     result_file_name += ".res";
     return result_file_name;
+}
+
+
+void QuestioningApp::getStudentDataFromLog(string timestamp,
+                                            string& student_name,
+                                            string& student_class,
+                                            string& result_file_string)
+{
+    student_name = "NOT_FOUND";
+    student_class = "NOT_FOUND";
+    result_file_string = "NOT_FOUND";
+
+    string chapter_marker = "LOG";
+    string line;
+    streampos oldpos;
+    string error_msg;
+    string timestamp_candidate;
+    string file_name;
+
+    ifstream logfile(LOG_FILE, ios_base::binary);
+    if (logfile)
+    {
+        // search until the first LOG line:
+        do
+        {
+            getline(logfile, line);
+        }
+        while ((line.find(chapter_marker) == string::npos) && logfile.good());
+
+        while (logfile.good())
+        {
+            // searching for the timestamp:
+            // checking whether there is already a log with this timestamp:
+            timestamp_candidate = read_section(logfile, oldpos, "timestamp", chapter_marker, error_msg);
+
+            if (timestamp_candidate == timestamp)
+            {
+                // reading the data about the student from the file:
+                result_file_string = read_section(logfile, oldpos, "result_file", chapter_marker, error_msg);
+                student_name = read_section(logfile, oldpos, "student_name", chapter_marker, error_msg);
+                student_class = read_section(logfile, oldpos, "student_class", chapter_marker, error_msg);
+            }
+            else
+            {
+                // search until next LOG or until the end of the file:
+                do
+                {
+                    getline(logfile, line);
+                }
+                while ((line.find(chapter_marker) == string::npos) && logfile.good());
+            }
+        }
+    }
+}
+
+
+void QuestioningApp::getStudentData(string& student_name,
+                                    string& student_class,
+                                    bool& student_data_ok)
+{
+    // getting the name of the student:
+    QString q_student_name = QInputDialog::getText(this, "Név",
+                                           "Kérlek add meg a nevedet", QLineEdit::Normal,
+                                           "Vezetéknév Keresztnév", &student_data_ok);
+    if (student_data_ok && !q_student_name.isEmpty())
+        student_name = q_student_name.toLocal8Bit().constData();
+
+    else return;
+
+    // getting the class of the student:
+    QString q_student_class = QInputDialog::getText(this, "Osztály",
+                                           "Kérlek add meg az osztályodat!", QLineEdit::Normal,
+                                           "2a", &student_data_ok);
+    if (student_data_ok && !q_student_class.isEmpty())
+        student_class = q_student_class.toLocal8Bit().constData();
 }
 
 

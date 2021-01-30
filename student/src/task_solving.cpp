@@ -1,19 +1,16 @@
 #include <task_solving.h>
-
-
-const string LOG_FILE = ".logfile";
+#include <questioningapp.h>
 
 
 TaskSolvingWindow::TaskSolvingWindow(vector<Question *> *questions,
                                      string outfileName,
                                      string timestamp,
+                                     string student_name,
+                                     string student_class,
                                      QWidget *parent):
-    QWidget(parent)
+    QWidget(parent), questions(questions), outfileName(outfileName),
+    timestamp(timestamp), student_name(student_name), student_class(student_class)
 {
-    this->questions = questions;
-    this->outfileName = outfileName;
-    this->timestamp = timestamp;
-
     // setting fontsize:
     this->setFont(QFont("Times", 12));
 
@@ -333,6 +330,7 @@ void TaskSolvingWindow::checkLogfile()
     streampos oldpos;
     string error_msg;
     string timestamp_candidate;
+    string buffer;
 
     // search until the first LOG line:
     do {
@@ -345,10 +343,15 @@ void TaskSolvingWindow::checkLogfile()
         // searching for the timestamp:
         // checking whether there is already a log with this timestamp:
         timestamp_candidate = read_section(logfile, oldpos, "timestamp", chapter_marker, error_msg);
-        cout << "timestamp_candidate" << endl;
-        cout << timestamp_candidate << endl;
+
         if (timestamp_candidate == timestamp)
         {
+            // reading the result file name, the student name and class. These were already given to
+            // the construtctor of the class, so we just read them in the buffer variable:
+            buffer = read_section(logfile, oldpos, "result_file", chapter_marker, error_msg);
+            buffer = read_section(logfile, oldpos, "student_name", chapter_marker, error_msg);
+            buffer = read_section(logfile, oldpos, "student_class", chapter_marker, error_msg);
+
             // setting the question number:
             string question_num_str = read_section(logfile, oldpos, "question_num", chapter_marker, error_msg);
             if (question_num_str != "NOT_FOUND") question_counter = stoi(question_num_str);
@@ -461,6 +464,11 @@ void TaskSolvingWindow::writeLogfile()
                 copy_string.erase(std::remove(copy_string.begin(), copy_string.end(), '\r'), copy_string.end());
 
                 // adding the new data to the string.
+                // result file, student name and class:
+                copy_string += get_section_string("result_file", outfileName);
+                copy_string += get_section_string("student_name", student_name);
+                copy_string += get_section_string("student_class", student_class);
+
                 // -1 is needed because question_counter is also increased one last time after the last question:
                 copy_string += get_section_string("question_num", to_string(question_counter - 1));
 
@@ -523,6 +531,11 @@ void TaskSolvingWindow::writeLogfile()
 
             // writing the timestamp:
             write_section(logoutfile, "timestamp", timestamp);
+
+            // writing the result file name, student name and class:
+            write_section(logoutfile, "result_file", outfileName);
+            write_section(logoutfile, "student_name", student_name);
+            write_section(logoutfile, "student_class", student_class);
 
             // writing the question number:
             write_section(logoutfile, "question_num", to_string(question_counter - 1));

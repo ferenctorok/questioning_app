@@ -23,7 +23,7 @@
 using namespace std;
 
 
-extern const string LOG_FILE;
+//extern const string LOG_FILE;
 
 class TaskSolvingWindow: public QWidget
 {
@@ -33,6 +33,8 @@ public:
     TaskSolvingWindow(vector<Question *> *questions,
                       string outfileName,
                       string timestamp,
+                      string student_name,
+                      string student_class,
                       QWidget *parent = nullptr);
     virtual ~TaskSolvingWindow();
 
@@ -45,6 +47,8 @@ public slots:
 private:
     string outfileName;
     string timestamp;
+    string student_name;
+    string student_class;
     vector<Question *> *questions;
     int question_counter;
     string current_question_type;

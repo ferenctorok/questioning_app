@@ -10,11 +10,14 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QFont>
+#include <QInputDialog>
 
 #include <question_utils.h>
 #include <task_solving.h>
 #include <results.h>
 #include <utils.h>
+
+const string LOG_FILE = ".logfile";
 
 
 class QuestioningApp : public QMainWindow
@@ -50,7 +53,16 @@ protected:
     vector<string> read_string_list(ifstream &infile,
                                     streampos &oldpos,
                                     string &error_msg);
-    string getResultFileName(string question_file_name);
+    string getResultFileName(string question_file_name,
+                             const string student_name,
+                             const string student_class);
+    void getStudentDataFromLog(string timestamp,
+                                 string& student_name,
+                                 string& student_class,
+                                 string& result_file_string);
+    void getStudentData(string& student_name,
+                        string& student_class,
+                        bool& student_data_ok);
     string getTimestamp(string filename);
 };
 #endif // QUESTIONINGAPP_H
