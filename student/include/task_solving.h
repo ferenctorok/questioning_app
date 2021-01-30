@@ -75,6 +75,8 @@ private:
     void checkLogfile();
     void writeLogfile();
     string givenAnswersToSring();
+    string get_section_string(const string header,
+                              const string content);
     string getTextAfter(ifstream &infile,
                         string after_this);
 };

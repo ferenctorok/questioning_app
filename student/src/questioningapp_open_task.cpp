@@ -40,7 +40,7 @@ vector<Question *>* QuestioningApp::readQuestions(string filename)
 
             //jump back to last read line if there is still left from the file:
             infile.seekg(oldpos);         
-            question_num_string = get_text_after(infile, oldpos, error_msg, "QUESTION");
+            question_num_string = get_text_after(infile, oldpos, error_msg, chapter_marker);
             if (question_num_string == "NOT_FOUND") return file_corrupted<Question>(error_msg);
 
             // reading the number of trials:

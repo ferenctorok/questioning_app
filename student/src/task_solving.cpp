@@ -326,17 +326,31 @@ void TaskSolvingWindow::checkLogfile()
     }
 
     // search for the timestamp in the logfile:
+    string chapter_marker = "LOG";
+    string chapter_marker_return;
     string line;
     size_t pos;
+    streampos oldpos;
+    string error_msg;
     string timestamp_candidate;
+
+    // search until the first LOG line:
+    do {
+        getline(logfile, line);
+    }
+    while ((line.find(chapter_marker) == string::npos) && logfile.good());
+
     while (logfile.good())
     {
         // searching for the timestamp:
-        timestamp_candidate = getTextAfter(logfile, "timestamp:");
+        // checking whether there is already a log with this timestamp:
+        timestamp_candidate = read_section(logfile, oldpos, "timestamp", chapter_marker, error_msg);
+        cout << "timestamp_candidate" << endl;
+        cout << timestamp_candidate << endl;
         if (timestamp_candidate == timestamp)
         {
             // setting the question number:
-            string question_num_str = getTextAfter(logfile, "question_num:");
+            string question_num_str = read_section(logfile, oldpos, "question_num", chapter_marker, error_msg);
             if (question_num_str != "NOT_FOUND") question_counter = stoi(question_num_str);
             else question_counter = 0;
 
@@ -344,30 +358,42 @@ void TaskSolvingWindow::checkLogfile()
             int used_trials = 0;
             if (question_counter < questions->size())
             {
-                string used_trials_string = getTextAfter(logfile, "num_used_trials:");
+                string used_trials_string = read_section(logfile, oldpos, "num_used_trials", chapter_marker, error_msg);
                 if (question_num_str != "NOT_FOUND") used_trials = stoi(used_trials_string);
                 for (int i = 0; i < used_trials; i++) questions->at(question_counter)->useTrial();
             }
 
             // setting the list of already given aswers:
-            if (getTextAfter(logfile, "given_answers:") != "NOT_FOUND"){
-                string given_answer_string;
-                // reading in the given answer as a string at first:
-                for (int i = 0; i < used_trials; i++){
-                    given_answer_string = getTextAfter(logfile, "*");
-                    // putting it in the vectors according to question type:
-                    if (given_answer_string != "NOT_FOUND"){
-                        if (questions->at(question_counter)->getType() == "text"){
-                            given_text_answers.push_back(given_answer_string);
-                        }
-                        else{
-                            given_multi_answers.push_back(get_multi_answers_from_string(given_answer_string));
-                        }
+            string given_answer_string = read_section(logfile, oldpos, "given_answers", chapter_marker, error_msg);
+            if (given_answer_string != "NOT_FOUND"){
+                // creating a vector of strings from it:
+                vector<string > given_answers_vect = vectorize_string(given_answer_string);
+
+                // putting it in the corresponding vector:
+                if (questions->at(question_counter)->getType() == "text")
+                {
+                    // putting in the member variable:
+                    given_text_answers = given_answers_vect;
+                }
+                else
+                {
+                    // extracting the vector<int > answers from the strings:
+                    for (auto answer_string: given_answers_vect)
+                    {
+                        given_multi_answers.push_back(get_multi_answers_from_string(answer_string));
                     }
                 }
             }
 
             break;
+        }
+        else
+        {
+            // search until next LOG or until the end of the file:
+            do {
+                getline(logfile, line);
+            }
+            while ((line.find(chapter_marker) == string::npos) && logfile.good());
         }
     }
 }
@@ -399,14 +425,26 @@ void TaskSolvingWindow::writeLogfile()
     if (logfile)
     {
         // search for the timestamp in the logfile:
+        string chapter_marker = "LOG";
+        string chapter_marker_return;
         string line;
         size_t pos;
+        streampos oldpos;
+        string error_msg;
         string timestamp_candidate;
         bool timestamp_found = false;
+
+        // search until the first LOG line:
+        do {
+            getline(logfile, line);
+        }
+        while ((line.find(chapter_marker) == string::npos) && logfile.good());
+
         while (logfile.good())
         {
             // checking whether there is already a log with this timestamp:
-            timestamp_candidate = getTextAfter(logfile, "timestamp:");
+            timestamp_candidate = read_section(logfile, oldpos, "timestamp", chapter_marker, error_msg);
+
             if (timestamp_candidate == timestamp)
             {
                 timestamp_found = true;
@@ -415,38 +453,50 @@ void TaskSolvingWindow::writeLogfile()
                 streampos strpos = logfile.tellg();
                 string copy_string;
                 copy_string.resize(strpos);
-                ifstream readfile(LOG_FILE);
+                ifstream readfile(LOG_FILE, ios_base::binary);
                 readfile.read(&copy_string[0], strpos);
 
+                // unfirtunatelly on windows we have \n\r at the end of every line, so we doble the new lines
+                // everywhere by this copy. So we delete the \r occurances from the string:
+                copy_string.erase(std::remove(copy_string.begin(), copy_string.end(), '\r'), copy_string.end());
+
                 // adding the new data to the string.
-                copy_string += "question_num:" + to_string(question_counter - 1) + "\n";
-                // this is needed because question_counter is also increased one last time after the last question.
+                // -1 is needed because question_counter is also increased one last time after the last question:
+                copy_string += get_section_string("question_num", to_string(question_counter - 1));
+
                 // if this modification would not be here, it would cause out of range errors for the vectors:
                 if (question_counter > questions->size()) question_counter = questions->size();
-                copy_string += "num_used_trials:" + to_string(questions->at(question_counter - 1)->getUsedTrials()) + "\n";
-                copy_string += "given_answers:\n";
-                copy_string += givenAnswersToSring();
-                copy_string += "\n";
+
+                // writing the number of used trials:
+                copy_string += get_section_string("num_used_trials", to_string(questions->at(question_counter - 1)->getUsedTrials()));
+
+                // writing the so far given answers to this question:
+                copy_string += get_section_string("given_answers", givenAnswersToSring());
+
+                // adding an extra new line for separation:
+                copy_string += '\n';
 
                 // skipping the old entries about this timestamp in the original file:
                 do {
                     strpos = logfile.tellg();
                     getline(logfile, line);
+                    cout << line << endl;
                 }
-                while ((line.find("timestamp:") == string::npos) && logfile.good());
+                while ((line.find(chapter_marker) == string::npos) && logfile.good());
 
                 // copying the rest of the file:
                 if (logfile.good()){
-                    // setting back the stream before "timestamp:" for further reading.
+                    // setting back the stream before "LOG" for further reading.
                     logfile.seekg(strpos);
                     while (logfile.good())
                     {
                         getline(logfile, line);
-                        copy_string += line + "\n";
+                        replace(line.begin(), line.end(), '\r', '\n');
+                        copy_string += line;
                     }
                 }
                 // deleting last new line from the end:
-                copy_string = copy_string.substr(0, copy_string.length() - 1);
+                //copy_string = copy_string.substr(0, copy_string.length() - 1);
 
                 // writing the new file:
                 logfile.close();
@@ -455,20 +505,36 @@ void TaskSolvingWindow::writeLogfile()
 
                 break;
             }
+            else
+            {
+                // search until next LOG or until the end of the file:
+                do {
+                    getline(logfile, line);
+                }
+                while ((line.find(chapter_marker) == string::npos) && logfile.good());
+            }
         }
 
         if (!timestamp_found)
         {
             logfile.close();
             ofstream logoutfile(LOG_FILE, ios_base::app);
-            logoutfile << "timestamp:" << timestamp << endl;
-            logoutfile << "question_num:" << question_counter - 1 << endl;
+            logoutfile << "LOG" << endl;
+
+            // writing the timestamp:
+            write_section(logoutfile, "timestamp", timestamp);
+
+            // writing the question number:
+            write_section(logoutfile, "question_num", to_string(question_counter - 1));
+
             // this is needed because question_counter is also increased one last time after the last question.
             // if this modification would not be here, it would cause out of range errors for the vectors:
             if (question_counter > questions->size()) question_counter = questions->size();
-            logoutfile << "num_used_trials:" << questions->at(question_counter - 1)->getUsedTrials() << endl;
-            logoutfile << "given_answers:" << endl;
-            logoutfile << givenAnswersToSring();
+            // writing the used trials:
+            write_section(logoutfile, "num_used_trials", to_string(questions->at(question_counter - 1)->getUsedTrials()));
+
+            // writing the so far given answers:
+            write_section(logoutfile, "given_answers", givenAnswersToSring());
             logoutfile << endl;
         }
 
@@ -489,5 +555,16 @@ string TaskSolvingWindow::givenAnswersToSring()
             str += "\n";
         }
     }
+    // removing last new line from the end of str:
+    return str.substr(0, str.size() - 1);
+}
+
+
+string TaskSolvingWindow::get_section_string(const string header,
+                                             const string content)
+{
+    string str =  "<" + header + ">\n";
+    str += (content + "\n");
+    str += ("</" + header + ">\n");
     return str;
 }
