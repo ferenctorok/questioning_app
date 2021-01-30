@@ -1,2 +1,1 @@
-sample_install_folder/packages/QuestioningApp/data/*
-!sample_install_folder/packages/QuestioningApp/data/README.md
+example_install_folders/**/data/

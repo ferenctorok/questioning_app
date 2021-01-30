@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>QAStudent Installer</Name>
+    <Version>1.1.1</Version>
+    <Title>QATeacher</Title>
+    <Publisher>Ferenc Török</Publisher>
+    <!-- Directory name is used in component.xml -->
+    <!--StartMenuDir>QuestioningApp</StartMenuDir -->
+    <TargetDir>@ApplicationsDir@/QATeacher</TargetDir>
+</Installer>
