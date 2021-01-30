@@ -114,11 +114,12 @@ void QuestioningApp::button_results_clicked()
         // converting into utf8 string
         string utf8String = fileName.toLocal8Bit().constData();
         // reading in the results from the file:
-        vector<Result *> *results = readResults(utf8String);
+        string student_name, student_class;
+        vector<Result *> *results = readResults(utf8String, student_name, student_class);
         if (results->size() > 0)
         {
             // creating and showing results window:
-            results_window = new ResultsWindow(results);
+            results_window = new ResultsWindow(results, student_name, student_class);
             connect(results_window, SIGNAL(IsClosed()), this, SLOT(show_again()));
             hide();
             results_window->show();

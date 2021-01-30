@@ -22,13 +22,15 @@ Result::Result(string question_number,
 
 
 ResultsWindow::ResultsWindow(vector<Result *> *results,
+                             string student_name,
+                             string student_class,
                              QWidget *parent):
-    QWidget(parent)
+    QWidget(parent), results(results),
+    student_name(student_name), student_class(student_class)
 {
-    this->results = results;
     detail_window = nullptr;
 
-    // setting font size:
+    // setting fontsize:
     this->setFont(QFont("Times", 12));
 
     // setting icon:
@@ -144,6 +146,10 @@ void ResultsWindow::details_button_clicked()
 string ResultsWindow::getMainInfoString()
 {
     string str = "";
+
+    // name and class:
+    str += ("Név: " + student_name + "\n");
+    str += ("Osztály: " + student_class + "\n\n");
 
     int num_of_questions = results->size();
     int num_correct_answers = getNumOfCorrectAnswers();

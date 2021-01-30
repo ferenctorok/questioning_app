@@ -44,7 +44,9 @@ protected:
     ResultsWindow *results_window;
 
     vector<Question *>* readQuestions(string filename);
-    vector<Result *>* readResults(string filename);
+    vector<Result *>* readResults(string filename,
+                                  string& student_name,
+                                  string& student_class);
     template<class T> vector<T *>* file_corrupted(const string &error_msg = "");
     string get_text_after(ifstream &infile,
                           streampos &oldpos,

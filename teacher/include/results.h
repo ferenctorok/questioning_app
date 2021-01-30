@@ -82,6 +82,8 @@ class ResultsWindow: public QWidget
 
 public:
     ResultsWindow(vector<Result *> *results,
+                  string student_name,
+                  string student_class,
                   QWidget *parent = nullptr);
     virtual ~ResultsWindow();
 
@@ -93,6 +95,8 @@ signals:
 
 private:
     vector<Result *> *results;
+    string student_name;
+    string student_class;
     ResultDetailsWindow *detail_window;
 
     QVBoxLayout *mainLayout;
